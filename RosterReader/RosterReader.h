@@ -23,15 +23,27 @@ class RosterReader
     string file_dir;
     string file_delim;
     
+    bool is_header; //column titles e.g Name
+    
     int file_name_col; //column (starting at 0) which contains the employee names
     
+    //Vector filled with entries from csv file
     vector<vector<string>> data_vec;
     
-public:
-    RosterReader(string f_dir, string delimeter = ", ", int name_col = 0) :
-        file_dir(f_dir), file_delim(delimeter), file_name_col(name_col) {}
+    //Vector of employee's names
+    void read_all_empl_names();
+    vector<string> empl_names;
     
+    //Called on creation of class object
     void get_data();
+    void parse_data();
+    
+public:
+    RosterReader(string f_dir, string delimeter = ", ", int name_col_indx = 0, bool header = false);
+    
+    vector<string> get_employee_names();
+    
+    
 };
 
 #endif /* defined(__SwapShiftEmployeeClass__RosterReader__) */

@@ -8,6 +8,13 @@
 
 #include "RosterReader.h"
 
+RosterReader::RosterReader(string f_dir, string delimeter, int name_col_indx, bool header) :
+    file_dir(f_dir), file_delim(delimeter), file_name_col(name_col_indx), is_header(header)
+{
+    get_data();
+    parse_data();
+}
+
 void RosterReader::get_data()
 {
     ifstream fin;
@@ -35,6 +42,37 @@ void RosterReader::get_data()
         
     }
     
-    
-    
 }
+
+void RosterReader::parse_data()
+{
+    read_all_empl_names();
+}
+
+void RosterReader::read_all_empl_names()
+{
+    //First entry in name column
+    string new_empl = data_vec[0][file_name_col];
+    
+    //If there's no column titles, names start from beginning
+    if(!is_header)
+        empl_names.push_back(new_empl);
+    
+    for(int i = 1; i < data_vec.size(); i++)
+    {
+        new_empl = data_vec[i][file_name_col];
+        
+        empl_names.push_back(new_empl);
+    }
+}
+
+vector<string> RosterReader::get_employee_names()
+{
+    return empl_names;
+}
+
+
+
+
+
+
