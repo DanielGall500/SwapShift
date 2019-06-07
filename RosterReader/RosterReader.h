@@ -35,8 +35,10 @@ class RosterReader
     vector<string> empl_names;
     
     //Called on creation of class object
-    void get_data();
+    void read_data();
     void parse_data();
+
+	bool valid_file(string dir);
     
 public:
     RosterReader(string f_dir, string delimeter = ", ", int name_col_indx = 0, bool header = false);
