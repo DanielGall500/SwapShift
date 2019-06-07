@@ -50,7 +50,11 @@ class Roster
 public:
     Roster(string f_dir, string delimeter = ", ", int name_col_indx = 0, bool header = false);
     
-    vector<string> get_employee_names();
+	//Get Functions
+	map<string, vector<string>> get_empl_shifts() { return empl_shifts; }
+
+	vector<string> get_employee_names() { return empl_names; }
+	vector<string> get_shift_dates() { return shift_dates; }
     
     
 };
