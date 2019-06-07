@@ -1,22 +1,23 @@
 //
-//  RosterReader.h
+//  Roster.h
 //  SwapShiftEmployeeClass
 //
 //  Created by Daniel Gallagher on 05/06/2019.
 //  Copyright (c) 2019 Developer Co. All rights reserved.
 //
 
-#ifndef __SwapShiftEmployeeClass__RosterReader__
-#define __SwapShiftEmployeeClass__RosterReader__
+#ifndef __SwapShiftEmployeeClass__Roster__
+#define __SwapShiftEmployeeClass__Roster__
 
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <vector>
+#include <map>
 
 using namespace std;
 
-class RosterReader
+class Roster
 {
     string file_dir;
     string file_delim;
@@ -27,10 +28,18 @@ class RosterReader
     
     //Vector filled with entries from csv file
     vector<vector<string>> data_vec;
+
+	//Maps employee names to shifts
+	map<string, vector<string>> empl_shifts;
+	void read_all_empl_shifts();
     
     //Vector of employee's names
     void read_all_empl_names();
     vector<string> empl_names;
+
+	//Vector of shift dates
+	void read_all_shift_dates();
+	vector<string> shift_dates;
     
     //Called on creation of class object
     void read_data();
@@ -39,11 +48,11 @@ class RosterReader
 	bool valid_file(string dir);
     
 public:
-    RosterReader(string f_dir, string delimeter = ", ", int name_col_indx = 0, bool header = false);
+    Roster(string f_dir, string delimeter = ", ", int name_col_indx = 0, bool header = false);
     
     vector<string> get_employee_names();
     
     
 };
 
-#endif /* defined(__SwapShiftEmployeeClass__RosterReader__) */
+#endif /* defined(__SwapShiftEmployeeClass__Roster__) */
