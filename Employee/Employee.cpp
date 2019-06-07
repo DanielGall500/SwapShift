@@ -10,9 +10,10 @@
 
 
 //Constructor
-Employee::Employee(string first_name)
+Employee::Employee(string first_name, long empl_id) :
+	empl_first_name(first_name), empl_ID(empl_id)
 {
-    empl_first_name = first_name;
+
 }
 
 
@@ -65,6 +66,12 @@ shift Employee::get_shift(date d)
 void Employee::del_shift(date d)
 {
     empl_shifts.erase(d);
+}
+
+//Unique Employee ID
+long Employee::get_employee_ID()
+{
+	return empl_ID;
 }
 
 

@@ -23,11 +23,16 @@ class Employee
     string empl_last_name;
     
     string empl_department;
+
+
+	//TODO: MAKE THIS UNIQUE 
+	long empl_ID;
     
+
     map<date, shift> empl_shifts; //only supports one shift per date
     
 public:
-    Employee(string first_name);
+    Employee(string first_name, long empl_id);
     
     //Set & Get For First Name
     string get_first_name();
@@ -46,6 +51,9 @@ public:
     void set_shift(shift s);
     
     void del_shift(date d);
+
+	//Unique Employee ID
+	long get_employee_ID();
     
     
 };
