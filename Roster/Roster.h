@@ -14,6 +14,7 @@
 #include <fstream>
 #include <vector>
 #include <map>
+#include "Structs.h"
 
 using namespace std;
 
@@ -30,7 +31,7 @@ class Roster
     vector<vector<string>> data_vec;
 
 	//Maps employee names to shifts
-	map<string, vector<string>> empl_shifts;
+	map<string, vector<shift>> empl_shifts;
 	void read_all_empl_shifts();
     
     //Vector of employee's names
@@ -46,12 +47,16 @@ class Roster
     void parse_data();
 
 	bool valid_file(string dir);
+
+	//Creating shift structs from this information
+	void parse_shift_times(string shft, string& beg, string& end, string delim="-");
+
     
 public:
     Roster(string f_dir, string delimeter = ", ", int name_col_indx = 0, bool header = false);
     
 	//Get Functions
-	map<string, vector<string>> get_empl_shifts() { return empl_shifts; }
+	map<string, vector<shift>> get_empl_shifts() { return empl_shifts; }
 
 	vector<string> get_employee_names() { return empl_names; }
 	vector<string> get_shift_dates() { return shift_dates; }

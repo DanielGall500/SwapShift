@@ -82,14 +82,16 @@ void Roster::read_all_empl_names()
     }
 }
 
-vector<string> Roster::get_employee_names()
-{
-    return empl_names;
-}
-
 void Roster::read_all_empl_shifts()
 {
 	int shift_beg_indx = file_name_col + 1;
+	vector<shift> shifts;
+	string beg_t, end_t;
+	shift s_tmp;
+	date d_tmp;
+	int date_indx = 0;
+
+	vector<string> dates = get_shift_dates();
 
 	//For every row in our data vector
 	for (vector<string> &x : data_vec)
@@ -98,10 +100,32 @@ void Roster::read_all_empl_shifts()
 		string name_key = x[file_name_col];
 
 		//Shifts are located after the name column until the end
-		vector<string> shifts(x.begin() + shift_beg_indx, x.end());
+		vector<string> str_shifts(x.begin() + shift_beg_indx, x.end());
+
+
+
+		//Create a vector of shifts
+		shifts.clear();
+
+		for (string& s : str_shifts)
+		{
+			//Retrieve the start and end times
+			parse_shift_times(s, beg_t, end_t);
+
+			cout << beg_t << "   " << end_t << endl;
+
+			//Add shift to our shifts vector
+			shifts.push_back(shift(dates[date_indx], beg_t, end_t));
+
+			//Increase date
+			date_indx++;
+		}
 
 		//Set name as key, row shifts as value
 		empl_shifts[name_key] = shifts;
+
+		//Reset the date
+		date_indx = 0;
 	}
 }
 
@@ -116,6 +140,14 @@ void Roster::read_all_shift_dates()
 	shift_dates = dates;
 }
 
+void Roster::parse_shift_times(string shft, string& beg, string& end, string delim)
+{
+	//Start time(everything before the delim)
+	beg = shft.substr(0, shft.find(delim));
+
+	//End time(everything after delim
+	end = shft.substr(shft.find(delim) + 1);
+}
 
 
 
