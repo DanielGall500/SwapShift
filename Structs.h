@@ -12,6 +12,12 @@
 typedef struct date
 {
     int day_of_month, month;
+
+	date() {};
+
+	date(int d, int m) :
+		day_of_month(d), month(m)
+	{};
     
     //true if x is the same date as y
     bool operator==(const date &x) const
@@ -38,8 +44,14 @@ typedef struct date
 
 typedef struct shift
 {
-    date shift_date;
-    std::string start_time, end_time;
+	date shift_date;
+	std::string start_time, end_time;
+
+	shift() {};
+
+	shift(date d, std::string start, std::string end) :
+		shift_date(d), start_time(start), end_time(end)
+	{};
     
 } shift;
 
