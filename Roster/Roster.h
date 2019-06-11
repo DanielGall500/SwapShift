@@ -20,8 +20,7 @@ using namespace std;
 
 class Roster
 {
-    string file_dir;
-    string file_delim;
+    string file_dir, file_delim;
     
     bool is_header; //column titles e.g Name
     
@@ -30,23 +29,21 @@ class Roster
     //Vector filled with entries from csv file
     vector<vector<string>> data_vec;
 
-	//Maps employee names to shifts
+	//Employee Shift Storage
 	map<string, vector<shift>> empl_shifts;
 	void read_all_empl_shifts();
     
-    //Vector of employee's names
+    //Employee Names
     void read_all_empl_names();
     vector<string> empl_names;
 
-	//Vector of shift dates
+	//Dates of Shifts
 	void read_all_shift_dates();
 	vector<string> shift_dates;
     
     //Called on creation of class object
     void read_data();
     void parse_data();
-
-	bool valid_file(string dir);
 
 	//Creating shift structs from this information
 	void parse_shift_times(string shft, string& beg, string& end, string delim="-");
@@ -57,7 +54,6 @@ public:
     
 	//Get Functions
 	map<string, vector<shift>> get_empl_shifts() { return empl_shifts; }
-
 	vector<string> get_employee_names() { return empl_names; }
 	vector<string> get_shift_dates() { return shift_dates; }
     

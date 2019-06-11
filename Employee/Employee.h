@@ -19,48 +19,41 @@ using namespace std;
 class Employee
 {
     
-    string empl_first_name;
-    
-    string empl_last_name;
-
-	//TODO: MAKE FULL NAME A CONCAT OF FIRST & LAST
-	string empl_full_name;
-    
-    string empl_department;
-
+    string empl_first_name, empl_last_name, 
+		empl_department, empl_full_name;
 
 	//TODO: MAKE THIS UNIQUE 
 	long empl_ID;
     
-
-    map<string, shift> empl_shifts; //only supports one shift per date
+	/* Stores the shifts for each employee.
+	   Only supports one shift per date  */
+    map<string, shift> empl_shifts;
     
 public:
     Employee(string empl_full_name, long empl_id);
     
-    //Set & Get For First Name
-    string get_first_name();
-    void set_first_name(string f);
-    
-    //Set & Get For First Name
-    string get_last_name();
-    void set_last_name(string l);
+    //First Name
+	string get_first_name();
+	void   set_first_name(string f);
 
-	//Set & Get For First Name
+    //Last Name
+	string get_last_name();
+	void   set_last_name(string l);
+
+	//Full Name
 	string get_full_name();
     
-    //Set & Get For Department
-    string get_department();
-    void set_department(string d);
-    
+    //Department
+	string get_department();
+	void   set_department(string d);
+
     //Shifts
     shift get_shift(string d);
-    void set_shift(shift s);
-    
-    void del_shift(string d);
+    void  set_shift(shift s);
+    void  del_shift(string d);
 
 	//Unique Employee ID
-	long get_employee_ID();
+	long get_employee_ID() { return empl_ID; };
 
 	//Print Functions
 	void print_shifts();
@@ -68,7 +61,7 @@ public:
     
 };
 
-void swap_shift(Employee *A, date A_date, Employee *B, date B_date);
+void swap_shift(Employee& A, string A_date, Employee& B, string B_date);
 
 #endif /* defined(__SwapShiftEmployeeClass__Employee__) */
 

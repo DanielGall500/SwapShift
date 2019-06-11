@@ -22,16 +22,16 @@ class EmployeeDatabase
 public:
 	EmployeeDatabase(string db_title);
 
+	vector<Employee> get_database();
+
+	//Add a new employee to the database
 	void add_employee(Employee empl);
 	void del_employee(long empl_ID);
 
-	vector<Employee> get_database() { return empl_db; }
-
+	//Add new roster to the database
 	void add_new_roster(Roster r);
 
 	void print_summary();
-
-
 
 };
 

@@ -15,12 +15,6 @@ Roster::Roster(string f_dir, string delimeter, int name_col_indx, bool header) :
 	parse_data();
 }
 
-bool Roster::valid_file(string dir)
-{
-	//TODO
-	return true;
-}
-
 void Roster::read_data()
 {
     ifstream fin;

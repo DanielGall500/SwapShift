@@ -2,9 +2,9 @@
 
 EmployeeDatabase::EmployeeDatabase(string title) :
 	db_title(title)
-{
+{}
 
-}
+vector<Employee> EmployeeDatabase::get_database() { return empl_db; }
 
 void EmployeeDatabase::add_employee(Employee empl)
 {
