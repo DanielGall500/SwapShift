@@ -44,13 +44,24 @@ typedef struct date
 
 typedef struct shift
 {
-	date shift_date;
 	std::string start_time, end_time;
+
+	//TODO: FIX DATES IN ROSTER TO MATCH DATE STRUCT
+
+	//If date can only be string, use str_date
+	std::string str_date;
+	date shift_date;
 
 	shift() {};
 
+	//If date can be converted to date struct
 	shift(date d, std::string start, std::string end) :
 		shift_date(d), start_time(start), end_time(end)
+	{};
+
+	//If date only exists as string
+	shift(std::string d, std::string start, std::string end) :
+		str_date(d), start_time(start), end_time(end)
 	{};
     
 } shift;

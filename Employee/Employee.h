@@ -21,6 +21,9 @@ class Employee
     string empl_first_name;
     
     string empl_last_name;
+
+	//TODO: MAKE FULL NAME A CONCAT OF FIRST & LAST
+	string empl_full_name;
     
     string empl_department;
 
@@ -32,7 +35,7 @@ class Employee
     map<date, shift> empl_shifts; //only supports one shift per date
     
 public:
-    Employee(string first_name, long empl_id);
+    Employee(string empl_full_name, long empl_id);
     
     //Set & Get For First Name
     string get_first_name();
@@ -41,6 +44,9 @@ public:
     //Set & Get For First Name
     string get_last_name();
     void set_last_name(string l);
+
+	//Set & Get For First Name
+	string get_full_name();
     
     //Set & Get For Department
     string get_department();

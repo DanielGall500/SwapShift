@@ -10,8 +10,8 @@
 
 
 //Constructor
-Employee::Employee(string first_name, long empl_id) :
-	empl_first_name(first_name), empl_ID(empl_id)
+Employee::Employee(string full_name, long empl_id) :
+	empl_full_name(full_name), empl_ID(empl_id)
 {
 
 }
@@ -39,6 +39,13 @@ void Employee::set_last_name(string l)
 {
     empl_last_name = l;
 }
+
+//Full Name
+string Employee::get_full_name()
+{
+	return empl_full_name;
+}
+
 
 //Department
 string Employee::get_department()
