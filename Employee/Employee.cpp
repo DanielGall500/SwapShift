@@ -62,15 +62,15 @@ void Employee::set_department(string d)
 //Shifts
 void Employee::set_shift(shift s)
 {
-    empl_shifts[s.shift_date] = s;
+    empl_shifts[s.str_date] = s;
 }
 
-shift Employee::get_shift(date d)
+shift Employee::get_shift(string d)
 {
     return empl_shifts[d];
 }
 
-void Employee::del_shift(date d)
+void Employee::del_shift(string d)
 {
     empl_shifts.erase(d);
 }
@@ -85,32 +85,30 @@ void Employee::print_shifts()
 {
 	for (auto &it : empl_shifts)
 	{
-		date date = it.first;
+		string date = it.first;
 		shift s = it.second;
 		
-		cout << "Date: " << date.day_of_month <<
-			"/" << date.month << endl;
+		cout << "Date: " << date << endl;
 
 		cout << "Shift: " << s.start_time <<
 			" - " << s.end_time << endl;
 	}
 }
 
-
 //Functions
-void swap_shift(Employee *A, date A_date, Employee *B, date B_date) //A and Bs original shifts
+
+void swap_shift(Employee& A, string A_date, Employee& B, string B_date) //A and Bs original shifts
 {
     //Create a temporary variable to hold the shift of the employees
-    shift A_temp = A->get_shift(A_date);
-    shift B_temp = B->get_shift(B_date);
+    shift A_temp = A.get_shift(A_date);
+    shift B_temp = B.get_shift(B_date);
     
     //Delete shift A and B
-    A->del_shift(A_date);
-    B->del_shift(B_date);
+    A.del_shift(A_date);
+    B.del_shift(B_date);
     
     //Swap the shifts
-    A->set_shift(B_temp);
-    B->set_shift(A_temp);
+    A.set_shift(B_temp);
+    B.set_shift(A_temp);
     
-}
-
+} 

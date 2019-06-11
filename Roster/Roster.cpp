@@ -116,10 +116,6 @@ void Roster::read_all_empl_shifts()
 		//Shifts are located after the name column until the end
 		vector<string> str_shifts(x.begin() + shift_beg_indx, x.end());
 
-		/*cout << "Shifts: " << endl;
-		for (auto& i : x)
-			cout << i << endl;*/
-
 		//Create a vector of shifts
 		shifts.clear();
 
@@ -132,13 +128,11 @@ void Roster::read_all_empl_shifts()
 			//Retrieve the start and end times
 			parse_shift_times(s, beg_t, end_t);
 
-			cout << "Shift: " << s << endl;
-			cout << "Beginning: " << beg_t << endl;
-			cout << "End: " << end_t << endl;
-			cout << endl << endl;
 
 			/*TODO
-			ADD DATES TO SHIFTS BEING ADDED*/
+			-> ADD DATES TO SHIFTS BEING ADDED
+			->Problem: not storing empl_shifts by date struct*/
+
 
 			//Add shift to our shifts vector
 			shifts.push_back(shift(dates[date_indx], beg_t, end_t));
@@ -147,11 +141,11 @@ void Roster::read_all_empl_shifts()
 			date_indx++;
 		}
 
-		//Reset the date
-		date_indx = 0;
-
 		//Set name as key, row shifts as value
 		empl_shifts[name_key] = shifts;
+
+		//Reset the date
+		date_indx = 0;
 	}
 }
 

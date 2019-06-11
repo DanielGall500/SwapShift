@@ -69,20 +69,14 @@ int EmployeeDatabase::get_empl_db_indx(string empl_name)
 	return indx;
 }
 
+//ADD CHECKS
 bool EmployeeDatabase::valid_roster(Roster r)
 {
-	cout << r.get_empl_shifts().size() << endl;
-	cout << r.get_shift_dates().size() << endl;
-	cout << "yy " << endl;
-
-	for (auto& i : r.get_empl_shifts())
-	{
-		cout << i.first << endl;
-	}
 
 	//Check 1: Same amount of shifts as shift dates
 	if (r.get_empl_shifts().size() != r.get_shift_dates().size())
 		return false;
+
 
 	return true;
 }
@@ -108,7 +102,7 @@ void EmployeeDatabase::add_new_roster(Roster r)
 	//TODO: HANDLE IF THERES A NAME THATS NOT IN DATABASE
 	for (auto &it : empl_shift_map)
 	{
-		//Name of employee is the key
+		//Name of employee is the map key
 		name = it.first;
 
 		//Vector of the shifts as the value

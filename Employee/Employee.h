@@ -33,7 +33,7 @@ class Employee
 	long empl_ID;
     
 
-    map<date, shift> empl_shifts; //only supports one shift per date
+    map<string, shift> empl_shifts; //only supports one shift per date
     
 public:
     Employee(string empl_full_name, long empl_id);
@@ -54,10 +54,10 @@ public:
     void set_department(string d);
     
     //Shifts
-    shift get_shift(date d);
+    shift get_shift(string d);
     void set_shift(shift s);
     
-    void del_shift(date d);
+    void del_shift(string d);
 
 	//Unique Employee ID
 	long get_employee_ID();
