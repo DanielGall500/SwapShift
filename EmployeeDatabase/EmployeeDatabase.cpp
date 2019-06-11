@@ -123,3 +123,17 @@ void EmployeeDatabase::add_new_roster(Roster r)
 			empl_db[empl_db_indx].set_shift(s);
 	}
 }
+
+void EmployeeDatabase::print_summary()
+{
+	for (Employee& e : empl_db)
+	{
+		string name = e.get_full_name();
+		long id = e.get_employee_ID();
+
+		cout << "Name: " << name << endl;
+		cout << "Unique ID: " << id << endl;
+		e.print_shifts();
+
+	}
+}

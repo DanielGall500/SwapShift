@@ -81,6 +81,21 @@ long Employee::get_employee_ID()
 	return empl_ID;
 }
 
+void Employee::print_shifts()
+{
+	for (auto &it : empl_shifts)
+	{
+		date date = it.first;
+		shift s = it.second;
+		
+		cout << "Date: " << date.day_of_month <<
+			"/" << date.month << endl;
+
+		cout << "Shift: " << s.start_time <<
+			" - " << s.end_time << endl;
+	}
+}
+
 
 //Functions
 void swap_shift(Employee *A, date A_date, Employee *B, date B_date) //A and Bs original shifts

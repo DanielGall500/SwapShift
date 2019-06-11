@@ -137,14 +137,8 @@ void Roster::read_all_empl_shifts()
 			cout << "End: " << end_t << endl;
 			cout << endl << endl;
 
-
-			//Nothing in dates or shifts?
-			//cout << beg_t << "   " << end_t << endl;
-			//cout << dates.size() << endl;
-			//cout << str_shifts.size() << endl;
-
-			//cout << "_______________" << endl;
-			//getchar();
+			/*TODO
+			ADD DATES TO SHIFTS BEING ADDED*/
 
 			//Add shift to our shifts vector
 			shifts.push_back(shift(dates[date_indx], beg_t, end_t));

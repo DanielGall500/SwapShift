@@ -13,7 +13,10 @@ typedef struct date
 {
     int day_of_month, month;
 
-	date() {};
+	date() 
+	{
+		day_of_month = month = 0;
+	};
 
 	date(int d, int m) :
 		day_of_month(d), month(m)

@@ -10,6 +10,7 @@
 #define __SwapShiftEmployeeClass__Employee__
 
 #include <string>
+#include <iostream>
 #include <map>
 #include "Structs.h"
 
@@ -60,6 +61,9 @@ public:
 
 	//Unique Employee ID
 	long get_employee_ID();
+
+	//Print Functions
+	void print_shifts();
     
     
 };

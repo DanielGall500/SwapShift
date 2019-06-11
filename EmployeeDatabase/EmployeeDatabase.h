@@ -29,6 +29,8 @@ public:
 
 	void add_new_roster(Roster r);
 
+	void print_summary();
+
 
 
 };
