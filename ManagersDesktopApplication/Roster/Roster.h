@@ -6,8 +6,8 @@
 //  Copyright (c) 2019 Developer Co. All rights reserved.
 //
 
-#ifndef __SwapShiftEmployeeClass__Roster__
-#define __SwapShiftEmployeeClass__Roster__
+#ifndef ROSTER_CLASS_
+#define ROSTER_CLASS_
 
 #include <iostream>
 #include <string>
@@ -24,7 +24,7 @@ class Roster
     
     bool is_header; //column titles e.g Name
     
-    int file_name_col; //column (starting at 0) which contains the employee names
+    unsigned long long file_name_col; //column (starting at 0) which contains the employee names
     
     //Vector filled with entries from csv file
     vector<vector<string>> data_vec;
@@ -60,4 +60,4 @@ public:
     
 };
 
-#endif /* defined(__SwapShiftEmployeeClass__Roster__) */
+#endif

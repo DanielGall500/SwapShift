@@ -1,5 +1,6 @@
 #include "menuwindow.h"
 #include <QApplication>
+#include "Employee/Employee.h"
 
 int main(int argc, char *argv[])
 {

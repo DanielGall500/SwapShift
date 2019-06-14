@@ -25,10 +25,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        Employee/Employee.cpp \
+        EmployeeDatabase/EmployeeDatabase.cpp \
+        Roster/Roster.cpp \
         main.cpp \
         menuwindow.cpp
 
 HEADERS += \
+        Employee/Employee.h \
+        EmployeeDatabase/EmployeeDatabase.h \
+        Roster/Roster.h \
         globals.h \
         menuwindow.h
 

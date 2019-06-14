@@ -35,5 +35,5 @@ public:
 
 };
 
-#endif __SwapShiftEmployeeDatabase__
+#endif
 

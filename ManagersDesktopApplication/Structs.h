@@ -9,6 +9,8 @@
 #ifndef SwapShiftEmployeeClass_Structs_h
 #define SwapShiftEmployeeClass_Structs_h
 
+#include <string>
+
 typedef struct date
 {
     int day_of_month, month;
@@ -16,11 +18,11 @@ typedef struct date
 	date() 
 	{
 		day_of_month = month = 0;
-	};
+        }
 
 	date(int d, int m) :
 		day_of_month(d), month(m)
-	{};
+        {}
     
     //true if x is the same date as y
     bool operator==(const date &x) const
@@ -52,20 +54,20 @@ typedef struct shift
 	//TODO: FIX DATES IN ROSTER TO MATCH DATE STRUCT
 
 	//If date can only be string, use str_date
-	std::string str_date;
 	date shift_date;
+        std::string str_date;
 
-	shift() {};
+        shift() {}
 
 	//If date can be converted to date struct
 	shift(date d, std::string start, std::string end) :
-		shift_date(d), start_time(start), end_time(end)
-	{};
+            start_time(start), end_time(end), shift_date(d)
+        {}
 
 	//If date only exists as string
 	shift(std::string d, std::string start, std::string end) :
-		str_date(d), start_time(start), end_time(end)
-	{};
+                start_time(start), end_time(end), str_date(d)
+        {}
     
 } shift;
 

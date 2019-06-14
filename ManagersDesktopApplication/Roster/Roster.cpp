@@ -9,7 +9,7 @@
 #include "Roster.h"
 
 Roster::Roster(string f_dir, string delimeter, int name_col_indx, bool header) :
-    file_dir(f_dir), file_delim(delimeter), file_name_col(name_col_indx), is_header(header)
+    file_dir(f_dir), file_delim(delimeter), is_header(header), file_name_col(name_col_indx)
 {
 	read_data();
 	parse_data();
