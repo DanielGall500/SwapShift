@@ -20,7 +20,7 @@ class Employee
 {
     
     string empl_first_name, empl_last_name, 
-		empl_department, empl_full_name;
+        empl_full_name, empl_department;
 
 	//TODO: MAKE THIS UNIQUE 
 	long empl_ID;
@@ -30,7 +30,7 @@ class Employee
     map<string, shift> empl_shifts;
     
 public:
-    Employee(string empl_full_name, long empl_id);
+    Employee(string empl_full_name, long empl_id, string dept="N/A");
     
     //First Name
 	string get_first_name();

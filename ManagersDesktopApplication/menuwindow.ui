@@ -6,21 +6,85 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>800</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MenuWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(35, 200, 255);</string>
+  </property>
   <widget class="QWidget" name="centralWidget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>60</y>
+      <width>801</width>
+      <height>331</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="menuPage">
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>10</y>
+        <width>231</width>
+        <height>261</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="emplButton">
+         <property name="text">
+          <string>Employees</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="curRostButton">
+         <property name="text">
+          <string>Current Rosters</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="uplRostButton">
+         <property name="text">
+          <string>Upload Roster</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="employeePage">
+     <widget class="QTableWidget" name="emplTableDisp">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>10</y>
+        <width>311</width>
+        <height>301</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_3"/>
+   </widget>
    <widget class="QLabel" name="menuTitle">
     <property name="geometry">
      <rect>
-      <x>110</x>
+      <x>290</x>
       <y>0</y>
-      <width>161</width>
-      <height>71</height>
+      <width>211</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -29,53 +93,17 @@
       <height>0</height>
      </size>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: white;
+font-size: 30px;</string>
+    </property>
     <property name="text">
      <string>SwapShift</string>
     </property>
-   </widget>
-   <widget class="QWidget" name="verticalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>70</y>
-      <width>160</width>
-      <height>141</height>
-     </rect>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
-    <layout class="QVBoxLayout" name="buttonLayout">
-     <item>
-      <widget class="QPushButton" name="currRostButton">
-       <property name="text">
-        <string>Current Rosters</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="editEmpButton">
-       <property name="text">
-        <string>Edit Employees</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="uploadRostButton">
-       <property name="text">
-        <string>Upload Roster</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>400</width>
-     <height>21</height>
-    </rect>
-   </property>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -85,7 +113,6 @@
     <bool>false</bool>
    </attribute>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
