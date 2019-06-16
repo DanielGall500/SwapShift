@@ -31,6 +31,7 @@ class Employee
     
 public:
     Employee(string empl_full_name, long empl_id, string dept="N/A");
+    Employee(string f_name, string l_name, long empl_id, string dept="N/A");
     
     //First Name
 	string get_first_name();

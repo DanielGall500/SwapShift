@@ -9,9 +9,13 @@
 #include "Employee.h"
 
 
-//Constructor
+//Constructors
+Employee::Employee(string f_name, string l_name, long empl_id, string dept) :
+    empl_first_name(f_name), empl_last_name(l_name), empl_department(dept), empl_ID(empl_id)
+{}
+
 Employee::Employee(string full_name, long empl_id, string dept) :
-    empl_full_name(full_name), empl_department(dept),empl_ID(empl_id)
+    empl_full_name(full_name), empl_department(dept), empl_ID(empl_id)
 {
 	//Set first name 
 	empl_first_name = full_name.substr(0, full_name.find(" "));
