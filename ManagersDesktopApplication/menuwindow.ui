@@ -65,15 +65,50 @@
      </widget>
     </widget>
     <widget class="QWidget" name="employeePage">
-     <widget class="QTableWidget" name="emplTableDisp">
+     <widget class="QSplitter" name="splitter">
       <property name="geometry">
        <rect>
         <x>70</x>
         <y>10</y>
-        <width>311</width>
-        <height>301</height>
+        <width>661</width>
+        <height>291</height>
        </rect>
       </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QTableWidget" name="emplTableDisp"/>
+      <widget class="QWidget" name="layoutWidget">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QPushButton" name="addEmplButton">
+          <property name="text">
+           <string>Add Employee</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="editEmplButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Edit Employee</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="delEmplButton">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Delete Employee</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="page_3"/>
