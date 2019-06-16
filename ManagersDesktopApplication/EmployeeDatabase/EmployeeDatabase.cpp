@@ -4,8 +4,6 @@ EmployeeDatabase::EmployeeDatabase(string title) :
 	db_title(title)
 {}
 
-vector<Employee> EmployeeDatabase::get_database() { return empl_db; }
-
 void EmployeeDatabase::add_employee(Employee empl)
 {
 	empl_db.push_back(empl);
@@ -39,9 +37,9 @@ void EmployeeDatabase::del_employee(long empl_ID)
 }
 
 //ID safer than name
-int EmployeeDatabase::get_empl_db_indx(long empl_id)
+ull EmployeeDatabase::get_empl_db_indx(long empl_id)
 {
-	int indx = 0;
+    ull indx = 0;
 
 	for (Employee& e : empl_db)
 	{
@@ -54,9 +52,9 @@ int EmployeeDatabase::get_empl_db_indx(long empl_id)
 	return indx;
 }
 
-int EmployeeDatabase::get_empl_db_indx(string empl_name)
+ull EmployeeDatabase::get_empl_db_indx(string empl_name)
 {
-	int indx = 0;
+    ull indx = 0;
 
 	for (Employee& e : empl_db)
 	{
@@ -97,7 +95,7 @@ void EmployeeDatabase::add_new_roster(Roster r)
 	vector<shift> shifts;
 
 	string name;
-	int empl_db_indx;
+    ull empl_db_indx;
 
 	//TODO: HANDLE IF THERES A NAME THATS NOT IN DATABASE
 	for (auto &it : empl_shift_map)
@@ -131,3 +129,37 @@ void EmployeeDatabase::print_summary()
 
 	}
 }
+
+vector<Employee> EmployeeDatabase::get_db_vector()
+{
+    return empl_db;
+}
+
+Employee EmployeeDatabase::find_employee(string empl_name)
+{
+    ull indx = get_empl_db_indx(empl_name);
+    return empl_db[indx];
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
