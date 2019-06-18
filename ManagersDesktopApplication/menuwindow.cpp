@@ -146,15 +146,20 @@ void MenuWindow::on_addEmplButton_clicked()
     newAddEmpDial.exec();
 }
 
+std::string MenuWindow::selectedRowEmplID()
+{
+    //Find the employee ID in the row the user has selected
+    int curr_row_indx = ui->emplTableDisp->currentRow();
+    QString curr_ID = ui->emplTableDisp->item(curr_row_indx, ID_hdr_indx)->text();
+
+    //Convert to STD String
+    return qStr_to_stdStr(curr_ID);
+}
+
 //On Clicking 'Edit Employee' Button
 void MenuWindow::on_editEmplButton_clicked()
 {
-    //Find the employee name in the row the user has selected
-    int selected_row_indx = ui->emplTableDisp->currentRow();
-    QString curr_ID = ui->emplTableDisp->item(selected_row_indx, ID_hdr_indx)->text();
-
-    //Convert to STD String
-    string ID = qStr_to_stdStr(curr_ID);
+    std::string ID = selectedRowEmplID();
 
     //Create an Edit Employee Dialog Box
     EditEmpDialog newEditEmpDialog(this, EMPL_DB, ID);
@@ -164,11 +169,25 @@ void MenuWindow::on_editEmplButton_clicked()
 }
 
 
-
 void MenuWindow::on_delEmplButton_clicked()
 {
     //TODO: ADD 'ARE YOU SURE' DIALOG
+    QMessageBox::StandardButton delEmplMsgBox;
 
+    delEmplMsgBox = QMessageBox::question(this, "Delete Employee", "Are you sure?",
+                                   QMessageBox::Yes | QMessageBox::No);
+
+    if(delEmplMsgBox == QMessageBox::Yes)
+    {
+        //Find the selected employee's ID
+        std::string ID = selectedRowEmplID();
+
+        //Delete them from the database
+        EMPL_DB->del_employee(ID);
+
+        //Refresh the employee table
+        refresh_empl_table_view(EMPL_DB);
+    }
 
 }
 

@@ -5,6 +5,7 @@
 #include <qlabel.h>
 #include <QString>
 #include <QTableWidget>
+#include <QMessageBox>
 #include "EmployeeDatabase/EmployeeDatabase.h"
 #include "Employee/Employee.h"
 #include "addempdialog.h"
@@ -49,13 +50,15 @@ private:
     friend class EditEmpDialog;
     friend class AddEmpDialog;
 
-
     /* Employee DB Display Widget */
     //First time setup of the table
     void setup_empl_table_view(EmployeeDatabase *empl_db);
 
     //Refresh when edits are made
     void refresh_empl_table_view(EmployeeDatabase *empl_db);
+
+    //Get the index of the selected row
+    std::string selectedRowEmplID();
 };
 
 #endif // MenuWindow_H
