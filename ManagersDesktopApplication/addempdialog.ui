@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -58,7 +58,10 @@
      </layout>
     </item>
     <item>
-     <widget class="QDialogButtonBox" name="buttonBox">
+     <widget class="QDialogButtonBox" name="addEmpButtonBox">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -73,7 +76,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>addEmpButtonBox</sender>
    <signal>accepted()</signal>
    <receiver>AddEmpDialog</receiver>
    <slot>accept()</slot>
@@ -89,7 +92,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>addEmpButtonBox</sender>
    <signal>rejected()</signal>
    <receiver>AddEmpDialog</receiver>
    <slot>reject()</slot>

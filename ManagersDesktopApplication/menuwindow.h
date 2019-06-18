@@ -43,6 +43,8 @@ private slots:
 
     void on_delEmplButton_clicked();
 
+    void on_emplBackButton_clicked();
+
 private:
     Ui::MenuWindow *ui;
 

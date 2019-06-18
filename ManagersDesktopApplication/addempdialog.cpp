@@ -15,9 +15,8 @@ AddEmpDialog::~AddEmpDialog()
 }
 
 //OK is clicked
-void AddEmpDialog::on_buttonBox_accepted()
+void AddEmpDialog::on_addEmpButtonBox_accepted()
 {
-
     /*Inputs: First Name, Last Name, Department*/
     string inp[3] = { qStr_to_stdStr(ui->firstNameLineEdit->text()),
                       qStr_to_stdStr(ui->lastNameLineEdit->text()),
@@ -30,4 +29,45 @@ void AddEmpDialog::on_buttonBox_accepted()
     EMPL_DB->add_employee(new_emp);
 
     main_window->refresh_empl_table_view(EMPL_DB);
+}
+
+//Refresh The Ok/Cancel Button
+void AddEmpDialog::refresh_button_box()
+{
+    if(valid_f_name && valid_l_name && valid_dept)
+        ui->addEmpButtonBox->setEnabled(true);
+    else
+        ui->addEmpButtonBox->setEnabled(false);
+}
+
+//SLOTS: LINE EDITS
+void AddEmpDialog::on_firstNameLineEdit_textChanged(const QString &arg1)
+{
+    if(arg1.isEmpty())
+        valid_f_name = false;
+    else
+        valid_f_name = true;
+
+    refresh_button_box();
+}
+
+void AddEmpDialog::on_lastNameLineEdit_textChanged(const QString &arg1)
+{
+    if(arg1.isEmpty())
+        valid_l_name = false;
+    else
+        valid_l_name = true;
+
+    refresh_button_box();
+}
+
+
+void AddEmpDialog::on_deptLineEdit_textChanged(const QString &arg1)
+{
+    if(arg1.isEmpty())
+        valid_dept = false;
+    else
+        valid_dept = true;
+
+    refresh_button_box();
 }

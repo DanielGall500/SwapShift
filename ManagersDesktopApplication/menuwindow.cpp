@@ -191,10 +191,7 @@ void MenuWindow::on_delEmplButton_clicked()
 
 }
 
-
-
-
-
-
-
-
+void MenuWindow::on_emplBackButton_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(0);
+}
