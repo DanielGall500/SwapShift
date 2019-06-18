@@ -1,13 +1,17 @@
 #include "MenuWindow.h"
 #include <QApplication>
 #include "Employee/Employee.h"
+#include <ctime>
+#include <cstdlib>
 
 int main(int argc, char *argv[])
 {
+    srand(time(0));
+
     //--TESTING DATABASE--
-    Employee x("Daniel Gallagher", 0);
-    Employee y("John Gallagher", 1);
-    Employee z("Paul Gallagher", 2);
+    Employee x("Daniel Gallagher");
+    Employee y("John Gallagher");
+    Employee z("Paul Gallagher");
 
     EmployeeDatabase db("Employees");
     db.add_employee(x);

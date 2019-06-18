@@ -12,6 +12,8 @@
 #include <string>
 #include <iostream>
 #include <map>
+#include <ctime>
+#include <cstdlib>
 #include "Structs.h"
 
 using namespace std;
@@ -21,17 +23,20 @@ class Employee
     
     string empl_first_name, empl_last_name, 
         empl_full_name, empl_department;
-
-	//TODO: MAKE THIS UNIQUE 
-	long empl_ID;
     
 	/* Stores the shifts for each employee.
 	   Only supports one shift per date  */
     map<string, shift> empl_shifts;
+
+    //Generate random ID number
+    string generate_unique_ID(string f_name, string l_name, unsigned int ID_range);
+    string empl_unique_ID;
+
+    unsigned int unique_ID_range = 1000;
     
 public:
-    Employee(string empl_full_name, long empl_id, string dept="N/A");
-    Employee(string f_name, string l_name, long empl_id, string dept="N/A");
+    Employee(string empl_full_name, string dept="N/A");
+    Employee(string f_name, string l_name, string dept="N/A");
     
     //First Name
 	string get_first_name();
@@ -54,7 +59,7 @@ public:
     void  del_shift(string d);
 
 	//Unique Employee ID
-    long get_employee_ID() { return empl_ID; }
+    string get_unique_ID();
 
 	//Print Functions
 	void print_shifts();
