@@ -47,6 +47,7 @@ private:
 
     //Friend Classes
     friend class EditEmpDialog;
+    friend class AddEmpDialog;
 
 
     /* Employee DB Display Widget */

@@ -16,7 +16,6 @@ Employee::Employee(string f_name, string l_name, string dept) :
     empl_full_name = empl_first_name + " " + empl_last_name;
 
     empl_unique_ID = generate_unique_ID(empl_first_name, empl_last_name, unique_ID_range);
-    cout << "ID: " << empl_unique_ID << endl;
 }
 
 Employee::Employee(string full_name, string dept) :
@@ -30,7 +29,6 @@ Employee::Employee(string full_name, string dept) :
 
     //Set Unique Employee ID
     empl_unique_ID = generate_unique_ID(empl_first_name, empl_last_name, unique_ID_range);
-    cout << "ID: " << empl_unique_ID << endl;
 }
 
 //First Name

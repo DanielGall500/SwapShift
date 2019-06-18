@@ -1,8 +1,9 @@
 #include "addempdialog.h"
 #include "ui_addempdialog.h"
+#include "menuwindow.h"
 
-AddEmpDialog::AddEmpDialog(EmployeeDatabase *db, QWidget *parent) :
-    QDialog(parent), emp_db(db),
+AddEmpDialog::AddEmpDialog(MenuWindow *mw, EmployeeDatabase *db, QWidget *parent) :
+    QDialog(parent), main_window(mw), EMPL_DB(db),
     ui(new Ui::AddEmpDialog)
 {
     ui->setupUi(this);
@@ -23,8 +24,10 @@ void AddEmpDialog::on_buttonBox_accepted()
                       qStr_to_stdStr(ui->deptLineEdit->text()) };
 
     //Create a new employee with these inputs
-    Employee new_emp(inp[0], inp[1], 0, inp[2]);
+    Employee new_emp(inp[0], inp[1], inp[2]);
 
     //TODO: Add the employee to the database
-    emp_db->add_employee(new_emp);
+    EMPL_DB->add_employee(new_emp);
+
+    main_window->refresh_empl_table_view(EMPL_DB);
 }

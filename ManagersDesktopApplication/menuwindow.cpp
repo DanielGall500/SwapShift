@@ -9,14 +9,11 @@ MenuWindow::MenuWindow(EmployeeDatabase *db, QWidget *parent) :
     ui(new Ui::MenuWindow)
 {
     ui->setupUi(this);
-
-
 }
 
 MenuWindow::~MenuWindow()
 {
     delete ui;
-    EMPL_DB->print_summary();
 }
 
 //--EMPLOYEE PAGE: TABLE VIEW--
@@ -43,8 +40,8 @@ void MenuWindow::setup_empl_table_view(EmployeeDatabase *empl_db)
     {
        Employee &e = empl_vec[r];
 
-       string entries[3] = {e.get_full_name(), e.get_department(),
-                            std::to_string(e.get_employee_ID())};
+       string entries[3] = { e.get_full_name(), e.get_department(),
+                             e.get_unique_ID() };
 
        //Add a new row for a new employee
        empl_tbl->insertRow((signed)r);
@@ -88,10 +85,8 @@ void MenuWindow::refresh_empl_table_view(EmployeeDatabase *empl_db)
     {
        Employee &e = empl_vec[r];
 
-       string entries[3] = {e.get_full_name(), e.get_department(),
-                            std::to_string(e.get_employee_ID())};
-
-       std::cout << "Reloading " << e.get_full_name() << endl;
+       string entries[3] = { e.get_full_name(), e.get_department(),
+                             e.get_unique_ID() };
 
        //Add a new row for a new employee
        empl_tbl->insertRow((signed)r);
@@ -145,7 +140,7 @@ void MenuWindow::on_emplTableDisp_itemSelectionChanged()
 //Om Clicking 'Add Employee' Button
 void MenuWindow::on_addEmplButton_clicked()
 {
-    AddEmpDialog newAddEmpDial(EMPL_DB);
+    AddEmpDialog newAddEmpDial(this, EMPL_DB);
     newAddEmpDial.setModal(true);
     newAddEmpDial.setWindowTitle("Add Employee");
     newAddEmpDial.exec();
@@ -156,13 +151,13 @@ void MenuWindow::on_editEmplButton_clicked()
 {
     //Find the employee name in the row the user has selected
     int selected_row_indx = ui->emplTableDisp->currentRow();
-    QString curr_selected_emp_name = ui->emplTableDisp->item(selected_row_indx, name_hdr_indx)->text();
+    QString curr_ID = ui->emplTableDisp->item(selected_row_indx, ID_hdr_indx)->text();
 
     //Convert to STD String
-    string name = qStr_to_stdStr(curr_selected_emp_name);
+    string ID = qStr_to_stdStr(curr_ID);
 
     //Create an Edit Employee Dialog Box
-    EditEmpDialog newEditEmpDialog(this, EMPL_DB, name);
+    EditEmpDialog newEditEmpDialog(this, EMPL_DB, ID);
     newEditEmpDialog.setModal(true);
     newEditEmpDialog.setWindowTitle("Edit Employee");
     newEditEmpDialog.exec();

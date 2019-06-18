@@ -15,8 +15,7 @@ class EmployeeDatabase
 	vector<Employee> empl_db;
 
 	//The location of the employee in the database
-    ull get_empl_db_indx(string empl_name);
-    ull get_empl_db_indx(long empl_id);
+    ull get_empl_db_indx(string empl_unique_ID);
 
 	//Check the validity of the roster
 	bool valid_roster(Roster r);
@@ -26,25 +25,16 @@ public:
 
     //Add, Edit or Delete employees
 	void add_employee(Employee empl);
-	void del_employee(long empl_ID);
+    void del_employee(string empl_ID);
 
-    //TODO: USE ID INSTEAD
-    void edit_empl_firstN(string emp_full_name, string new_first_name);
-    void edit_empl_lastN(string emp_full_name, string new_last_name);
-    void edit_empl_dept(string emp_full_name, string new_dept);
-
-
-    /*
-    void edit_empl_firstN(long ID, string new_first_name);
-    void edit_empl_lastN(long ID, string new_last_name);
-    void edit_empl_dept(long ID, string new_dept);
-    */
-
+    void edit_empl_firstN(string ID, string new_first_name);
+    void edit_empl_lastN(string ID, string new_last_name);
+    void edit_empl_dept(string ID, string new_dept);
 
     //Get employee information
-    string get_empl_firstN(string emp_full_name);
-    string get_empl_lastN(string emp_full_name);
-    string get_empl_dept(string emp_full_name);
+    string get_empl_firstN(string ID);
+    string get_empl_lastN(string ID);
+    string get_empl_dept(string ID);
 
 	//Add new roster to the database
 	void add_new_roster(Roster r);
@@ -55,7 +45,7 @@ public:
 
     //TODO: USE ID INSTEAD OF NAME TO FIND EMPLOYEES
     //Find employee in database
-    Employee find_employee(string empl_name);
+    Employee find_employee(string empl_unique_ID);
 
 	void print_summary();
 

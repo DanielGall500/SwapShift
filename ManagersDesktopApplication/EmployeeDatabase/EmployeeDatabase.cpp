@@ -9,16 +9,16 @@ void EmployeeDatabase::add_employee(Employee empl)
 	empl_db.push_back(empl);
 }
 
-void EmployeeDatabase::del_employee(long empl_ID)
+void EmployeeDatabase::del_employee(string empl_ID)
 {
 	bool success = false;
 	int indx = 0;
-	long tmp_ID;
+    string tmp_ID;
 
 	//Iterate employees in database
 	for (Employee &i : empl_db)
 	{
-		tmp_ID = i.get_employee_ID();
+        tmp_ID = i.get_unique_ID();
 
 		//Deletion based on ID number
 		if (tmp_ID == empl_ID)
@@ -37,13 +37,13 @@ void EmployeeDatabase::del_employee(long empl_ID)
 }
 
 //ID safer than name
-ull EmployeeDatabase::get_empl_db_indx(long empl_id)
+ull EmployeeDatabase::get_empl_db_indx(string empl_id)
 {
     ull indx = 0;
 
 	for (Employee& e : empl_db)
 	{
-		if (e.get_employee_ID() == empl_id)
+        if (e.get_unique_ID() == empl_id)
 			break;
 
 		indx++;
@@ -52,24 +52,9 @@ ull EmployeeDatabase::get_empl_db_indx(long empl_id)
 	return indx;
 }
 
-ull EmployeeDatabase::get_empl_db_indx(string empl_name)
+Employee EmployeeDatabase::find_employee(string ID)
 {
-    ull indx = 0;
-
-	for (Employee& e : empl_db)
-	{
-		if (e.get_full_name() == empl_name)
-			break;
-
-		indx++;
-	}
-
-	return indx;
-}
-
-Employee EmployeeDatabase::find_employee(string empl_name)
-{
-    ull indx = get_empl_db_indx(empl_name);
+    ull indx = get_empl_db_indx(ID);
     return empl_db[indx];
 }
 
@@ -127,7 +112,7 @@ void EmployeeDatabase::print_summary()
 	for (Employee& e : empl_db)
 	{
 		string name = e.get_full_name();
-		long id = e.get_employee_ID();
+        string id = e.get_unique_ID();
 
 		cout << "Name: " << name << endl;
 		cout << "Unique ID: " << id << endl;
@@ -142,50 +127,44 @@ vector<Employee> EmployeeDatabase::get_db_vector()
 }
 
 //Edit Employees
-void EmployeeDatabase::edit_empl_firstN(string emp_full_name, string new_first_name)
+void EmployeeDatabase::edit_empl_firstN(string ID, string new_first_name)
 {
-    ull emp_indx = get_empl_db_indx(emp_full_name);
+    ull emp_indx = get_empl_db_indx(ID);
 
-    std::cout <<"Editing First Name" << endl;
-    std::cout << "Original Name: " << emp_full_name << endl;
-    std::cout << "New First Name: " << new_first_name << endl;
-
-    std::cout << "Before: " << empl_db[emp_indx].get_first_name() << endl;
     empl_db[emp_indx].set_first_name(new_first_name);
-    std::cout << "After: " << empl_db[emp_indx].get_first_name() << endl;
-
-
 
 }
 
-void EmployeeDatabase::edit_empl_lastN(string emp_full_name, string new_last_name)
+void EmployeeDatabase::edit_empl_lastN(string ID, string new_last_name)
 {
-    ull emp_indx = get_empl_db_indx(emp_full_name);
+    ull emp_indx = get_empl_db_indx(ID);
+
     empl_db[emp_indx].set_last_name(new_last_name);
 }
 
-void EmployeeDatabase::edit_empl_dept(string emp_full_name, string new_dept)
+void EmployeeDatabase::edit_empl_dept(string ID, string new_dept)
 {
-    ull emp_indx = get_empl_db_indx(emp_full_name);
+    ull emp_indx = get_empl_db_indx(ID);
+
     empl_db[emp_indx].set_department(new_dept);
 }
 
 //Get employee info
-string EmployeeDatabase::get_empl_firstN(string emp_full_name)
+string EmployeeDatabase::get_empl_firstN(string ID)
 {
-    ull emp_indx = get_empl_db_indx(emp_full_name);
+    ull emp_indx = get_empl_db_indx(ID);
     return empl_db[emp_indx].get_first_name();
 }
 
-string EmployeeDatabase::get_empl_lastN(string emp_full_name)
+string EmployeeDatabase::get_empl_lastN(string ID)
 {
-    ull emp_indx = get_empl_db_indx(emp_full_name);
+    ull emp_indx = get_empl_db_indx(ID);
     return empl_db[emp_indx].get_last_name();
 }
 
-string EmployeeDatabase::get_empl_dept(string emp_full_name)
+string EmployeeDatabase::get_empl_dept(string ID)
 {
-    ull emp_indx = get_empl_db_indx(emp_full_name);
+    ull emp_indx = get_empl_db_indx(ID);
     return empl_db[emp_indx].get_department();
 }
 

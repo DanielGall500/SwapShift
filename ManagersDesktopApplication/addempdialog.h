@@ -10,14 +10,17 @@ namespace Ui {
 class AddEmpDialog;
 }
 
+class MenuWindow;
+
 class AddEmpDialog : public QDialog
 {
     Q_OBJECT
 
-    EmployeeDatabase *emp_db;
+    MenuWindow *main_window;
+    EmployeeDatabase *EMPL_DB;
 
 public:
-    explicit AddEmpDialog(EmployeeDatabase *db, QWidget *parent = nullptr);
+    explicit AddEmpDialog(MenuWindow *mw, EmployeeDatabase *db, QWidget *parent = nullptr);
     ~AddEmpDialog();
 
 private slots:

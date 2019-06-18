@@ -2,16 +2,16 @@
 #include "ui_editempdialog.h"
 #include "menuwindow.h"
 
-EditEmpDialog::EditEmpDialog(MenuWindow *mw, EmployeeDatabase *db, string full_name, QWidget *parent) :
-    QDialog(parent), main_window(mw), EMPL_DB(db), orig_full_name(full_name),
+EditEmpDialog::EditEmpDialog(MenuWindow *mw, EmployeeDatabase *db, string ID, QWidget *parent) :
+    QDialog(parent), main_window(mw), EMPL_DB(db), empl_ID(ID),
     ui(new Ui::EditEmpDialog)
 {
     ui->setupUi(this);
 
     //Store selected employee's info
-    f_name = QString::fromStdString(db->get_empl_firstN(full_name));
-    l_name = QString::fromStdString(db->get_empl_lastN(full_name));
-    dept   = QString::fromStdString(db->get_empl_dept(full_name));
+    f_name = QString::fromStdString(db->get_empl_firstN(ID));
+    l_name = QString::fromStdString(db->get_empl_lastN(ID));
+    dept   = QString::fromStdString(db->get_empl_dept(ID));
 
     //Add the info to our line-edit widgets
     ui->firstNameLineEdit->setText(f_name);
@@ -33,9 +33,9 @@ void EditEmpDialog::on_editEmpButtonBox_accepted()
     dept   = ui->deptLineEdit->text();
 
     //Update the employee information
-    EMPL_DB->edit_empl_firstN(orig_full_name, qStr_to_stdStr(f_name));
-    EMPL_DB->edit_empl_lastN(orig_full_name, qStr_to_stdStr(l_name));
-    EMPL_DB->edit_empl_dept(orig_full_name, qStr_to_stdStr(dept));
+    EMPL_DB->edit_empl_firstN(empl_ID, qStr_to_stdStr(f_name));
+    EMPL_DB->edit_empl_lastN(empl_ID, qStr_to_stdStr(l_name));
+    EMPL_DB->edit_empl_dept(empl_ID, qStr_to_stdStr(dept));
 
     //Refresh the table
     main_window->refresh_empl_table_view(EMPL_DB);

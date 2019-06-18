@@ -22,11 +22,11 @@ class EditEmpDialog : public QDialog
 
     //Employee's Variables
     QString f_name, l_name, dept;
-    std::string orig_full_name;
+    std::string empl_ID;
 
 
 public:
-    explicit EditEmpDialog(MenuWindow *mw, EmployeeDatabase *db, std::string emp_name, QWidget *parent = nullptr);
+    explicit EditEmpDialog(MenuWindow *mw, EmployeeDatabase *db, std::string empl_ID, QWidget *parent = nullptr);
     ~EditEmpDialog();
 
 private slots:
