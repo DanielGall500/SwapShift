@@ -26,17 +26,26 @@ Employee::Employee(string full_name, long empl_id, string dept) :
 
 //First Name
 string Employee::get_first_name() { return empl_first_name; }
-void   Employee::set_first_name(string f) { empl_first_name = f; }
+void   Employee::set_first_name(string f)
+{
+    empl_first_name = f;
+    empl_full_name = f + " " + get_last_name();
+}
+
 
 //Last Name
-string Employee::get_last_name() { return empl_last_name; };
-void   Employee::set_last_name(string l) { empl_last_name = l; }
+string Employee::get_last_name() { return empl_last_name; }
+void   Employee::set_last_name(string l)
+{
+    empl_last_name = l;
+    empl_full_name = get_first_name() + " " + l;
+}
 
 //Full Name
-string Employee::get_full_name() { return empl_full_name; };
+string Employee::get_full_name() { return empl_full_name; }
 
 //Department
-string Employee::get_department() { return empl_department; };
+string Employee::get_department() { return empl_department; }
 void   Employee::set_department(string d) { empl_department = d; }
 
 //Shifts

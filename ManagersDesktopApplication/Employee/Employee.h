@@ -6,8 +6,8 @@
 //  Copyright (c) 2019 Developer Co. All rights reserved.
 //
 
-#ifndef __SwapShiftEmployeeClass__Employee__
-#define __SwapShiftEmployeeClass__Employee__
+#ifndef EMPLOYEE_CLASS
+#define EMPLOYEE_CLASS
 
 #include <string>
 #include <iostream>
@@ -54,7 +54,7 @@ public:
     void  del_shift(string d);
 
 	//Unique Employee ID
-	long get_employee_ID() { return empl_ID; };
+    long get_employee_ID() { return empl_ID; }
 
 	//Print Functions
 	void print_shifts();
@@ -64,7 +64,7 @@ public:
 
 void swap_shift(Employee& A, string A_date, Employee& B, string B_date);
 
-#endif /* defined(__SwapShiftEmployeeClass__Employee__) */
+#endif
 
 
 

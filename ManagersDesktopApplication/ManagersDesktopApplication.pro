@@ -28,6 +28,9 @@ SOURCES += \
         Employee/Employee.cpp \
         EmployeeDatabase/EmployeeDatabase.cpp \
         Roster/Roster.cpp \
+        addempdialog.cpp \
+        editempdialog.cpp \
+        globals.cpp \
         main.cpp \
         menuwindow.cpp
 
@@ -35,10 +38,14 @@ HEADERS += \
         Employee/Employee.h \
         EmployeeDatabase/EmployeeDatabase.h \
         Roster/Roster.h \
+        addempdialog.h \
+        editempdialog.h \
         globals.h \
         menuwindow.h
 
 FORMS += \
+        addempdialog.ui \
+        editempdialog.ui \
         menuwindow.ui
 
 # Default rules for deployment.

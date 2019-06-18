@@ -67,6 +67,12 @@ ull EmployeeDatabase::get_empl_db_indx(string empl_name)
 	return indx;
 }
 
+Employee EmployeeDatabase::find_employee(string empl_name)
+{
+    ull indx = get_empl_db_indx(empl_name);
+    return empl_db[indx];
+}
+
 //ADD CHECKS
 bool EmployeeDatabase::valid_roster(Roster r)
 {
@@ -135,10 +141,52 @@ vector<Employee> EmployeeDatabase::get_db_vector()
     return empl_db;
 }
 
-Employee EmployeeDatabase::find_employee(string empl_name)
+//Edit Employees
+void EmployeeDatabase::edit_empl_firstN(string emp_full_name, string new_first_name)
 {
-    ull indx = get_empl_db_indx(empl_name);
-    return empl_db[indx];
+    ull emp_indx = get_empl_db_indx(emp_full_name);
+
+    std::cout <<"Editing First Name" << endl;
+    std::cout << "Original Name: " << emp_full_name << endl;
+    std::cout << "New First Name: " << new_first_name << endl;
+
+    std::cout << "Before: " << empl_db[emp_indx].get_first_name() << endl;
+    empl_db[emp_indx].set_first_name(new_first_name);
+    std::cout << "After: " << empl_db[emp_indx].get_first_name() << endl;
+
+
+
+}
+
+void EmployeeDatabase::edit_empl_lastN(string emp_full_name, string new_last_name)
+{
+    ull emp_indx = get_empl_db_indx(emp_full_name);
+    empl_db[emp_indx].set_last_name(new_last_name);
+}
+
+void EmployeeDatabase::edit_empl_dept(string emp_full_name, string new_dept)
+{
+    ull emp_indx = get_empl_db_indx(emp_full_name);
+    empl_db[emp_indx].set_department(new_dept);
+}
+
+//Get employee info
+string EmployeeDatabase::get_empl_firstN(string emp_full_name)
+{
+    ull emp_indx = get_empl_db_indx(emp_full_name);
+    return empl_db[emp_indx].get_first_name();
+}
+
+string EmployeeDatabase::get_empl_lastN(string emp_full_name)
+{
+    ull emp_indx = get_empl_db_indx(emp_full_name);
+    return empl_db[emp_indx].get_last_name();
+}
+
+string EmployeeDatabase::get_empl_dept(string emp_full_name)
+{
+    ull emp_indx = get_empl_db_indx(emp_full_name);
+    return empl_db[emp_indx].get_department();
 }
 
 
