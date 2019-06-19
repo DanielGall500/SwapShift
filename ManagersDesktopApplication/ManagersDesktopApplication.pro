@@ -32,7 +32,8 @@ SOURCES += \
         editempdialog.cpp \
         globals.cpp \
         main.cpp \
-        menuwindow.cpp
+        menuwindow.cpp \
+        uploadrosterdialog.cpp
 
 HEADERS += \
         Employee/Employee.h \
@@ -41,12 +42,14 @@ HEADERS += \
         addempdialog.h \
         editempdialog.h \
         globals.h \
-        menuwindow.h
+        menuwindow.h \
+        uploadrosterdialog.h
 
 FORMS += \
         addempdialog.ui \
         editempdialog.ui \
-        menuwindow.ui
+        menuwindow.ui \
+        uploadrosterdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

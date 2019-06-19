@@ -195,3 +195,14 @@ void MenuWindow::on_emplBackButton_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
 }
+
+
+
+//--UPLOAD ROSTER--
+void MenuWindow::on_uplRostButton_clicked()
+{
+    UploadRosterDialog uplRostDialog(this);
+    uplRostDialog.setModal(true);
+    uplRostDialog.setWindowTitle("Upload Roster");
+    uplRostDialog.exec();
+}

@@ -50,7 +50,7 @@ class Roster
 
     
 public:
-    Roster(string f_dir, string delimeter = ", ", int name_col_indx = 0, bool header = false);
+    Roster(string f_dir, string delimeter = ",", int name_col_indx = 0, bool header = true);
     
 	//Get Functions
 	map<string, vector<shift>> get_empl_shifts() { return empl_shifts; }

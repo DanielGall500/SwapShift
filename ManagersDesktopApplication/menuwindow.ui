@@ -124,7 +124,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="page_3"/>
+    <widget class="QWidget" name="uploadRostPage"/>
    </widget>
    <widget class="QLabel" name="menuTitle">
     <property name="geometry">

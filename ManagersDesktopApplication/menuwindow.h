@@ -10,6 +10,7 @@
 #include "Employee/Employee.h"
 #include "addempdialog.h"
 #include "editempdialog.h"
+#include "uploadrosterdialog.h"
 
 namespace Ui {
 class MenuWindow;
@@ -44,6 +45,8 @@ private slots:
     void on_delEmplButton_clicked();
 
     void on_emplBackButton_clicked();
+
+    void on_uplRostButton_clicked();
 
 private:
     Ui::MenuWindow *ui;

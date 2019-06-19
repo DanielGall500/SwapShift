@@ -78,6 +78,8 @@ void Roster::read_all_empl_names()
     for(unsigned int i = 1; i < data_vec.size(); i++)
     {
         new_empl = data_vec[i][file_name_col];
+
+        cout << "READ NAME: " << new_empl << endl;
         
         empl_names.push_back(new_empl);
     }
