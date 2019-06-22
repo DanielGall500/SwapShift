@@ -1,12 +1,14 @@
 #ifndef EMPLOYEE_DATABASE
 #define EMPLOYEE_DATABASE
 
-#include "Employee\Employee.h"
-#include "Roster\Roster.h"
+#include "ManagersDesktopApplication\Employee\Employee.h"
+#include "ManagersDesktopApplication\Roster\Roster.h"
 #include <vector>
 #include <iostream>
 
 typedef unsigned long long ull;
+
+enum EMPL_VAR {NAME, ID};
 
 class EmployeeDatabase
 {
@@ -14,11 +16,12 @@ class EmployeeDatabase
 
 	vector<Employee> empl_db;
 
-	//The location of the employee in the database
-    ull get_empl_db_indx(string empl_unique_ID);
-
-	//Check the validity of the roster
-	bool valid_roster(Roster r);
+	/* Find the location of the employee in the database
+	Input either the name or ID as the information we can use
+	to search for this employee.
+	The unique ID is safer, however sometimes we only have the name.
+	*/
+    ull get_empl_db_indx(string empl_info, EMPL_VAR search_type);
 
 public:
     EmployeeDatabase(string db_title);
@@ -35,6 +38,9 @@ public:
     string get_empl_firstN(string ID);
     string get_empl_lastN(string ID);
     string get_empl_dept(string ID);
+
+	//Used to prevent two employee's of the same name
+	bool empl_exists(string full_name);
 
 	//Add new roster to the database
 	void add_new_roster(Roster r);

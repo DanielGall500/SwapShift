@@ -37,13 +37,19 @@ void EmployeeDatabase::del_employee(string empl_ID)
 }
 
 //ID safer than name
-ull EmployeeDatabase::get_empl_db_indx(string empl_id)
+ull EmployeeDatabase::get_empl_db_indx(string empl_info, EMPL_VAR search_type)
 {
     ull indx = 0;
 
 	for (Employee& e : empl_db)
 	{
-        if (e.get_unique_ID() == empl_id)
+		/*  We can search for employees based on ID
+			or name. curr_info changes the info we look for
+			from the current iterated employee based on the search 
+			type we're carrying out. */
+		string curr_info = search_type == NAME ? e.get_full_name() : e.get_unique_ID();
+
+        if (curr_info == empl_info)
 			break;
 
 		indx++;
@@ -52,73 +58,108 @@ ull EmployeeDatabase::get_empl_db_indx(string empl_id)
 	return indx;
 }
 
-Employee EmployeeDatabase::find_employee(string ID)
+Employee EmployeeDatabase::find_employee(string empl_ID)
 {
-    ull indx = get_empl_db_indx(ID);
+    ull indx = get_empl_db_indx(empl_ID, ID);
     return empl_db[indx];
 }
 
-//ADD CHECKS
-bool EmployeeDatabase::valid_roster(Roster r)
+//Edit Employees
+void EmployeeDatabase::edit_empl_firstN(string empl_ID, string new_first_name)
 {
+    ull emp_indx = get_empl_db_indx(empl_ID, ID);
 
-	//Check 1: Same amount of shifts as shift dates
-	if (r.get_empl_shifts().size() != r.get_shift_dates().size())
-		return false;
+    empl_db[emp_indx].set_first_name(new_first_name);
 
-
-	return true;
 }
 
+void EmployeeDatabase::edit_empl_lastN(string empl_ID, string new_last_name)
+{
+    ull emp_indx = get_empl_db_indx(empl_ID, ID);
+
+    empl_db[emp_indx].set_last_name(new_last_name);
+}
+
+void EmployeeDatabase::edit_empl_dept(string empl_ID, string new_dept)
+{
+    ull emp_indx = get_empl_db_indx(empl_ID, ID);
+
+    empl_db[emp_indx].set_department(new_dept);
+}
+
+//Get employee info
+string EmployeeDatabase::get_empl_firstN(string empl_ID)
+{
+    ull emp_indx = get_empl_db_indx(empl_ID, ID);
+    return empl_db[emp_indx].get_first_name();
+}
+
+string EmployeeDatabase::get_empl_lastN(string empl_ID)
+{
+    ull emp_indx = get_empl_db_indx(empl_ID, ID);
+    return empl_db[emp_indx].get_last_name();
+}
+
+string EmployeeDatabase::get_empl_dept(string empl_ID)
+{
+    ull emp_indx = get_empl_db_indx(empl_ID, ID);
+    return empl_db[emp_indx].get_department();
+}
+
+//Roster Functions
 void EmployeeDatabase::add_new_roster(Roster r)
 {
-	//Ensure roster is correct format
-	if (!valid_roster(r))
-	{
-		cout << "Roster Invalid" << endl;
-		getchar();
-		exit(1);
-	}
+    //Declare variables
+    map<string, vector<shift>> empl_shift_map = r.get_empl_shifts();
+    vector<string> dates = r.get_shift_dates();
+    vector<shift> shifts;
 
-	//Declare variables
-	map<string, vector<shift>> empl_shift_map = r.get_empl_shifts();
-	vector<string> dates = r.get_shift_dates();
-	vector<shift> shifts;
-
-	string name;
+    string name;
     ull empl_db_indx;
 
-	//TODO: HANDLE IF THERES A NAME THATS NOT IN DATABASE
-	for (auto &it : empl_shift_map)
-	{
-		//Name of employee is the map key
-		name = it.first;
+    //TODO: HANDLE IF THERES A NAME THATS NOT IN DATABASE
+    for (auto &it : empl_shift_map)
+    {
+        //Name of employee is the map key
+        name = it.first;
 
-		//Vector of the shifts as the value
-		shifts = it.second;
+        //Vector of the shifts as the value
+        shifts = it.second;
 
-		//Find employee's location in database
-		empl_db_indx = get_empl_db_indx(name);
+		//Ensure employee exists in the database
+		if (empl_exists(name))
+		{
+			/* We only have access to the employee's name.
+		       Therefore, we have to search using the name
+		       instead of ID. */
+			empl_db_indx = get_empl_db_indx(name, NAME);
 
 
-		//Give the shifts to the employees
-		for (auto& s : shifts)
-			empl_db[empl_db_indx].set_shift(s);
-	}
+			//Give the shifts to the employees
+			for (auto& s : shifts)
+				empl_db[empl_db_indx].set_shift(s);
+		}
+		else
+		{
+			//ERROR: EMPLOYEE DOES NOT EXIST IN DATABASE
+			cout << "EMPLOYEE DOESNT EXIST: " << name << endl;
+		}
+    }
 }
 
+//Other Functions
 void EmployeeDatabase::print_summary()
 {
-	for (Employee& e : empl_db)
-	{
-		string name = e.get_full_name();
+    for (Employee& e : empl_db)
+    {
+        string name = e.get_full_name();
         string id = e.get_unique_ID();
 
-		cout << "Name: " << name << endl;
-		cout << "Unique ID: " << id << endl;
-		e.print_shifts();
+        cout << "Name: " << name << endl;
+        cout << "Unique ID: " << id << endl;
+        e.print_shifts();
 
-	}
+    }
 }
 
 vector<Employee> EmployeeDatabase::get_db_vector()
@@ -126,49 +167,16 @@ vector<Employee> EmployeeDatabase::get_db_vector()
     return empl_db;
 }
 
-//Edit Employees
-void EmployeeDatabase::edit_empl_firstN(string ID, string new_first_name)
+bool EmployeeDatabase::empl_exists(string full_name)
 {
-    ull emp_indx = get_empl_db_indx(ID);
+	for (Employee& e : empl_db)
+	{
+		if (e.get_full_name() == full_name)
+			return true;
+	}
 
-    empl_db[emp_indx].set_first_name(new_first_name);
-
+	return false;
 }
-
-void EmployeeDatabase::edit_empl_lastN(string ID, string new_last_name)
-{
-    ull emp_indx = get_empl_db_indx(ID);
-
-    empl_db[emp_indx].set_last_name(new_last_name);
-}
-
-void EmployeeDatabase::edit_empl_dept(string ID, string new_dept)
-{
-    ull emp_indx = get_empl_db_indx(ID);
-
-    empl_db[emp_indx].set_department(new_dept);
-}
-
-//Get employee info
-string EmployeeDatabase::get_empl_firstN(string ID)
-{
-    ull emp_indx = get_empl_db_indx(ID);
-    return empl_db[emp_indx].get_first_name();
-}
-
-string EmployeeDatabase::get_empl_lastN(string ID)
-{
-    ull emp_indx = get_empl_db_indx(ID);
-    return empl_db[emp_indx].get_last_name();
-}
-
-string EmployeeDatabase::get_empl_dept(string ID)
-{
-    ull emp_indx = get_empl_db_indx(ID);
-    return empl_db[emp_indx].get_department();
-}
-
-
 
 
 
