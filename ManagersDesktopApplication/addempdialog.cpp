@@ -25,10 +25,20 @@ void AddEmpDialog::on_addEmpButtonBox_accepted()
     //Create a new employee with these inputs
     Employee new_emp(inp[0], inp[1], inp[2]);
 
-    //TODO: Add the employee to the database
-    EMPL_DB->add_employee(new_emp);
+    //CHECK: Is Employee name already in database?
+    if(EMPL_DB->empl_exists(new_emp.get_full_name()))
+    {
+        //ERROR: EMPLOYEE ALREADY EXISTS
+        QMessageBox::critical(this, "Cannot Add Employee",
+                              "An employee by this name already exists.");
+    }
+    else
+    {
+        //Add the employee to the database
+        EMPL_DB->add_employee(new_emp);
 
-    main_window->refresh_empl_table_view(EMPL_DB);
+        main_window->refresh_empl_table_view(EMPL_DB);
+    }
 }
 
 //Refresh The Ok/Cancel Button

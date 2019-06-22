@@ -2,6 +2,7 @@
 #define ADDEMPDIALOG_H
 
 #include <QDialog>
+#include <QMessageBox>
 #include "Employee/Employee.h"
 #include "EmployeeDatabase/EmployeeDatabase.h"
 #include "globals.h"
