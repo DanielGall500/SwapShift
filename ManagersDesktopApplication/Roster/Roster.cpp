@@ -8,152 +8,90 @@
 
 #include "Roster.h"
 
-Roster::Roster(string f_dir, string delimeter, int name_col_indx, bool header) :
-    file_dir(f_dir), file_delim(delimeter), is_header(header), file_name_col(name_col_indx)
+Roster::Roster(string title, vectorStr2D csv_roster, col_pos names, row_pos dates, vectorStr non_shifts) :
+    title(title), roster(csv_roster), names_loc(names), dates_loc(dates), non_shifts(non_shifts)
 {
-	read_data();
-	parse_data();
+    //-1 => End Of Roster
+    if(names_loc.end_pos == -1)
+        names_loc.end_pos = (int)roster.size() - 1;
+    
+    if(dates_loc.end_pos == -1)
+        dates_loc.end_pos = (int)roster[0].size() - 1;
+    
+    /* --Find Names On Roster--
+     Names are found on the roster using the names_loc global var, 
+     which specifies exactly where the names are located on the roster*/
+    
+    empl_names = read_roster_col(names_loc.col, names_loc.start_pos, names_loc.end_pos);
+    
+    /*  --Find Shift Dates On Roster--
+     Dates are found using the dates_loc global var,
+     specifying where the dates are located on roster*/
+    
+    shift_dates = read_roster_row(dates_loc.row, dates_loc.start_pos, dates_loc.end_pos);
+
+    parse_shifts();
 }
 
-void Roster::read_data()
+//--SHIFT FUNCTIONS--
+
+void Roster::parse_shifts()
 {
-    ifstream fin;
+    vector<shift> shifts;
     
-    fin.open(file_dir);
-
-	if (fin.fail())
-	{
-		//NEED TO HANDLE THIS ERROR
-		cout << "ERROR: Unable To Open File" << endl;
-		getchar();
-		exit(1);
-	}
-	else
-	{
-		vector<string> row_vec;
-		string line;
-
-		while (getline(fin, line))
-		{
-			row_vec.clear();
-
-			//while the delimeter still exists in the string
-			while (line.find(file_delim) != string::npos)
-			{
-				string entry = line.substr(0, line.find(file_delim));
-
-				row_vec.push_back(entry);
-
-				line.erase(0, line.find(file_delim) + file_delim.length());
-			}
-
-			//Push the final entry to the row vector
-			row_vec.push_back(line);
-
-			//Push this row to the data vector
-			data_vec.push_back(row_vec);
-		}
-	}
+    /* Each shift is found in a cell that
+       corresponds to a date and an employee
+       name.
+     
+       Rows = Names
+       Cols = Dates */
     
-}
-
-void Roster::parse_data()
-{
-    read_all_empl_names();
-	read_all_shift_dates();
-
-	//Must be called AFTER previous functions
-	read_all_empl_shifts();
-}
-
-void Roster::read_all_empl_names()
-{
-    //First entry in name column
-    string new_empl = data_vec[0][file_name_col];
+    int beg_name = names_loc.start_pos,
+        end_name = names_loc.end_pos,
+        beg_date = dates_loc.start_pos,
+        end_date = dates_loc.end_pos;
     
-    //If there's no column titles, names start from beginning
-    if(!is_header)
-        empl_names.push_back(new_empl);
-      
-    for(unsigned int i = 1; i < data_vec.size(); i++)
+    string name, date, new_shift,
+           beg_t, end_t;
+    
+    for(int n = beg_name; n <= end_name; n++)
     {
-        new_empl = data_vec[i][file_name_col];
-
-        cout << "READ NAME: " << new_empl << endl;
+        name = read_roster_cell(n, names_loc.col);
         
-        empl_names.push_back(new_empl);
+        for(int d = beg_date; d <= end_date; d++)
+        {
+            
+            date = read_roster_cell(dates_loc.row, d);
+            
+            new_shift = read_roster_cell(n, d);
+            
+            /* Some cells will be empty when employees
+               do not have a shift that day or will be filled
+               with a non-shift such as "Hol", "N/A", etc.*/
+            
+            if (new_shift.empty() || ignore_shift(new_shift))
+                continue;
+            
+            parse_shift_times(new_shift, beg_t, end_t);
+            
+            /* --Create Shift--
+             ->Date
+             ->Beginning Time
+             ->End Time
+             ->Roster Title (Eg. Week number) */
+            
+            shift s(date, beg_t, end_t, title);
+            
+            cout << "New Shift: " << name << " @" << beg_t << endl;
+            
+            //Add shift to our shifts vector
+            shifts.push_back(s);
+            
+        }
+        
+        //Set name as key, row shifts as value
+        empl_shifts[name] = shifts;
     }
-}
-
-void Roster::read_all_empl_shifts()
-{
-	int shift_beg_indx = file_name_col + 1;
-	vector<shift> shifts;
-	string beg_t, end_t;
-	shift s_tmp;
-	date d_tmp;
-	int date_indx = 0;
-	bool is_header = true;
-
-	vector<string> dates = get_shift_dates();
-
-	//Create a shifts vector from our data vector
-	int b = is_header ? 1 : 0;
-
-	vector<vector<string>> shifts_vec(data_vec.begin() + b, data_vec.end());
-
-	//For every row in our data vector
-	for (auto &x : shifts_vec)
-	{
-
-		//Get the name of employee from name column
-		string name_key = x[file_name_col];
-
-		//Shifts are located after the name column until the end
-		vector<string> str_shifts(x.begin() + shift_beg_indx, x.end());
-
-		//Create a vector of shifts
-		shifts.clear();
-
-		for (string& s : str_shifts)
-		{
-			//Check if there's a shift
-			if (s.empty())
-				continue;
-
-			//Retrieve the start and end times
-			parse_shift_times(s, beg_t, end_t);
-
-
-			/*TODO
-			-> ADD DATES TO SHIFTS BEING ADDED
-			->Problem: not storing empl_shifts by date struct*/
-
-
-			//Add shift to our shifts vector
-			shifts.push_back(shift(dates[date_indx], beg_t, end_t));
-
-			//Increase date
-			date_indx++;
-		}
-
-		//Set name as key, row shifts as value
-		empl_shifts[name_key] = shifts;
-
-		//Reset the date
-		date_indx = 0;
-	}
-}
-
-void Roster::read_all_shift_dates()
-{
-	//Header row is the first row in the file
-	vector<string> headers = data_vec[0];
-
-	//Dates located after the name title
-	vector<string> dates(headers.begin() + (file_name_col + 1), headers.end());
-
-	shift_dates = dates;
 }
 
 void Roster::parse_shift_times(string shft, string& beg, string& end, string delim)
@@ -167,7 +105,54 @@ void Roster::parse_shift_times(string shft, string& beg, string& end, string del
 	end = shft.substr(pos + 1);
 }
 
+//--READ ROSTER FUNCTIONS--
 
+vectorStr Roster::read_roster_row(int row_indx, int start_pos, int end_pos)
+{
+    vectorStr row_cut;
+    
+    //Cut row from specified start position to specified end position
+    row_cut = vectorStr(roster[row_indx].begin() + (start_pos),
+                        roster[row_indx].begin() + (end_pos + 1));
+    
+    return row_cut;
+}
+
+vectorStr Roster::read_roster_col(int col_indx, int start_pos, int end_pos)
+{
+    vectorStr col;
+    string entry;
+    
+    /*Iterate from start position to the end position
+      on the column specified*/
+    vectorStr2D::iterator row;
+    
+    for(row = (roster.begin() + (start_pos)); row <= (roster.begin() + (end_pos)); row++)
+    {
+        //Next entry
+        entry = (*row)[col_indx];
+        
+        //Add to vector
+        col.push_back(entry);
+    }
+    
+    return col;
+}
+
+string Roster::read_roster_cell(int row_indx, int col_indx)
+{
+    return roster[row_indx][col_indx];
+}
+
+bool Roster::ignore_shift(string shift)
+{
+    for(string &x : non_shifts)
+    {
+        if(shift == x)
+            return true;
+    }
+    return false;
+}
 
 
 
