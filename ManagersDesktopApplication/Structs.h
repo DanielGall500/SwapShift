@@ -49,26 +49,52 @@ typedef struct date
 
 typedef struct shift
 {
-	std::string start_time, end_time;
+	std::string start_time, end_time,
+                roster;
 
 	//TODO: FIX DATES IN ROSTER TO MATCH DATE STRUCT
 
 	//If date can only be string, use str_date
 	date shift_date;
-        std::string str_date;
+    std::string str_date;
 
-        shift() {}
+    shift() {}
 
 	//If date can be converted to date struct
-	shift(date d, std::string start, std::string end) :
+    shift(date d, std::string start, std::string end, std::string roster) :
             start_time(start), end_time(end), shift_date(d)
         {}
 
 	//If date only exists as string
-	shift(std::string d, std::string start, std::string end) :
-                start_time(start), end_time(end), str_date(d)
+    shift(std::string d, std::string start, std::string end, std::string roster) :
+                start_time(start), end_time(end), str_date(d), roster(roster)
         {}
     
 } shift;
+
+typedef struct row_pos
+{
+    int row, start_pos, end_pos;
+    
+    //-1 indicates to very end
+    row_pos(int r, int s_pos = 0, int e_pos = -1) :
+    row(r), start_pos(s_pos), end_pos(e_pos)
+    {};
+    
+    row_pos() {}
+} row;
+
+typedef struct col_pos
+{
+    int col, start_pos, end_pos;
+    
+    //-1 indicates to very end
+    col_pos(int c, int s_pos = 0, int e_pos = -1) :
+    col(c), start_pos(s_pos), end_pos(e_pos)
+    {};
+    
+    col_pos() {}
+    
+} col;
 
 #endif
