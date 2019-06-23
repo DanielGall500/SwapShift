@@ -117,7 +117,6 @@ void EmployeeDatabase::add_new_roster(Roster r)
     string name;
     ull empl_db_indx;
 
-    //TODO: HANDLE IF THERES A NAME THATS NOT IN DATABASE
     for (auto &it : empl_shift_map)
     {
         //Name of employee is the map key
@@ -135,14 +134,16 @@ void EmployeeDatabase::add_new_roster(Roster r)
 			empl_db_indx = get_empl_db_indx(name, NAME);
 
 
-			//Give the shifts to the employees
+			/*Iterate through each shift the employee
+              has on this roster. We give each shift to 
+              the employee as we iterate through them */
 			for (auto& s : shifts)
 				empl_db[empl_db_indx].set_shift(s);
 		}
 		else
 		{
 			//ERROR: EMPLOYEE DOES NOT EXIST IN DATABASE
-			cout << "EMPLOYEE DOESNT EXIST: " << name << endl;
+			throw "Employee Does Not Exist";
 		}
     }
 }

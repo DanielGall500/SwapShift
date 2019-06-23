@@ -35,7 +35,6 @@ class Employee
     unsigned int unique_ID_range = 1000;
     
 public:
-    Employee(string empl_full_name, string dept="N/A");
     Employee(string f_name, string l_name, string dept="N/A");
     
     //First Name

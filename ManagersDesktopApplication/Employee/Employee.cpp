@@ -18,19 +18,6 @@ Employee::Employee(string f_name, string l_name, string dept) :
     empl_unique_ID = generate_unique_ID(empl_first_name, empl_last_name, unique_ID_range);
 }
 
-Employee::Employee(string full_name, string dept) :
-    empl_full_name(full_name), empl_department(dept)
-{
-	//Set first name 
-	empl_first_name = full_name.substr(0, full_name.find(" "));
-
-	//Set last name
-	empl_last_name = full_name.substr(full_name.find(" ") + 1);
-
-    //Set Unique Employee ID
-    empl_unique_ID = generate_unique_ID(empl_first_name, empl_last_name, unique_ID_range);
-}
-
 //First Name
 string Employee::get_first_name() { return empl_first_name; }
 void   Employee::set_first_name(string f)

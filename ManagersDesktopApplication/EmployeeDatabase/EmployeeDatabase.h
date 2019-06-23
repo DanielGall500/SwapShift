@@ -1,8 +1,8 @@
 #ifndef EMPLOYEE_DATABASE
 #define EMPLOYEE_DATABASE
 
-#include "ManagersDesktopApplication\Employee\Employee.h"
-#include "ManagersDesktopApplication\Roster\Roster.h"
+#include "Employee.h"
+#include "Roster.h"
 #include <vector>
 #include <iostream>
 
