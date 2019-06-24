@@ -34,6 +34,9 @@ class CSVReader
 
     //Check if a string is a substring of another
     bool contains_str(string orig, string substr);
+
+    //Check if string is empty
+    bool empty_line(string line);
     
     
 public:

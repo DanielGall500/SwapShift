@@ -35,6 +35,10 @@ vectorStr2D CSVReader::read_csv()
         ignore_line = false;
         row.clear();
 
+        //Check if line is empty
+        if(empty_line(line))
+            continue;
+
         //Check if this line should be ignored
         for(string &s : str_to_ignore)
         {
@@ -68,6 +72,12 @@ vectorStr2D CSVReader::read_csv()
     
     return csv_vector;
     
+}
+
+bool CSVReader::empty_line(string line)
+{
+    if(line.empty())
+        return true;
 }
 
 bool CSVReader::contains_str(string orig, string substr)
