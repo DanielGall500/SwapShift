@@ -9,9 +9,9 @@ int main(int argc, char *argv[])
     srand(time(0));
 
     //--TESTING DATABASE--
-    Employee x("Daniel Gallagher");
-    Employee y("John Gallagher");
-    Employee z("Paul Gallagher");
+    Employee x("Jaime", "Lannister");
+    Employee y("Daenarys","Targaeryn");
+    Employee z("Tyrion", "Lannister");
 
     EmployeeDatabase db("Employees");
     db.add_employee(x);

@@ -9,10 +9,14 @@ MenuWindow::MenuWindow(EmployeeDatabase *db, QWidget *parent) :
     ui(new Ui::MenuWindow)
 {
     ui->setupUi(this);
+
+    //Setup the employee table for viewing
+    setup_empl_table_view(EMPL_DB);
 }
 
 MenuWindow::~MenuWindow()
 {
+    EMPL_DB->print_summary();
     delete ui;
 }
 
@@ -119,8 +123,8 @@ void MenuWindow::on_emplButton_clicked()
     //Can only select rows on the employee table view
     ui->emplTableDisp->setSelectionBehavior( QAbstractItemView::SelectRows );
 
-    //Initialise the table view
-    setup_empl_table_view(EMPL_DB);
+    //Refresh the table view
+    refresh_empl_table_view(EMPL_DB);
 
 }
 
@@ -201,7 +205,7 @@ void MenuWindow::on_emplBackButton_clicked()
 //--UPLOAD ROSTER--
 void MenuWindow::on_uplRostButton_clicked()
 {
-    UploadRosterDialog uplRostDialog(this);
+    UploadRosterDialog uplRostDialog(EMPL_DB, this);
     uplRostDialog.setModal(true);
     uplRostDialog.setWindowTitle("Upload Roster");
     uplRostDialog.exec();

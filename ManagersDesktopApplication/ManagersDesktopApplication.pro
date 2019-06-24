@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        CSVReader/CSVReader.cpp \
         Employee/Employee.cpp \
         EmployeeDatabase/EmployeeDatabase.cpp \
         Roster/Roster.cpp \
@@ -36,6 +37,7 @@ SOURCES += \
         uploadrosterdialog.cpp
 
 HEADERS += \
+        CSVReader/CSVReader.h \
         Employee/Employee.h \
         EmployeeDatabase/EmployeeDatabase.h \
         Roster/Roster.h \
