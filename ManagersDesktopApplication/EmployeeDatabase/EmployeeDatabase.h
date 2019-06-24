@@ -15,6 +15,7 @@ class EmployeeDatabase
 	string db_title;
 
 	vector<Employee> empl_db;
+    vector<string> roster_titles;
 
 	/* Find the location of the employee in the database
 	Input either the name or ID as the information we can use
@@ -53,6 +54,9 @@ public:
 
     //Get Employee Names
     vectorStr get_empl_names();
+
+    //Get Roster Titles
+    vectorStr get_roster_titles();
 
 	void print_summary();
 

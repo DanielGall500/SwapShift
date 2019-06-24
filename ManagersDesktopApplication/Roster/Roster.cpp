@@ -83,14 +83,21 @@ void Roster::parse_shifts()
             shift s(date, beg_t, end_t, title);
             
             cout << "New Shift: " << name << " @" << beg_t << endl;
+
+            cout << "Current Shifts For" << name << endl;
+            for(auto &s : shifts)
+            {
+                cout << "S: " << s.str_date << " @" << s.start_time << endl;
+            }
             
             //Add shift to our shifts vector
             shifts.push_back(s);
             
         }
-        
+
         //Set name as key, row shifts as value
         empl_shifts[name] = shifts;
+        shifts.clear();
     }
 }
 
@@ -176,6 +183,25 @@ bool Roster::check_db_contains_rost_empl(EmployeeDatabase db, string &not_found)
         }
     }
     return true;
+}
+
+//Print Func
+void Roster::print_summary()
+{
+    cout << "--ROSTER SUMMARY--" << endl;
+    for(auto &i : empl_shifts)
+    {
+        cout << "--EMPLOYEE--" << endl;
+        cout << "Name: " << i.first << endl;
+
+        for(shift &s : i.second)
+        {
+            cout << "Shift " << s.str_date
+                 << " @" << s.start_time
+                 << endl;
+        }
+        cout << endl;
+    }
 }
 
 

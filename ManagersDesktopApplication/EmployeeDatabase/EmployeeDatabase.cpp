@@ -140,28 +140,40 @@ void EmployeeDatabase::add_new_roster(Roster r)
               the employee as we iterate through them */
 			for (auto& s : shifts)
 				empl_db[empl_db_indx].set_shift(s);
-		}
-		else
-		{
-			//ERROR: EMPLOYEE DOES NOT EXIST IN DATABASE
-			throw "Employee Does Not Exist";
-		}
+        }
     }
+
+    //Add roster title to list
+    roster_titles.push_back(r.get_title());
 }
 
 //Other Functions
 void EmployeeDatabase::print_summary()
 {
+    cout << "--START SUMMARY--"
+         << endl << endl;
+
     for (Employee& e : empl_db)
     {
         string name = e.get_full_name();
         string id = e.get_unique_ID();
+        vector<shift> shifts = e.get_all_shifts();
 
+        cout << "--EMPLOYEE--" << endl;
         cout << "Name: " << name << endl;
-        cout << "Unique ID: " << id << endl;
-        e.print_shifts();
+
+        for(shift &s : shifts)
+        {
+            cout << "Shift " << s.str_date
+                 << " @" << s.start_time
+                 << "-" << s.end_time
+                 << endl;
+        }
+
+        cout << endl << endl;
 
     }
+    cout << "--END SUMMARY--" << endl << endl;
 }
 
 vector<Employee> EmployeeDatabase::get_db_vector()
@@ -188,6 +200,11 @@ vectorStr EmployeeDatabase::get_empl_names()
         empl_list.push_back(e.get_full_name());
 
     return empl_list;
+}
+
+vectorStr EmployeeDatabase::get_roster_titles()
+{
+    return roster_titles;
 }
 
 

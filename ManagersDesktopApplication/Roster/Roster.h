@@ -62,12 +62,16 @@ public:
     
 	//Get Functions
 	map<string, vector<shift>> get_empl_shifts() { return empl_shifts; }
-	vector<string> get_employee_names() { return empl_names; }
-	vector<string> get_shift_dates() { return shift_dates; }
+    vector<string> get_employee_names()          { return empl_names; }
+    vector<string> get_shift_dates()             { return shift_dates; }
+    string get_title()                           { return title; }
 
     //Check Roster Structure & Format
     bool check_formatted_correctly();
     bool check_db_contains_rost_empl(EmployeeDatabase db, string &not_found);
+
+    //Print Func
+    void print_summary();
     
     
     

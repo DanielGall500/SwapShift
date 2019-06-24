@@ -22,6 +22,9 @@ class UploadRosterDialog : public QDialog
     //Stores new roster
     Roster *rr;
 
+    bool valid_roster_uploaded = false,
+         valid_roster_title = false;
+
 public:
     explicit UploadRosterDialog(EmployeeDatabase *db, QWidget *parent = nullptr);
     ~UploadRosterDialog();
@@ -31,8 +34,12 @@ private slots:
 
     void on_uplRostOKButton_clicked();
 
+    void on_rostTitleLineEdit_textChanged(const QString &title);
+
 private:
     Ui::UploadRosterDialog *ui;
+
+    void update_upl_button();
 
 };
 

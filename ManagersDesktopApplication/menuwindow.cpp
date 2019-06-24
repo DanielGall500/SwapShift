@@ -16,7 +16,6 @@ MenuWindow::MenuWindow(EmployeeDatabase *db, QWidget *parent) :
 
 MenuWindow::~MenuWindow()
 {
-    EMPL_DB->print_summary();
     delete ui;
 }
 
