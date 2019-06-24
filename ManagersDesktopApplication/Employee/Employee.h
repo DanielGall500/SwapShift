@@ -14,6 +14,7 @@
 #include <map>
 #include <ctime>
 #include <cstdlib>
+#include <vector>
 #include "Structs.h"
 
 using namespace std;
@@ -53,6 +54,7 @@ public:
 	void   set_department(string d);
 
     //Shifts
+    vector<shift> get_all_shifts();
     shift get_shift(string d);
     void  set_shift(shift s);
     void  del_shift(string d);

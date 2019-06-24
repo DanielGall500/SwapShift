@@ -95,6 +95,16 @@ string Employee::generate_unique_ID(string f_name, string l_name, unsigned int I
 
 std::string Employee::get_unique_ID() { return empl_unique_ID; }
 
+vector<shift> Employee::get_all_shifts()
+{
+    vector<shift> all_shifts;
+
+    for(auto &s : empl_shifts)
+        all_shifts.push_back(s.second);
+
+    return all_shifts;
+}
+
 //Non-Class Functions
 
 void swap_shift(Employee& A, string A_date, Employee& B, string B_date) //A and Bs original shifts
