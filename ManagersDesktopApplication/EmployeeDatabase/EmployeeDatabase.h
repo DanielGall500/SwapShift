@@ -1,12 +1,12 @@
 #ifndef EMPLOYEE_DATABASE
 #define EMPLOYEE_DATABASE
 
-#include "Employee.h"
-#include "Roster.h"
+#include "Employee/Employee.h"
+#include "globals.h"
 #include <vector>
 #include <iostream>
 
-typedef unsigned long long ull;
+class Roster;
 
 enum EMPL_VAR {NAME, ID};
 
@@ -48,10 +48,11 @@ public:
     //Get database as vector
     vector<Employee> get_db_vector();
 
-
-    //TODO: USE ID INSTEAD OF NAME TO FIND EMPLOYEES
     //Find employee in database
     Employee find_employee(string empl_unique_ID);
+
+    //Get Employee Names
+    vectorStr get_empl_names();
 
 	void print_summary();
 

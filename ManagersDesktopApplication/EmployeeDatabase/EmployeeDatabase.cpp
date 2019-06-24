@@ -1,4 +1,5 @@
 #include "EmployeeDatabase.h"
+#include "Roster/Roster.h"
 
 EmployeeDatabase::EmployeeDatabase(string title) :
 	db_title(title)
@@ -177,6 +178,16 @@ bool EmployeeDatabase::empl_exists(string full_name)
 	}
 
 	return false;
+}
+
+vectorStr EmployeeDatabase::get_empl_names()
+{
+    vectorStr empl_list;
+
+    for(Employee e : empl_db)
+        empl_list.push_back(e.get_full_name());
+
+    return empl_list;
 }
 
 
