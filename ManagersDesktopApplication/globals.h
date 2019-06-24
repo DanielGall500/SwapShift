@@ -2,9 +2,13 @@
 #define GLOBALS_H
 
 #include <QString>
+#include <vector>
 
 extern const QString ssTitleStr;
 
+typedef std::vector<std::vector<std::string>> vectorStr2D;
+typedef std::vector<std::string> vectorStr;
+typedef unsigned long long ull;
 
 /* Our inputs are read as QStrings, however we need to
 *  input STD strings to many of our classes.
