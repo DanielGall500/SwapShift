@@ -9,7 +9,7 @@
 #include "Roster.h"
 
 Roster::Roster(string title, vectorStr2D csv_roster, col_pos names, row_pos dates, vectorStr non_shifts) :
-    title(title), roster(csv_roster), names_loc(names), dates_loc(dates), non_shifts(non_shifts)
+    names_loc(names), dates_loc(dates), roster(csv_roster), title(title), non_shifts(non_shifts)
 {
     //-1 => End Of Roster
     if(names_loc.end_pos == -1)
@@ -153,6 +153,40 @@ bool Roster::ignore_shift(string shift)
     }
     return false;
 }
+
+//TODO: Check Format
+bool Roster::check_formatted_correctly()
+{
+    return true;
+}
+
+bool Roster::check_db_contains_rost_empl(EmployeeDatabase db, string &not_found)
+{
+    vectorStr empl_list = db.get_empl_names();
+
+    cout << "Checking Empl DB" << endl;
+    for(string &rost_name : get_employee_names())
+    {
+        cout << "Checking: " << rost_name << endl;
+        if(std::find(empl_list.begin(), empl_list.end(), rost_name) == empl_list.end())
+        {
+            cout << "FAILED" << endl;
+            not_found = rost_name;
+            return false;
+        }
+    }
+    return true;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

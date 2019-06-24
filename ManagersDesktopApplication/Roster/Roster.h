@@ -14,26 +14,23 @@
 #include <fstream>
 #include <vector>
 #include <map>
+#include "EmployeeDatabase/EmployeeDatabase.h"
 #include "Structs.h"
+#include "globals.h"
 
 using namespace std;
-
-//MAKE GLOBAL
-typedef vector<vector<string>> vectorStr2D;
-typedef vector<string> vectorStr;
-typedef unsigned long long ull;
 
 class Roster
 {
     //Location Of Dates & Names
-    row_pos dates_loc;
     col_pos names_loc;
+    row_pos dates_loc;
+
+    //Vector filled with entries from csv file
+    vectorStr2D roster;
     
     //File Directory, Delimeter & Roster Title
     string file_dir, file_delim, title;
-    
-    //Vector filled with entries from csv file
-    vectorStr2D roster;
     
     /* This tells us what to ignore on the roster.
        Example: "Hol", "N/A", etc */
@@ -67,6 +64,10 @@ public:
 	map<string, vector<shift>> get_empl_shifts() { return empl_shifts; }
 	vector<string> get_employee_names() { return empl_names; }
 	vector<string> get_shift_dates() { return shift_dates; }
+
+    //Check Roster Structure & Format
+    bool check_formatted_correctly();
+    bool check_db_contains_rost_empl(EmployeeDatabase db, string &not_found);
     
     
     
