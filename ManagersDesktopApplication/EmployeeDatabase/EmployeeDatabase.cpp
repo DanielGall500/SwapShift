@@ -112,11 +112,24 @@ void EmployeeDatabase::add_new_roster(Roster r)
 {
     //Declare variables
     map<string, vector<shift>> empl_shift_map = r.get_empl_shifts();
-    vector<string> dates = r.get_shift_dates();
     vector<shift> shifts;
-
     string name;
     ull empl_db_indx;
+
+    cout << "Dates: " << r.get_shift_dates().size() << endl;
+    cout << "Names: " << r.get_employee_names().size() << endl;
+
+    for(auto s : r.get_employee_names())
+    {
+        cout << s << endl;
+    }
+
+    //Store roster's title, dates and names
+    roster_info new_info(r.get_title(),
+                         r.get_shift_dates(),
+                         r.get_employee_names());
+
+    r_info.push_back(new_info);
 
     for (auto &it : empl_shift_map)
     {
@@ -142,9 +155,6 @@ void EmployeeDatabase::add_new_roster(Roster r)
 				empl_db[empl_db_indx].set_shift(s);
         }
     }
-
-    //Add roster title to list
-    roster_titles.push_back(r.get_title());
 }
 
 //Other Functions
@@ -202,9 +212,37 @@ vectorStr EmployeeDatabase::get_empl_names()
     return empl_list;
 }
 
+//Get Roster Titles & Dates
 vectorStr EmployeeDatabase::get_roster_titles()
 {
-    return roster_titles;
+    vectorStr titles;
+
+    for(roster_info ri : r_info)
+        titles.push_back(ri.title);
+
+    return titles;
+
+}
+
+vectorStr2D EmployeeDatabase::get_roster_dates()
+{
+    vectorStr2D dates;
+
+    for(roster_info ri : r_info)
+        dates.push_back(ri.dates);
+
+    return dates;
+}
+
+roster_info EmployeeDatabase::get_roster_info(string title)
+{
+    for(roster_info &r : r_info)
+    {
+        if(r.title == title)
+            return r;
+    }
+
+    return roster_info();
 }
 
 

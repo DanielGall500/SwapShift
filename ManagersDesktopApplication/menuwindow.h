@@ -11,6 +11,7 @@
 #include "addempdialog.h"
 #include "editempdialog.h"
 #include "uploadrosterdialog.h"
+#include "emplrostermodel.h"
 
 namespace Ui {
 class MenuWindow;
@@ -20,14 +21,19 @@ class MenuWindow : public QMainWindow
 {
     Q_OBJECT
 
-    //EMPLOYEE PAGE
-    QTableWidget *empl_tbl; //pointer to the employee table widget
+    //EMPLOYEE DISPLAY
+    QTableWidget *empl_tbl;
 
+    //ROSTER DISPLAY
+    EmplRosterModel *rost_model;
+    QTableView *rost_tbl;
+
+    //MAIN DATABASE
     EmployeeDatabase *EMPL_DB;
 
-    int name_hdr_indx = 0;
-    int dept_hdr_indx = 1;
-    int ID_hdr_indx = 2;
+    int name_hdr_indx = 0,
+        dept_hdr_indx = 1,
+        ID_hdr_indx = 2;
 
 public:
     explicit MenuWindow(EmployeeDatabase *db, QWidget *parent = nullptr);
@@ -48,6 +54,8 @@ private slots:
 
     void on_uplRostButton_clicked();
 
+    void on_curRostButton_clicked();
+
 private:
     Ui::MenuWindow *ui;
 
@@ -64,6 +72,9 @@ private:
 
     //Get the index of the selected row
     std::string selectedRowEmplID();
+
+    /*Current Rosters Table View*/
+    void init_curr_rost_display(EmployeeDatabase *empl_db, string roster);
 };
 
 #endif // MenuWindow_H

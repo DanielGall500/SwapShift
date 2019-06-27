@@ -82,14 +82,6 @@ void Roster::parse_shifts()
             
             shift s(date, beg_t, end_t, title);
             
-            cout << "New Shift: " << name << " @" << beg_t << endl;
-
-            cout << "Current Shifts For" << name << endl;
-            for(auto &s : shifts)
-            {
-                cout << "S: " << s.str_date << " @" << s.start_time << endl;
-            }
-            
             //Add shift to our shifts vector
             shifts.push_back(s);
             

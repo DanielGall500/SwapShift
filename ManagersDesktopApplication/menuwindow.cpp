@@ -209,3 +209,32 @@ void MenuWindow::on_uplRostButton_clicked()
     uplRostDialog.setWindowTitle("Upload Roster");
     uplRostDialog.exec();
 }
+
+void MenuWindow::on_curRostButton_clicked()
+{
+    //Move to current rosters page
+    ui->stackedWidget->setCurrentIndex(2);
+    init_curr_rost_display(EMPL_DB, "Week1");
+}
+
+/*CURRENT ROSTERS PAGE*/
+void MenuWindow::init_curr_rost_display(EmployeeDatabase *empl_db, string roster)
+{
+    rost_tbl = ui->currRostTableView;
+    cout << "Pre Model" << endl;
+    rost_model = new EmplRosterModel(EMPL_DB, roster, 0);
+    cout << "Post Model" << endl;
+    rost_tbl->setModel(rost_model);
+
+    rost_tbl->show();
+}
+
+
+
+
+
+
+
+
+
+

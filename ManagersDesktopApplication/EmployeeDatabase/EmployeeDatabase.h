@@ -3,6 +3,7 @@
 
 #include "Employee/Employee.h"
 #include "globals.h"
+#include "Structs.h"
 #include <vector>
 #include <iostream>
 
@@ -14,8 +15,11 @@ class EmployeeDatabase
 {
 	string db_title;
 
-	vector<Employee> empl_db;
-    vector<string> roster_titles;
+    vector<Employee> empl_db;
+
+    //General information about the uploaded rosters
+    vector<roster_info> r_info;
+
 
 	/* Find the location of the employee in the database
 	Input either the name or ID as the information we can use
@@ -55,8 +59,11 @@ public:
     //Get Employee Names
     vectorStr get_empl_names();
 
-    //Get Roster Titles
+    //Get Roster Titles & Dates
     vectorStr get_roster_titles();
+    vectorStr2D get_roster_dates();
+
+    roster_info get_roster_info(string title);
 
 	void print_summary();
 

@@ -124,7 +124,18 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="uploadRostPage"/>
+    <widget class="QWidget" name="currRostPage">
+     <widget class="QTableView" name="currRostTableView">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>781</width>
+        <height>301</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
    </widget>
    <widget class="QLabel" name="menuTitle">
     <property name="geometry">

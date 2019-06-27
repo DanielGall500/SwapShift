@@ -41,11 +41,11 @@ class Roster
 	map<string, vector<shift>> empl_shifts;
 	void parse_shifts();
     
-    //Employee Names
-    vector<string> empl_names;
+    //Employee Names & IDs
+    vectorStr empl_names;
 
 	//Dates
-	vector<string> shift_dates;
+    vectorStr shift_dates;
 
 	//Creating shift structs from this information
 	void parse_shift_times(string shft, string& beg, string& end, string delim="-");
@@ -54,7 +54,7 @@ class Roster
        Start & End Position set to -1 indicates return the whole row/column */
     vectorStr read_roster_row(int row_indx, int start_pos, int end_pos);
     vectorStr read_roster_col(int col_indx, int start_pos, int end_pos);
-    string    read_roster_cell(int row_indx, int col_indx);
+    string    read_roster_cell(int row_indx,int col_indx);
 
     
 public:
@@ -62,8 +62,8 @@ public:
     
 	//Get Functions
 	map<string, vector<shift>> get_empl_shifts() { return empl_shifts; }
-    vector<string> get_employee_names()          { return empl_names; }
-    vector<string> get_shift_dates()             { return shift_dates; }
+    vectorStr get_employee_names()               { return empl_names; }
+    vectorStr get_shift_dates()                  { return shift_dates; }
     string get_title()                           { return title; }
 
     //Check Roster Structure & Format

@@ -31,6 +31,7 @@ SOURCES += \
         Roster/Roster.cpp \
         addempdialog.cpp \
         editempdialog.cpp \
+        emplrostermodel.cpp \
         globals.cpp \
         main.cpp \
         menuwindow.cpp \
@@ -41,8 +42,10 @@ HEADERS += \
         Employee/Employee.h \
         EmployeeDatabase/EmployeeDatabase.h \
         Roster/Roster.h \
+        Structs.h \
         addempdialog.h \
         editempdialog.h \
+        emplrostermodel.h \
         globals.h \
         menuwindow.h \
         uploadrosterdialog.h

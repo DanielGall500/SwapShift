@@ -10,6 +10,7 @@
 #define SwapShiftEmployeeClass_Structs_h
 
 #include <string>
+#include "globals.h"
 
 typedef struct date
 {
@@ -96,5 +97,28 @@ typedef struct col_pos
     col_pos() {}
     
 } col;
+
+typedef struct roster_info
+{
+    std::string title;
+    vectorStr dates;
+
+    //**UPDATE WHEN ROSTERS CHANGED
+    vectorStr names;
+
+    roster_info(std::string t, vectorStr dates, vectorStr names) :
+        title(t), dates(dates), names(names)
+    {}
+
+    roster_info() {}
+
+    void set_values(std::string t, vectorStr d, vectorStr n)
+    {
+        title = t;
+        dates = d;
+        names = n;
+    }
+
+} roster_info;
 
 #endif
