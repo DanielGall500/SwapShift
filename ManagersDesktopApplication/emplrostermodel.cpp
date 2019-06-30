@@ -8,29 +8,25 @@ EmplRosterModel::EmplRosterModel(EmployeeDatabase *empl_db, string title,
     //Get the general roster information
     info = EMPL_DB->get_roster_info(title);
 
-    //Set the number of dates & employees on this roster
-    num_dates = info.dates.size();
-    num_empl  = info.names.size();
-
     /*Create employee map
      * Map[Name] = Employee Object */
     empl_map = EMPL_DB->create_empl_map();
 
     /*Create shift map
      * Map[Name] = Shifts On Roster */
-    shift_map = parse_roster(info.title);
+    shift_map = create_shift_map(info.title);
 }
 
 int EmplRosterModel::rowCount(const QModelIndex & /*parent*/) const
 {
     //Rows = Num Employees
-   return (int)num_empl;
+   return (int)info.names.size();
 }
 
 int EmplRosterModel::columnCount(const QModelIndex & /*parent*/) const
 {
     //Columns = Roster Dates
-    return (int)num_dates;
+    return (int)info.dates.size();
 }
 
 QVariant EmplRosterModel::data(const QModelIndex &index, int role) const
@@ -38,19 +34,22 @@ QVariant EmplRosterModel::data(const QModelIndex &index, int role) const
     int r = index.row(),
         c = index.column();
 
+    //Get employee & date
     string curr_empl = info.names[r],
            curr_date = info.dates[c];
 
-    //changed func to non-const, is this problem?
+    //Get the shifts for this employee
     vector<shift> shifts = shift_map.at(curr_empl);
 
     if (role == Qt::DisplayRole)
     {
+        /* Find The Shift
+         * If there is a shift in this cell then
+         * find it's details and return it.
+         * If not, return blank cell */
+
         for(shift s : shifts)
         {
-            cout << s.str_date << " == " << curr_date << "? " << (s.str_date == curr_date) << endl;
-            cout << "----" << endl;
-
             if(s.str_date == curr_date)
             {
                 string shift_str = s.start_time + " - " + s.end_time;
@@ -58,10 +57,12 @@ QVariant EmplRosterModel::data(const QModelIndex &index, int role) const
             }
         }
     }
-    return QString("X");
+
+    //No shift
+    return QString();
 }
 
-map<string, vector<shift>> EmplRosterModel::parse_roster(string title)
+map<string, vector<shift>> EmplRosterModel::create_shift_map(string title)
 {
     map<string, vector<shift>> rost_map;
     vector<shift> shifts;

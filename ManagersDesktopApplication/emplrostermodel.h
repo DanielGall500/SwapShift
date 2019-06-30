@@ -11,18 +11,20 @@ class EmplRosterModel : public QAbstractTableModel
 {
     Q_OBJECT
 
+    //Pointer to all employees
     EmployeeDatabase *EMPL_DB;
 
+    /* Employee Map:
+       Map[Name] = Employee Object */
     map<string, Employee> empl_map;
+
+    /* Shifts Map:
+       Map[Name] = Shifts On Roster */
+    map<string, vector<shift>> create_shift_map(string title);
     map<string, vector<shift>> shift_map;
 
+    //Roster Information
     roster_info info;
-
-    size_t num_dates, num_empl;
-
-    //Extra header cell for names
-    int num_extra_hdrs = 1;
-    int hdr_row = 1;
 
 
 public:
@@ -33,7 +35,6 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
-    map<string, vector<shift>> parse_roster(string title);
 };
 
 #endif // EMPLROSTERMODEL_H
