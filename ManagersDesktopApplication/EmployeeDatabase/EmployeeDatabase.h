@@ -26,7 +26,7 @@ class EmployeeDatabase
 	to search for this employee.
 	The unique ID is safer, however sometimes we only have the name.
 	*/
-    ull get_empl_db_indx(string empl_info, EMPL_VAR search_type);
+    size_t get_empl_db_indx(string empl_info, EMPL_VAR search_type);
 
 public:
     EmployeeDatabase(string db_title);
@@ -45,10 +45,10 @@ public:
     string get_empl_dept(string ID);
 
 	//Used to prevent two employee's of the same name
-	bool empl_exists(string full_name);
+    bool empl_exists(string fsize_t_name);
 
 	//Add new roster to the database
-	void add_new_roster(Roster r);
+    void add_new_roster(Roster& r);
 
     //Get database as vector
     vector<Employee> get_db_vector();
@@ -64,6 +64,10 @@ public:
     vectorStr2D get_roster_dates();
 
     roster_info get_roster_info(string title);
+
+    bool has_shift(string name, string date, string roster, shift &return_shift);
+
+    map<string, Employee> create_empl_map();
 
 	void print_summary();
 

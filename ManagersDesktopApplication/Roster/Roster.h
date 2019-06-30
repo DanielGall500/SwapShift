@@ -68,7 +68,7 @@ public:
 
     //Check Roster Structure & Format
     bool check_formatted_correctly();
-    bool check_db_contains_rost_empl(EmployeeDatabase db, string &not_found);
+    bool check_db_contains_rost_empl(EmployeeDatabase& db, string &not_found);
 
     //Print Func
     void print_summary();

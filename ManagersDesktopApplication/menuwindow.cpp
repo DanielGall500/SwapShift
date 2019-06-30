@@ -214,11 +214,11 @@ void MenuWindow::on_curRostButton_clicked()
 {
     //Move to current rosters page
     ui->stackedWidget->setCurrentIndex(2);
-    init_curr_rost_display(EMPL_DB, "Week1");
+    init_curr_rost_display("Week1");
 }
 
 /*CURRENT ROSTERS PAGE*/
-void MenuWindow::init_curr_rost_display(EmployeeDatabase *empl_db, string roster)
+void MenuWindow::init_curr_rost_display(string roster)
 {
     rost_tbl = ui->currRostTableView;
     cout << "Pre Model" << endl;

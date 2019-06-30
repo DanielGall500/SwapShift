@@ -38,9 +38,9 @@ void EmployeeDatabase::del_employee(string empl_ID)
 }
 
 //ID safer than name
-ull EmployeeDatabase::get_empl_db_indx(string empl_info, EMPL_VAR search_type)
+size_t EmployeeDatabase::get_empl_db_indx(string empl_info, EMPL_VAR search_type)
 {
-    ull indx = 0;
+    size_t indx = 0;
 
 	for (Employee& e : empl_db)
 	{
@@ -48,7 +48,7 @@ ull EmployeeDatabase::get_empl_db_indx(string empl_info, EMPL_VAR search_type)
 			or name. curr_info changes the info we look for
 			from the current iterated employee based on the search 
 			type we're carrying out. */
-		string curr_info = search_type == NAME ? e.get_full_name() : e.get_unique_ID();
+        string curr_info = search_type == NAME ? e.get_full_name() : e.get_unique_ID();
 
         if (curr_info == empl_info)
 			break;
@@ -61,60 +61,57 @@ ull EmployeeDatabase::get_empl_db_indx(string empl_info, EMPL_VAR search_type)
 
 Employee EmployeeDatabase::find_employee(string empl_ID)
 {
-    ull indx = get_empl_db_indx(empl_ID, ID);
+    size_t indx = get_empl_db_indx(empl_ID, ID);
     return empl_db[indx];
 }
 
 //Edit Employees
 void EmployeeDatabase::edit_empl_firstN(string empl_ID, string new_first_name)
 {
-    ull emp_indx = get_empl_db_indx(empl_ID, ID);
-
+    size_t emp_indx = get_empl_db_indx(empl_ID, ID);
     empl_db[emp_indx].set_first_name(new_first_name);
 
 }
 
 void EmployeeDatabase::edit_empl_lastN(string empl_ID, string new_last_name)
 {
-    ull emp_indx = get_empl_db_indx(empl_ID, ID);
-
+    size_t emp_indx = get_empl_db_indx(empl_ID, ID);
     empl_db[emp_indx].set_last_name(new_last_name);
 }
 
 void EmployeeDatabase::edit_empl_dept(string empl_ID, string new_dept)
 {
-    ull emp_indx = get_empl_db_indx(empl_ID, ID);
-
+    size_t emp_indx = get_empl_db_indx(empl_ID, ID);
     empl_db[emp_indx].set_department(new_dept);
 }
 
 //Get employee info
 string EmployeeDatabase::get_empl_firstN(string empl_ID)
 {
-    ull emp_indx = get_empl_db_indx(empl_ID, ID);
+    size_t emp_indx = get_empl_db_indx(empl_ID, ID);
     return empl_db[emp_indx].get_first_name();
 }
 
 string EmployeeDatabase::get_empl_lastN(string empl_ID)
 {
-    ull emp_indx = get_empl_db_indx(empl_ID, ID);
+    size_t emp_indx = get_empl_db_indx(empl_ID, ID);
     return empl_db[emp_indx].get_last_name();
 }
 
 string EmployeeDatabase::get_empl_dept(string empl_ID)
 {
-    ull emp_indx = get_empl_db_indx(empl_ID, ID);
+    size_t emp_indx = get_empl_db_indx(empl_ID, ID);
     return empl_db[emp_indx].get_department();
 }
 
 //Roster Functions
-void EmployeeDatabase::add_new_roster(Roster r)
+void EmployeeDatabase::add_new_roster(Roster& r)
 {
     //Declare variables
     map<string, vector<shift>> empl_shift_map = r.get_empl_shifts();
     vector<shift> shifts;
     string name;
-    ull empl_db_indx;
+    size_t empl_db_indx;
 
     cout << "Dates: " << r.get_shift_dates().size() << endl;
     cout << "Names: " << r.get_employee_names().size() << endl;
@@ -191,11 +188,11 @@ vector<Employee> EmployeeDatabase::get_db_vector()
     return empl_db;
 }
 
-bool EmployeeDatabase::empl_exists(string full_name)
+bool EmployeeDatabase::empl_exists(string fsize_t_name)
 {
 	for (Employee& e : empl_db)
 	{
-		if (e.get_full_name() == full_name)
+        if (e.get_full_name() == fsize_t_name)
 			return true;
 	}
 
@@ -205,9 +202,10 @@ bool EmployeeDatabase::empl_exists(string full_name)
 vectorStr EmployeeDatabase::get_empl_names()
 {
     vectorStr empl_list;
+    size_t indx = 0;
 
     for(Employee e : empl_db)
-        empl_list.push_back(e.get_full_name());
+        empl_list[indx++] = e.get_full_name();
 
     return empl_list;
 }
@@ -216,9 +214,10 @@ vectorStr EmployeeDatabase::get_empl_names()
 vectorStr EmployeeDatabase::get_roster_titles()
 {
     vectorStr titles;
+    size_t indx = 0;
 
     for(roster_info ri : r_info)
-        titles.push_back(ri.title);
+        titles[indx++] = ri.title;
 
     return titles;
 
@@ -227,9 +226,10 @@ vectorStr EmployeeDatabase::get_roster_titles()
 vectorStr2D EmployeeDatabase::get_roster_dates()
 {
     vectorStr2D dates;
+    size_t indx = 0;
 
     for(roster_info ri : r_info)
-        dates.push_back(ri.dates);
+        dates[indx++] = ri.dates;
 
     return dates;
 }
@@ -245,6 +245,36 @@ roster_info EmployeeDatabase::get_roster_info(string title)
     return roster_info();
 }
 
+bool EmployeeDatabase::has_shift(string name, string date, string roster, shift &return_shift)
+{
+    int empl_indx = get_empl_db_indx(name, NAME);
+
+    Employee e = empl_db[empl_indx];
+
+    for(shift s : e.get_all_shifts())
+    {
+        cout << "NEW TEST" << endl;
+        if(s.str_date == date && s.roster == roster)
+        {
+            return_shift = s;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+map<string, Employee> EmployeeDatabase::create_empl_map()
+{
+    map<string, Employee> empl_map;
+
+    for(Employee e : empl_db)
+    {
+        empl_map[e.get_full_name()] = e;
+    }
+
+    return empl_map;
+}
 
 
 

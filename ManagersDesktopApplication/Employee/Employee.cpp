@@ -35,7 +35,7 @@ void   Employee::set_last_name(string l)
     empl_full_name = get_first_name() + " " + l;
 }
 
-//Full Name
+//Fsize_t Name
 string Employee::get_full_name() { return empl_full_name; }
 
 //Department

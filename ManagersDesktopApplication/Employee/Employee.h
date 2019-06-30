@@ -23,7 +23,7 @@ class Employee
 {
     
     string empl_first_name, empl_last_name, 
-        empl_full_name, empl_department;
+           empl_full_name, empl_department;
     
 	/* Stores the shifts for each employee.
 	   Only supports one shift per date  */
@@ -37,6 +37,7 @@ class Employee
     
 public:
     Employee(string f_name, string l_name, string dept="N/A");
+    Employee() {}
     
     //First Name
 	string get_first_name();
@@ -46,8 +47,8 @@ public:
 	string get_last_name();
 	void   set_last_name(string l);
 
-	//Full Name
-	string get_full_name();
+    //Fsize_t Name
+    string get_full_name();
     
     //Department
 	string get_department();

@@ -74,7 +74,7 @@ private:
     std::string selectedRowEmplID();
 
     /*Current Rosters Table View*/
-    void init_curr_rost_display(EmployeeDatabase *empl_db, string roster);
+    void init_curr_rost_display(string roster);
 };
 
 #endif // MenuWindow_H

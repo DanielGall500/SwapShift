@@ -159,7 +159,7 @@ bool Roster::check_formatted_correctly()
     return true;
 }
 
-bool Roster::check_db_contains_rost_empl(EmployeeDatabase db, string &not_found)
+bool Roster::check_db_contains_rost_empl(EmployeeDatabase& db, string &not_found)
 {
     vectorStr empl_list = db.get_empl_names();
 
