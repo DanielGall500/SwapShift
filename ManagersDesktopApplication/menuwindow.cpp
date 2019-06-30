@@ -248,8 +248,11 @@ void MenuWindow::on_currRostBackButton_clicked()
 }
 
 //Clicked Roster Selection Combo Box
-void MenuWindow::on_rostSelectCombo_activated(const QString &arg1)
+void MenuWindow::on_rostSelectCombo_activated(const QString &title)
 {
+    //Convert to STD
+    string t = qStr_to_stdStr(title);
 
-
+    //Display selected roster
+    curr_rost_display(t);
 }

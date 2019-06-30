@@ -58,7 +58,7 @@ private slots:
 
     void on_currRostBackButton_clicked();
 
-    void on_rostSelectCombo_activated(const QString &arg1);
+    void on_rostSelectCombo_activated(const QString &title);
 
 private:
     Ui::MenuWindow *ui;
