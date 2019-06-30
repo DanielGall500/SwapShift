@@ -214,10 +214,9 @@ vectorStr EmployeeDatabase::get_empl_names()
 vectorStr EmployeeDatabase::get_roster_titles()
 {
     vectorStr titles;
-    size_t indx = 0;
 
     for(roster_info ri : r_info)
-        titles[indx++] = ri.title;
+        titles.push_back(ri.title);
 
     return titles;
 

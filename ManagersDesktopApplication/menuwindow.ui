@@ -129,9 +129,9 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>20</y>
+        <y>60</y>
         <width>781</width>
-        <height>301</height>
+        <height>261</height>
        </rect>
       </property>
       <attribute name="horizontalHeaderMinimumSectionSize">
@@ -140,6 +140,41 @@
       <attribute name="horizontalHeaderStretchLastSection">
        <bool>false</bool>
       </attribute>
+     </widget>
+     <widget class="QPushButton" name="currRostBackButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>75</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Back</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>10</y>
+        <width>101</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QLabel" name="rostSelectLabel">
+         <property name="text">
+          <string>Roster</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="rostSelectCombo"/>
+       </item>
+      </layout>
      </widget>
     </widget>
    </widget>

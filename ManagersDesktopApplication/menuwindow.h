@@ -56,6 +56,10 @@ private slots:
 
     void on_curRostButton_clicked();
 
+    void on_currRostBackButton_clicked();
+
+    void on_rostSelectCombo_activated(const QString &arg1);
+
 private:
     Ui::MenuWindow *ui;
 
@@ -74,7 +78,7 @@ private:
     std::string selectedRowEmplID();
 
     /*Current Rosters Table View*/
-    void init_curr_rost_display(string roster);
+    void curr_rost_display(string roster);
 };
 
 #endif // MenuWindow_H

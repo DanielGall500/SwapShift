@@ -10,6 +10,7 @@ MenuWindow::MenuWindow(EmployeeDatabase *db, QWidget *parent) :
 {
     ui->setupUi(this);
 
+
     //Setup the employee table for viewing
     setup_empl_table_view(EMPL_DB);
 }
@@ -201,7 +202,7 @@ void MenuWindow::on_emplBackButton_clicked()
 
 
 
-//--UPLOAD ROSTER--
+//Upload Roster Button Clicked
 void MenuWindow::on_uplRostButton_clicked()
 {
     UploadRosterDialog uplRostDialog(EMPL_DB, this);
@@ -210,31 +211,45 @@ void MenuWindow::on_uplRostButton_clicked()
     uplRostDialog.exec();
 }
 
+/* --CURRENT ROSTERS PAGE-- */
 void MenuWindow::on_curRostButton_clicked()
 {
+    //Reset the roster selection combo box
+    for(int i = 0; i < ui->rostSelectCombo->count(); i++)
+        ui->rostSelectCombo->removeItem(i);
+
+    //Add every roster title to combo box
+    vectorStr titles = EMPL_DB->get_roster_titles();
+
+    for(string t : titles)
+        ui->rostSelectCombo->addItem(QString::fromStdString(t));
+
+    //Initialise the display with the first roster
+    if(titles.size() > 0)
+        curr_rost_display(titles[0]);
+
     //Move to current rosters page
     ui->stackedWidget->setCurrentIndex(2);
-    init_curr_rost_display("Week1");
+
 }
 
-/*CURRENT ROSTERS PAGE*/
-void MenuWindow::init_curr_rost_display(string roster)
+void MenuWindow::curr_rost_display(string roster)
 {
     rost_tbl = ui->currRostTableView;
-    cout << "Pre Model" << endl;
     rost_model = new EmplRosterModel(EMPL_DB, roster, 0);
-    cout << "Post Model" << endl;
     rost_tbl->setModel(rost_model);
-
     rost_tbl->show();
 }
 
+//Clicked Current Roster Page Back Button
+void MenuWindow::on_currRostBackButton_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+//Clicked Roster Selection Combo Box
+void MenuWindow::on_rostSelectCombo_activated(const QString &arg1)
+{
 
 
-
-
-
-
-
-
-
+}
