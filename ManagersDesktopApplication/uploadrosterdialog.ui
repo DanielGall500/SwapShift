@@ -17,6 +17,9 @@
    <string>Dialog</string>
   </property>
   <widget class="QPushButton" name="chooseFileButton">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -102,7 +105,7 @@ font-size: 30px;</string>
     <string/>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -115,7 +118,7 @@ font-size: 30px;</string>
     <item>
      <widget class="QLabel" name="rostTitleLabel">
       <property name="text">
-       <string>Roster Title (Eg. Week 1)</string>
+       <string>Roster Title (Eg. Week 1)*</string>
       </property>
      </widget>
     </item>

@@ -12,9 +12,6 @@ UploadRosterDialog::~UploadRosterDialog()
 {
     delete ui;
 }
-
-//Roster(string title, vectorStr2D csv_roster, col_pos names, row_pos dates, vectorStr non_shifts);
-
 void UploadRosterDialog::on_chooseFileButton_clicked()
 {
     QString file_filter = "CSV Files (*.csv)";
@@ -28,24 +25,26 @@ void UploadRosterDialog::on_chooseFileButton_clicked()
     //Convert to STD String
     std::string file_dir = qStr_to_stdStr(f_dir);
 
-
     vectorStr2D file;
     vectorStr to_ignore{"Department", "Floor"};
     CSVReader rdr(file_dir, to_ignore, ",");
 
     if(rdr.open_file())
-    {
         file = rdr.read_csv();
-    }
+    else
+        throw "File Cannot Be Opened";
 
     //--TESTING--
     row_pos dates_pos(0, 1);
     col_pos names_pos(0, 1);
     vectorStr non_shifts{"N/A", "Hol"};
-    string roster_title = qStr_to_stdStr(ui->rostTitleLineEdit->text());
     //-----------
 
-    rr = new Roster(roster_title, file, names_pos, dates_pos, non_shifts);
+    //Get roster title
+    string r_title = qStr_to_stdStr(ui->rostTitleLineEdit->text());
+
+    //Create a new roster
+    rr = new Roster(r_title, file, names_pos, dates_pos, non_shifts);
 
     //Check roster is valid
     string empl_not_found, error;
@@ -71,11 +70,23 @@ void UploadRosterDialog::on_chooseFileButton_clicked()
     }
     else
     {
+        cout << "DEBUG" << endl;
+
         //Valid Roster
         valid_roster_uploaded = true;
         update_upl_button();
 
+        cout << "DEBUG" << endl;
+
+        //Update status
         ui->isValidRostLabel->setText("Roster Valid");
+
+        cout << "DEBUG" << endl;
+
+        //Disable the roster title line edit
+        ui->rostTitleLineEdit->setEnabled(false);
+
+        cout << "DEBUG" << endl;
     }
 }
 
@@ -104,17 +115,26 @@ void UploadRosterDialog::on_rostTitleLineEdit_textChanged(const QString &title)
 {
     vectorStr prev_titles = EMPL_DB->get_roster_titles();
 
-    //Check if roster title is an empty string
-    if(title.isEmpty())
-        valid_roster_title = false;
-    else
-        valid_roster_title = true;
+    string r_title = qStr_to_stdStr(title);
 
-    /*Check if the title entered has already been
+    //Default to true
+    valid_roster_title = true;
+
+    /* Check 1:
+       Check if roster title is an empty string */
+    if(title.isEmpty())
+    {
+        valid_roster_title = false;
+        ui->isValidRostLabel->setText("Invalid Title");
+    }
+
+
+    /*Check 2:
+      Check if the title entered has already been
       used for another roster */
     for(string &t : prev_titles)
     {
-        if(QString::fromStdString(t) == title)
+        if(t == r_title)
         {
             ui->isValidRostLabel->setText(
                         "This roster title has been used before. Please use a different one.");
@@ -123,6 +143,15 @@ void UploadRosterDialog::on_rostTitleLineEdit_textChanged(const QString &title)
             break;
         }
     }
+
+    //Allow the user to upload a file
+    if(valid_roster_title)
+    {
+        ui->chooseFileButton->setEnabled(true);
+        ui->isValidRostLabel->setText("Valid Title");
+    }
+    else
+        ui->chooseFileButton->setEnabled(false);
 
     //Check if upload button should be enabled
     update_upl_button();

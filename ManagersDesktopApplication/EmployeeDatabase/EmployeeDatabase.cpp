@@ -202,10 +202,9 @@ bool EmployeeDatabase::empl_exists(string fsize_t_name)
 vectorStr EmployeeDatabase::get_empl_names()
 {
     vectorStr empl_list;
-    size_t indx = 0;
 
     for(Employee e : empl_db)
-        empl_list[indx++] = e.get_full_name();
+        empl_list.push_back(e.get_full_name());
 
     return empl_list;
 }
@@ -228,7 +227,7 @@ vectorStr2D EmployeeDatabase::get_roster_dates()
     size_t indx = 0;
 
     for(roster_info ri : r_info)
-        dates[indx++] = ri.dates;
+        dates.push_back(ri.dates);
 
     return dates;
 }
