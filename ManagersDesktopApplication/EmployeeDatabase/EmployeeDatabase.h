@@ -6,6 +6,12 @@
 #include "Structs.h"
 #include <vector>
 #include <iostream>
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlQueryModel>
+#include <iostream>
+#include <QDebug>
+#include <QSqlError>
 
 class Roster;
 
@@ -20,6 +26,11 @@ class EmployeeDatabase
     //General information about the uploaded rosters
     vector<roster_info> r_info;
 
+    //SQL
+    QSqlDatabase *empl_sql_db;
+    QSqlQueryModel *sql_model;
+    QSqlQuery *query;
+
 
 	/* Find the location of the employee in the database
 	Input either the name or ID as the information we can use
@@ -29,7 +40,7 @@ class EmployeeDatabase
     size_t get_empl_db_indx(string empl_info, EMPL_VAR search_type);
 
 public:
-    EmployeeDatabase(string db_title);
+    EmployeeDatabase(QSqlDatabase *empl_db, string db_title);
 
     //Add, Edit or Delete employees
 	void add_employee(Employee empl);
@@ -69,8 +80,7 @@ public:
 
     map<string, Employee> create_empl_map();
 
-	void print_summary();
-
+    void print_summary();
 };
 
 #endif

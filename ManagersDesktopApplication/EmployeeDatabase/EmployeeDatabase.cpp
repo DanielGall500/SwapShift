@@ -1,13 +1,38 @@
-#include "EmployeeDatabase.h"
+﻿#include "EmployeeDatabase.h"
 #include "Roster/Roster.h"
 
-EmployeeDatabase::EmployeeDatabase(string title) :
-	db_title(title)
-{}
+EmployeeDatabase::EmployeeDatabase(QSqlDatabase *empl_db, string title) :
+    db_title(title), empl_sql_db(empl_db)
+{
+    this->sql_model = new QSqlQueryModel();
+    this->query     = new QSqlQuery(*empl_sql_db);
+
+}
 
 void EmployeeDatabase::add_employee(Employee empl)
 {
+    //OLD
 	empl_db.push_back(empl);
+
+    //SQL INSERT EMPL
+    QString f_name = QString::fromStdString(empl.get_first_name()),
+            l_name = QString::fromStdString(empl.get_last_name()),
+            dept   = QString::fromStdString(empl.get_department());
+
+    qDebug() << "ADD EMPL" << endl;
+    qDebug() << f_name << " " << l_name << " , " << dept;
+
+
+    query->prepare(QString("INSERT INTO employees (first_name, last_name, dept) "
+                           "VALUES ('%1', '%2', '%3');").arg(f_name).arg(l_name).arg(dept));
+
+    if(query->exec())
+        qDebug() << "Query Add Empl Successful";
+    else
+    {
+        qDebug() << "Query Add Empl FAILED";
+        qDebug() << query->lastError().text();
+    }
 }
 
 void EmployeeDatabase::del_employee(string empl_ID)
@@ -273,6 +298,7 @@ map<string, Employee> EmployeeDatabase::create_empl_map()
 
     return empl_map;
 }
+
 
 
 

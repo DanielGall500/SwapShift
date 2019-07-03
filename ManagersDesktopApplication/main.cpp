@@ -3,22 +3,53 @@
 #include "Employee/Employee.h"
 #include <ctime>
 #include <cstdlib>
+#include <QtSql>
+#include <fstream>
 
 int main(int argc, char *argv[])
 {
     srand(time(0));
 
-    //--TESTING DATABASE--
-    Employee s("Jimmy", "Neutron");
-    Employee x("Daniel", "Gallagher");
-    Employee y("Jack","Sweeney");
-    Employee z("Nathan", "Doyle");
+    //--SQL--
+    //RETRIEVE DATABASE PASSWORD
+    ifstream fPASS;
+    string DB_PASS;
 
-    EmployeeDatabase db("Employees");
+    fPASS.open("C:\\Users\\DannyG\\Desktop\\Projects\\Files\\DB_PASS.txt");
+
+    if(fPASS.good())
+        getline(fPASS, DB_PASS);
+    else
+        qDebug() << "Cannot Open DB_PASS File";
+   //---------------------------
+
+
+    //Connect to SQL Database
+
+    //Create DB connection
+    QSqlDatabase sql_db = QSqlDatabase::addDatabase("QMYSQL");
+
+    sql_db.setDatabaseName("swapshift_db");
+    sql_db.setHostName("127.0.0.1");
+    sql_db.setUserName("root");
+    sql_db.setPassword(QString::fromStdString(DB_PASS));
+
+    //Open DB
+    if(sql_db.open())
+        qDebug() << "Success";
+    else
+    {
+        qDebug() << sql_db.lastError();
+    }
+
+
+
+
+    //--TESTING DATABASE--
+    Employee s("Jimmy", "Neutron", "Tills");
+
+    EmployeeDatabase db(&sql_db, "Employees");
     db.add_employee(s);
-    db.add_employee(x);
-    db.add_employee(y);
-    db.add_employee(z);
     //--------------------
 
     //Add Base Roster
@@ -34,6 +65,11 @@ int main(int argc, char *argv[])
     vectorStr non_shifts{"N/A", "Hol"};
     Roster r("Week1", csv_vec, names_pos, dates_pos,non_shifts);
     db.add_new_roster(r);
+
+
+
+
+
 
     //Run Application
     QApplication a(argc, argv);
