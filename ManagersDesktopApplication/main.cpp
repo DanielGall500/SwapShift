@@ -46,10 +46,8 @@ int main(int argc, char *argv[])
 
 
     //--TESTING DATABASE--
-    Employee s("Jimmy", "Neutron", "Tills");
 
     EmployeeDatabase db(&sql_db, "Employees");
-    db.add_employee(s);
     //--------------------
 
     //Add Base Roster

@@ -7,6 +7,8 @@ EmployeeDatabase::EmployeeDatabase(QSqlDatabase *empl_db, string title) :
     this->sql_model = new QSqlQueryModel();
     this->query     = new QSqlQuery(*empl_sql_db);
 
+    vector<Employee> vec = get_db_vector();
+
 }
 
 void EmployeeDatabase::add_employee(Employee empl)
@@ -19,12 +21,12 @@ void EmployeeDatabase::add_employee(Employee empl)
             l_name = QString::fromStdString(empl.get_last_name()),
             dept   = QString::fromStdString(empl.get_department());
 
-    qDebug() << "ADD EMPL" << endl;
-    qDebug() << f_name << " " << l_name << " , " << dept;
-
 
     query->prepare(QString("INSERT INTO employees (first_name, last_name, dept) "
                            "VALUES ('%1', '%2', '%3');").arg(f_name).arg(l_name).arg(dept));
+
+    qDebug() << "ADD EMPL" << endl;
+    qDebug() << f_name << " " << l_name << " , " << dept;
 
     if(query->exec())
         qDebug() << "Query Add Empl Successful";
@@ -210,7 +212,27 @@ void EmployeeDatabase::print_summary()
 
 vector<Employee> EmployeeDatabase::get_db_vector()
 {
-    return empl_db;
+    vector<Employee> db_vec;
+
+    *query = QSqlQuery("SELECT *"
+                       "FROM employees");
+
+    //Iterate through employees
+    while(query->next())
+    {
+        QString f_name = query->value("first_name").toString(),
+                l_name = query->value("last_name").toString(),
+                dept   = query->value("dept").toString();
+
+        Employee e(qStr_to_stdStr(f_name),
+                   qStr_to_stdStr(l_name),
+                   qStr_to_stdStr(dept));
+
+        db_vec.push_back(e);
+
+    }
+
+    return db_vec;
 }
 
 bool EmployeeDatabase::empl_exists(string fsize_t_name)
