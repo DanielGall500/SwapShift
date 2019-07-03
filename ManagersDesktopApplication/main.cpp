@@ -44,10 +44,12 @@ int main(int argc, char *argv[])
 
 
 
-
     //--TESTING DATABASE--
 
     EmployeeDatabase db(&sql_db, "Employees");
+
+    Employee e = db.find_employee(1);
+
     //--------------------
 
     //Add Base Roster

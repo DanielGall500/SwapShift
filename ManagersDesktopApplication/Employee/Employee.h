@@ -30,10 +30,7 @@ class Employee
     map<string, shift> empl_shifts;
 
     //Generate random ID number
-    string generate_unique_ID(string f_name, string l_name, unsigned int ID_range);
-    string empl_unique_ID;
-
-    unsigned int unique_ID_range = 1000;
+    int empl_unique_ID;
     
 public:
     Employee(string f_name, string l_name, string dept="N/A");
@@ -61,7 +58,8 @@ public:
     void  del_shift(string d);
 
 	//Unique Employee ID
-    string get_unique_ID();
+    int get_unique_ID();
+    void retrieve_unique_ID(int ID); //from SQL database
 
 	//Print Functions
 	void print_shifts();

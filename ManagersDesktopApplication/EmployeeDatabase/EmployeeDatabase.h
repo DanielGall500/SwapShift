@@ -15,8 +15,6 @@
 
 class Roster;
 
-enum EMPL_VAR {NAME, ID};
-
 class EmployeeDatabase
 {
 	string db_title;
@@ -31,29 +29,32 @@ class EmployeeDatabase
     QSqlQueryModel *sql_model;
     QSqlQuery *query;
 
+    QString query_edit_empl_info(int empl_ID, string col_name, string new_val);
+    QString query_get_empl_info(int empl_ID, string col_name);
 
-	/* Find the location of the employee in the database
-	Input either the name or ID as the information we can use
-	to search for this employee.
-	The unique ID is safer, however sometimes we only have the name.
-	*/
-    size_t get_empl_db_indx(string empl_info, EMPL_VAR search_type);
+
+    //Unsafe
+    size_t get_empl_db_indx(string f_name, string l_name);
+
+    //Safe
+    size_t get_empl_db_indx(int ID);
 
 public:
     EmployeeDatabase(QSqlDatabase *empl_db, string db_title);
+
 
     //Add, Edit or Delete employees
 	void add_employee(Employee empl);
     void del_employee(string empl_ID);
 
-    void edit_empl_firstN(string ID, string new_first_name);
-    void edit_empl_lastN(string ID, string new_last_name);
-    void edit_empl_dept(string ID, string new_dept);
+    void edit_empl_firstN(int ID, string new_first_name);
+    void edit_empl_lastN(int ID, string new_last_name);
+    void edit_empl_dept(int ID, string new_dept);
 
     //Get employee information
-    string get_empl_firstN(string ID);
-    string get_empl_lastN(string ID);
-    string get_empl_dept(string ID);
+    string get_empl_firstN(int ID);
+    string get_empl_lastN(int ID);
+    string get_empl_dept(int ID);
 
 	//Used to prevent two employee's of the same name
     bool empl_exists(string fsize_t_name);
@@ -65,7 +66,7 @@ public:
     vector<Employee> get_db_vector();
 
     //Find employee in database
-    Employee find_employee(string empl_unique_ID);
+    Employee find_employee(int empl_ID);
 
     //Get Employee Names
     vectorStr get_empl_names();

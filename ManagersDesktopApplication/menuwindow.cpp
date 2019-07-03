@@ -12,14 +12,15 @@ MenuWindow::MenuWindow(EmployeeDatabase *db, QWidget *parent) :
 
 
     //Setup the employee table for viewing
-    setup_empl_table_view(EMPL_DB);
+    //setup_empl_table_view(EMPL_DB);
+
 }
 
 MenuWindow::~MenuWindow()
 {
     delete ui;
 }
-
+/*
 //--EMPLOYEE PAGE: TABLE VIEW--
 void MenuWindow::setup_empl_table_view(EmployeeDatabase *empl_db)
 {
@@ -55,10 +56,10 @@ void MenuWindow::setup_empl_table_view(EmployeeDatabase *empl_db)
            //Create an item for our next entry
            QTableWidgetItem *nxt_itm = new QTableWidgetItem();
 
-           /* Set the value of the next item:
-            * c = 0 -> Name
-              c = 1 -> Department
-              c = 2 -> Unique ID */
+           // Set the value of the next item:
+           // c = 0 -> Name
+           //   c = 1 -> Department
+           //   c = 2 -> Unique ID
            nxt_itm->setText(QString::fromStdString(entries[c]));
 
            //Add the item to the table
@@ -100,10 +101,10 @@ void MenuWindow::refresh_empl_table_view(EmployeeDatabase *empl_db)
            //Create an item for our next entry
            QTableWidgetItem *nxt_itm = new QTableWidgetItem();
 
-           /* Set the value of the next item:
-            * c = 0 -> Name
-              c = 1 -> Department
-              c = 2 -> Unique ID */
+           // Set the value of the next item:
+           // c = 0 -> Name
+            //  c = 1 -> Department
+           //   c = 2 -> Unique ID
            nxt_itm->setText(QString::fromStdString(entries[c]));
 
            //Add the item to the table
@@ -112,7 +113,7 @@ void MenuWindow::refresh_empl_table_view(EmployeeDatabase *empl_db)
 
 
     }
-}
+}*/
 
 //--EMPLOYEE PAGE: SLOTS--
 void MenuWindow::on_emplButton_clicked()
@@ -124,7 +125,7 @@ void MenuWindow::on_emplButton_clicked()
     ui->emplTableDisp->setSelectionBehavior( QAbstractItemView::SelectRows );
 
     //Refresh the table view
-    refresh_empl_table_view(EMPL_DB);
+   // refresh_empl_table_view(EMPL_DB);
 
 }
 
@@ -190,7 +191,7 @@ void MenuWindow::on_delEmplButton_clicked()
         EMPL_DB->del_employee(ID);
 
         //Refresh the employee table
-        refresh_empl_table_view(EMPL_DB);
+       // refresh_empl_table_view(EMPL_DB);
     }
 
 }

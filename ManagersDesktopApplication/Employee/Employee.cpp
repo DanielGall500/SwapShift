@@ -14,8 +14,6 @@ Employee::Employee(string f_name, string l_name, string dept) :
     empl_first_name(f_name), empl_last_name(l_name), empl_department(dept)
 {
     empl_full_name = empl_first_name + " " + empl_last_name;
-
-    empl_unique_ID = generate_unique_ID(empl_first_name, empl_last_name, unique_ID_range);
 }
 
 //First Name
@@ -73,27 +71,7 @@ void Employee::print_shifts()
 	}
 }
 
-string Employee::generate_unique_ID(string f_name, string l_name, unsigned int ID_range)
-{
-    //(1) Get the initials of first and last name
-    char f_init = f_name.at(0),
-         l_init = l_name.at(0);
-
-    //(2) Generate a random number
-    unsigned int rand_num = (rand() % ID_range) + 1;
-
-    /* Create Unique ID
-     * ID Format:
-     * First Name Initial + Last Name Initial + Random Number */
-    string ID = "";
-    ID += f_init;
-    ID += l_init;
-    ID += to_string(rand_num);
-
-    return ID;
-}
-
-std::string Employee::get_unique_ID() { return empl_unique_ID; }
+int Employee::get_unique_ID() { return empl_unique_ID; }
 
 vector<shift> Employee::get_all_shifts()
 {
@@ -103,6 +81,11 @@ vector<shift> Employee::get_all_shifts()
         all_shifts.push_back(s.second);
 
     return all_shifts;
+}
+
+void Employee::retrieve_unique_ID(int ID)
+{
+    empl_unique_ID = ID;
 }
 
 //Non-Class Functions

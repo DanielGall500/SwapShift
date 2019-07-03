@@ -65,19 +65,14 @@ void EmployeeDatabase::del_employee(string empl_ID)
 }
 
 //ID safer than name
-size_t EmployeeDatabase::get_empl_db_indx(string empl_info, EMPL_VAR search_type)
+size_t EmployeeDatabase::get_empl_db_indx(string f_name, string l_name)
 {
     size_t indx = 0;
 
-	for (Employee& e : empl_db)
-	{
-		/*  We can search for employees based on ID
-			or name. curr_info changes the info we look for
-			from the current iterated employee based on the search 
-			type we're carrying out. */
-        string curr_info = search_type == NAME ? e.get_full_name() : e.get_unique_ID();
-
-        if (curr_info == empl_info)
+    for (Employee& e : get_db_vector())
+    {
+        if (f_name == e.get_first_name() &&
+            l_name == e.get_last_name())
 			break;
 
 		indx++;
@@ -86,49 +81,148 @@ size_t EmployeeDatabase::get_empl_db_indx(string empl_info, EMPL_VAR search_type
 	return indx;
 }
 
-Employee EmployeeDatabase::find_employee(string empl_ID)
+size_t EmployeeDatabase::get_empl_db_indx(int ID)
 {
-    size_t indx = get_empl_db_indx(empl_ID, ID);
-    return empl_db[indx];
+    size_t indx = 0;
+
+    for (Employee& e : get_db_vector())
+    {
+        if (ID == e.get_unique_ID())
+            break;
+
+        indx++;
+    }
+
+    return indx;
+}
+
+Employee EmployeeDatabase::find_employee(int empl_ID)
+{
+    /* empl_id is unique,
+     * thus only one result will be returned */
+
+    QString q = QString("SELECT *"
+                        "WHERE empl_ID = %1").arg(empl_ID);
+
+    query->prepare(q);
+
+    if(query->exec())
+        qDebug() << "Find Employee Query Executed";
+    else
+        qDebug() << "Find Employee Query Failed Execution";
+
+    QString f_name = query->value("first_name").toString(),
+            l_name = query->value("last_name").toString(),
+            dept   = query->value("dept").toString();
+
+    qDebug() << f_name << l_name << dept;
+
+    Employee e(qStr_to_stdStr(f_name),
+               qStr_to_stdStr(l_name),
+               qStr_to_stdStr(dept));
+
+    return e;
+}
+
+QString EmployeeDatabase::query_edit_empl_info(int empl_ID, string col_name, string new_val)
+{
+    return QString("UPDATE employees"
+                   "SET %1 = '%2'"
+                   "WHERE empl_ID  = %3").arg(
+           QString::fromStdString(col_name)).arg(
+           QString::fromStdString(new_val)).arg(
+                                  empl_ID);
+}
+
+QString EmployeeDatabase::query_get_empl_info(int empl_ID, string col_name)
+{
+    return QString("SELECT %1"
+                   "WHERE empl_id = %2").arg(
+                QString::fromStdString(col_name)).arg(
+                                       empl_ID);
 }
 
 //Edit Employees
-void EmployeeDatabase::edit_empl_firstN(string empl_ID, string new_first_name)
+void EmployeeDatabase::edit_empl_firstN(int empl_ID, string new_first_name)
 {
-    size_t emp_indx = get_empl_db_indx(empl_ID, ID);
-    empl_db[emp_indx].set_first_name(new_first_name);
+    QString q = query_edit_empl_info(empl_ID, "first_name", new_first_name);
+
+    if(query->exec(q))
+        qDebug() << "Success Edit Empl First Name";
+    else
+        qDebug() << "Failed Edit Empl First Name";
 
 }
 
-void EmployeeDatabase::edit_empl_lastN(string empl_ID, string new_last_name)
+void EmployeeDatabase::edit_empl_lastN(int empl_ID, string new_last_name)
 {
-    size_t emp_indx = get_empl_db_indx(empl_ID, ID);
-    empl_db[emp_indx].set_last_name(new_last_name);
+    QString q = query_edit_empl_info(empl_ID, "last_name", new_last_name);
+
+    if(query->exec(q))
+        qDebug() << "Success Edit Empl Last Name";
+    else
+        qDebug() << "Failed Edit Empl Last Name";
 }
 
-void EmployeeDatabase::edit_empl_dept(string empl_ID, string new_dept)
+void EmployeeDatabase::edit_empl_dept(int empl_ID, string new_dept)
 {
-    size_t emp_indx = get_empl_db_indx(empl_ID, ID);
-    empl_db[emp_indx].set_department(new_dept);
+    QString q = query_edit_empl_info(empl_ID, "dept", new_dept);
+
+    if(query->exec(q))
+        qDebug() << "Success Edit Empl Dept";
+    else
+        qDebug() << "Failed Edit Empl Dept";
 }
 
 //Get employee info
-string EmployeeDatabase::get_empl_firstN(string empl_ID)
+string EmployeeDatabase::get_empl_firstN(int empl_ID)
 {
-    size_t emp_indx = get_empl_db_indx(empl_ID, ID);
-    return empl_db[emp_indx].get_first_name();
+    QString q = query_get_empl_info(empl_ID, "first_name");
+
+    if(query->exec(q))
+    {
+        qDebug() << "Success Get Empl First Name";
+        QString fn = query->value("first_name").toString();
+
+        return qStr_to_stdStr(fn);
+    }
+    else
+        qDebug() << "Failed Get Empl First Name";
+        return "Employee Not Found";
+
+
 }
 
-string EmployeeDatabase::get_empl_lastN(string empl_ID)
+string EmployeeDatabase::get_empl_lastN(int empl_ID)
 {
-    size_t emp_indx = get_empl_db_indx(empl_ID, ID);
-    return empl_db[emp_indx].get_last_name();
+    QString q = query_get_empl_info(empl_ID, "last_name");
+
+    if(query->exec(q))
+    {
+        qDebug() << "Success Get Empl Last Name";
+        QString ln = query->value("last_name").toString();
+
+        return qStr_to_stdStr(ln);
+    }
+    else
+        qDebug() << "Failed Get Empl last Name";
+        return "Employee Not Found";
 }
 
-string EmployeeDatabase::get_empl_dept(string empl_ID)
+string EmployeeDatabase::get_empl_dept(int empl_ID)
 {
-    size_t emp_indx = get_empl_db_indx(empl_ID, ID);
-    return empl_db[emp_indx].get_department();
+    QString q = query_get_empl_info(empl_ID, "dept");
+
+    if(query->exec(q))
+    {
+        qDebug() << "Success Get Empl Dept";
+        QString dpt = query->value("dept").toString();
+
+        return qStr_to_stdStr(dpt);
+    }
+    else
+        qDebug() << "Failed Get Empl Dept";
+        return "Employee Not Found";
 }
 
 //Roster Functions
@@ -169,7 +263,7 @@ void EmployeeDatabase::add_new_roster(Roster& r)
 			/* We only have access to the employee's name.
 		       Therefore, we have to search using the name
 		       instead of ID. */
-			empl_db_indx = get_empl_db_indx(name, NAME);
+            empl_db_indx = get_empl_db_indx(name);
 
 
 			/*Iterate through each shift the employee
@@ -187,10 +281,9 @@ void EmployeeDatabase::print_summary()
     cout << "--START SUMMARY--"
          << endl << endl;
 
-    for (Employee& e : empl_db)
+    for (Employee& e : get_db_vector())
     {
         string name = e.get_full_name();
-        string id = e.get_unique_ID();
         vector<shift> shifts = e.get_all_shifts();
 
         cout << "--EMPLOYEE--" << endl;
@@ -220,13 +313,16 @@ vector<Employee> EmployeeDatabase::get_db_vector()
     //Iterate through employees
     while(query->next())
     {
-        QString f_name = query->value("first_name").toString(),
-                l_name = query->value("last_name").toString(),
-                dept   = query->value("dept").toString();
+        QString f_name  = query->value("first_name").toString(),
+                l_name  = query->value("last_name").toString(),
+                dept    = query->value("dept").toString();
 
         Employee e(qStr_to_stdStr(f_name),
                    qStr_to_stdStr(l_name),
                    qStr_to_stdStr(dept));
+
+        int empl_ID = query->value("empl_ID").toInt();
+        e.retrieve_unique_ID(empl_ID);
 
         db_vec.push_back(e);
 
@@ -237,7 +333,7 @@ vector<Employee> EmployeeDatabase::get_db_vector()
 
 bool EmployeeDatabase::empl_exists(string fsize_t_name)
 {
-	for (Employee& e : empl_db)
+    for (Employee& e : get_db_vector())
 	{
         if (e.get_full_name() == fsize_t_name)
 			return true;
@@ -250,7 +346,7 @@ vectorStr EmployeeDatabase::get_empl_names()
 {
     vectorStr empl_list;
 
-    for(Employee e : empl_db)
+    for(Employee e : get_db_vector())
         empl_list.push_back(e.get_full_name());
 
     return empl_list;
@@ -294,7 +390,7 @@ bool EmployeeDatabase::has_shift(string name, string date, string roster, shift 
 {
     int empl_indx = get_empl_db_indx(name, NAME);
 
-    Employee e = empl_db[empl_indx];
+    Employee e = get_db_vector()[empl_indx];
 
     for(shift s : e.get_all_shifts())
     {
@@ -313,7 +409,7 @@ map<string, Employee> EmployeeDatabase::create_empl_map()
 {
     map<string, Employee> empl_map;
 
-    for(Employee e : empl_db)
+    for(Employee e : get_db_vector())
     {
         empl_map[e.get_full_name()] = e;
     }
