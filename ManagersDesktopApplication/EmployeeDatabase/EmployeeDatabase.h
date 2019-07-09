@@ -55,9 +55,10 @@ public:
     string get_empl_firstN(int ID); //sql
     string get_empl_lastN(int ID);  //sql
     string get_empl_dept(int ID);  //sql
+    int    get_empl_id(string f_name, string l_name);
 
 	//Used to prevent two employee's of the same name
-    bool empl_exists(string first_name, string last_name);
+    bool empl_exists(string first_name, string last_name); //sql
 
 	//Add new roster to the database
     void add_new_roster(Roster& r);
@@ -77,7 +78,7 @@ public:
 
     roster_info get_roster_info(string title);
 
-    bool has_shift(string name, string date, string roster, shift &return_shift);
+    bool has_shift(int empl_id, string date, string roster, shift &return_shift); //sql
 
     map<string, Employee> create_empl_map();
 

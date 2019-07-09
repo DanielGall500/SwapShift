@@ -23,7 +23,7 @@ void EmployeeDatabase::add_employee(Employee empl)
 
 
     query->prepare(QString("INSERT INTO employees (first_name, last_name, dept) "
-                           "VALUES ('%1', '%2', '%3');").arg(f_name).arg(l_name).arg(dept));
+                           "VALUES ('%1', '%2', '%3');").arg(f_name, l_name, dept));
 
     qDebug() << "ADD EMPL" << endl;
     qDebug() << f_name << " " << l_name << " , " << dept;
@@ -131,7 +131,7 @@ QString EmployeeDatabase::query_edit_empl_info(int empl_ID, string col_name, str
     return QString("UPDATE employees "
                    "SET %1 = '%2' "
                    "WHERE empl_ID  = %3 ").arg(
-           QString::fromStdString(col_name)).arg(
+           QString::fromStdString(col_name),
            QString::fromStdString(new_val)).arg(
                                   empl_ID);
 }
@@ -233,6 +233,77 @@ void EmployeeDatabase::add_new_roster(Roster& r)
     //Declare variables
     map<string, vector<shift>> empl_shift_map = r.get_empl_shifts();
     vector<shift> shifts;
+
+    cout << "Dates: " << r.get_shift_dates().size() << endl;
+    cout << "Names: " << r.get_employee_names().size() << endl;
+
+    for(auto s : r.get_employee_names())
+    {
+        cout << s << endl;
+    }
+
+    //Store roster's title, dates and names
+    roster_info new_info(r.get_title(),
+                         r.get_shift_dates(),
+                         r.get_employee_names());
+
+    r_info.push_back(new_info);
+
+    //Placeholder variables
+    size_t pos;
+    string name, f_name, l_name;
+
+    QString st, et, d, rst;
+    int id;
+
+    for (auto &it : empl_shift_map)
+    {
+        //Name of employee is the map key
+
+        //Employee's Full Name
+        name = it.first;
+
+        //Position of space between first and last name
+        pos = name.find(' ');
+
+        //Get first and last name
+        f_name = name.substr(0, pos);
+        l_name = name.substr(pos + 1);
+
+        //Vector of the shifts as the value
+        shifts = it.second;
+
+		//Ensure employee exists in the database
+        if (empl_exists(f_name, l_name))
+		{
+            id = get_empl_id(f_name, l_name);
+
+            //insert new shifts for employee
+            for(shift s : shifts)
+            {
+                //Start Time, End Time, Date, Roster
+                st   = QString::fromStdString(s.start_time);
+                et   = QString::fromStdString(s.end_time);
+                d    = QString::fromStdString(s.str_date);
+                rst  = QString::fromStdString(s.roster);
+
+                //SQL Query: Insert Shift
+                QString q = QString("INSERT INTO shifts (empl_id, start_time, end_time, date, roster) "
+                                    "VALUES (%1, %2, %3, %4, %5)").arg(id).arg(st, et, d, rst);
+
+                query->exec(q);
+            }
+        }
+        else
+            qDebug() << QString("Employee %1 Does Not Exist").arg(QString::fromStdString(name));
+    }
+}
+/*
+void EmployeeDatabase::add_new_roster(Roster& r)
+{
+    //Declare variables
+    map<string, vector<shift>> empl_shift_map = r.get_empl_shifts();
+    vector<shift> shifts;
     string name;
     size_t empl_db_indx;
 
@@ -259,23 +330,24 @@ void EmployeeDatabase::add_new_roster(Roster& r)
         //Vector of the shifts as the value
         shifts = it.second;
 
-		//Ensure employee exists in the database
-		if (empl_exists(name))
-		{
-			/* We only have access to the employee's name.
-		       Therefore, we have to search using the name
-		       instead of ID. */
+        //Ensure employee exists in the database
+        if (empl_exists(name))
+        {
+             We only have access to the employee's name.
+               Therefore, we have to search using the name
+               instead of ID.
             empl_db_indx = get_empl_db_indx(name);
 
 
-			/*Iterate through each shift the employee
-              has on this roster. We give each shift to 
-              the employee as we iterate through them */
-			for (auto& s : shifts)
-				empl_db[empl_db_indx].set_shift(s);
+            Iterate through each shift the employee
+              has on this roster. We give each shift to
+              the employee as we iterate through them
+            for (auto& s : shifts)
+                empl_db[empl_db_indx].set_shift(s);
         }
     }
 }
+*/
 
 //Other Functions
 void EmployeeDatabase::print_summary()
@@ -340,7 +412,7 @@ bool EmployeeDatabase::empl_exists(string first_name, string last_name)
                         "FROM employees "
                         "WHERE first_name = '%1' "
                         "AND   last_name  = '%2' ").arg(
-                QString::fromStdString(first_name)).arg(
+                QString::fromStdString(first_name),
                 QString::fromStdString(last_name));
 
     //Return true if an employee is returned
@@ -397,9 +469,43 @@ roster_info EmployeeDatabase::get_roster_info(string title)
     return roster_info();
 }
 
-bool EmployeeDatabase::has_shift(string name, string date, string roster, shift &return_shift)
+bool EmployeeDatabase::has_shift(int empl_id, string date, string roster, shift &return_shift)
 {
-    //WONT WORK
+    QString dt  = QString::fromStdString(date),
+            rst = QString::fromStdString(roster);
+
+    QString check_shift = QString("SELECT * "
+                                  "FROM shifts"
+                                  "WHERE empl_id    = %1 "
+                                  "AND   date       = '%2' "
+                                  "AND   roster     = '%3' ")
+                                  .arg(empl_id).arg(dt, rst);
+
+
+    if(query->exec(check_shift))
+    {
+        if(query->size() > 0)
+        {
+            //Get the shift start and end time
+            QString strt = query->value("start_time").toString(),
+                    end  = query->value("end_time").toString();
+
+            //Set the shift parameter equal to this shift
+            return_shift = shift(date, qStr_to_stdStr(strt), qStr_to_stdStr(end), roster);
+
+            return true;
+        }
+    }
+    else
+    {
+        qDebug() << "Could Not Execute Has Shift Func";
+        qDebug() << query->lastError();
+    }
+
+    return false;
+
+
+  /*  //WONT WORK
     int empl_indx = get_empl_db_indx(name, NAME);
 
     Employee e = get_db_vector()[empl_indx];
@@ -414,7 +520,7 @@ bool EmployeeDatabase::has_shift(string name, string date, string roster, shift 
         }
     }
 
-    return false;
+    return false;*/
 }
 
 map<string, Employee> EmployeeDatabase::create_empl_map()
@@ -427,6 +533,30 @@ map<string, Employee> EmployeeDatabase::create_empl_map()
     }
 
     return empl_map;
+}
+
+int EmployeeDatabase::get_empl_id(string f_name, string l_name)
+{
+    QString get_id = QString(
+                "SELECT * "
+                "FROM employees "
+                "WHERE first_name = '%1' "
+                "AND last_name = '%2'").arg(
+                QString::fromStdString(f_name),
+                QString::fromStdString(l_name));
+
+    if(query->exec(get_id))
+    {
+        query->first();
+        return query->value("empl_id").toInt();
+    }
+    else
+    {
+        qDebug() << "Employee ID Not Found";
+        return -1;
+    }
+
+
 }
 
 
