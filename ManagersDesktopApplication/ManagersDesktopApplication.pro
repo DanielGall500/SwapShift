@@ -39,7 +39,6 @@ SOURCES += \
 
 HEADERS += \
         CSVReader/CSVReader.h \
-        Employee/Employee.h \
         EmployeeDatabase/EmployeeDatabase.h \
         Roster/Roster.h \
         Structs.h \

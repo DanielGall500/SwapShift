@@ -26,7 +26,7 @@ void AddEmpDialog::on_addEmpButtonBox_accepted()
     Employee new_emp(inp[0], inp[1], inp[2]);
 
     //CHECK: Is Employee name already in database?
-    if(EMPL_DB->empl_exists(new_emp.get_full_name()))
+    if(EMPL_DB->empl_exists(new_emp.get_first_name(), new_emp.get_last_name())) //**TEST
     {
         //ERROR: EMPLOYEE ALREADY EXISTS
         QMessageBox::critical(this, "Cannot Add Employee",

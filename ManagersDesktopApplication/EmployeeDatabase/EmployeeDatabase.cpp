@@ -39,6 +39,8 @@ void EmployeeDatabase::add_employee(Employee empl)
 
 void EmployeeDatabase::del_employee(string empl_ID)
 {
+    //SQL: Delete from employees
+    // AND ALSO shifts database
 	bool success = false;
 	int indx = 0;
     string tmp_ID;
@@ -101,7 +103,7 @@ Employee EmployeeDatabase::find_employee(int empl_ID)
     /* empl_id is unique,
      * thus only one result will be returned */
 
-    QString q = QString("SELECT *"
+    QString q = QString("SELECT * "
                         "WHERE empl_ID = %1").arg(empl_ID);
 
     query->prepare(q);
@@ -126,9 +128,9 @@ Employee EmployeeDatabase::find_employee(int empl_ID)
 
 QString EmployeeDatabase::query_edit_empl_info(int empl_ID, string col_name, string new_val)
 {
-    return QString("UPDATE employees"
-                   "SET %1 = '%2'"
-                   "WHERE empl_ID  = %3").arg(
+    return QString("UPDATE employees "
+                   "SET %1 = '%2' "
+                   "WHERE empl_ID  = %3 ").arg(
            QString::fromStdString(col_name)).arg(
            QString::fromStdString(new_val)).arg(
                                   empl_ID);
@@ -307,8 +309,8 @@ vector<Employee> EmployeeDatabase::get_db_vector()
 {
     vector<Employee> db_vec;
 
-    *query = QSqlQuery("SELECT *"
-                       "FROM employees");
+    query->exec("SELECT * "
+                "FROM employees ");
 
     //Iterate through employees
     while(query->next())
@@ -331,15 +333,24 @@ vector<Employee> EmployeeDatabase::get_db_vector()
     return db_vec;
 }
 
-bool EmployeeDatabase::empl_exists(string fsize_t_name)
+bool EmployeeDatabase::empl_exists(string first_name, string last_name)
 {
-    for (Employee& e : get_db_vector())
-	{
-        if (e.get_full_name() == fsize_t_name)
-			return true;
-	}
+    //Find an employee with this first & last name
+    QString q = QString("SELECT * "
+                        "FROM employees "
+                        "WHERE first_name = '%1' "
+                        "AND   last_name  = '%2' ").arg(
+                QString::fromStdString(first_name)).arg(
+                QString::fromStdString(last_name));
 
-	return false;
+    //Return true if an employee is returned
+    if(query->exec(q))
+        return (query->size() > 0);
+    else
+    {
+        qDebug() << "Could Not Execute Query: empl_exists";
+        return false;
+    }
 }
 
 vectorStr EmployeeDatabase::get_empl_names()
@@ -388,6 +399,7 @@ roster_info EmployeeDatabase::get_roster_info(string title)
 
 bool EmployeeDatabase::has_shift(string name, string date, string roster, shift &return_shift)
 {
+    //WONT WORK
     int empl_indx = get_empl_db_indx(name, NAME);
 
     Employee e = get_db_vector()[empl_indx];

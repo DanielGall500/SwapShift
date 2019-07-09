@@ -24,7 +24,7 @@ class EmployeeDatabase
     //General information about the uploaded rosters
     vector<roster_info> r_info;
 
-    //SQL
+    //SQL (declared in constructor)
     QSqlDatabase *empl_sql_db;
     QSqlQueryModel *sql_model;
     QSqlQuery *query;
@@ -44,32 +44,32 @@ public:
 
 
     //Add, Edit or Delete employees
-	void add_employee(Employee empl);
+    void add_employee(Employee empl); //sql
     void del_employee(string empl_ID);
 
-    void edit_empl_firstN(int ID, string new_first_name);
-    void edit_empl_lastN(int ID, string new_last_name);
-    void edit_empl_dept(int ID, string new_dept);
+    void edit_empl_firstN(int ID, string new_first_name); //sql
+    void edit_empl_lastN(int ID, string new_last_name); //sql
+    void edit_empl_dept(int ID, string new_dept); //sql
 
     //Get employee information
-    string get_empl_firstN(int ID);
-    string get_empl_lastN(int ID);
-    string get_empl_dept(int ID);
+    string get_empl_firstN(int ID); //sql
+    string get_empl_lastN(int ID);  //sql
+    string get_empl_dept(int ID);  //sql
 
 	//Used to prevent two employee's of the same name
-    bool empl_exists(string fsize_t_name);
+    bool empl_exists(string first_name, string last_name);
 
 	//Add new roster to the database
     void add_new_roster(Roster& r);
 
     //Get database as vector
-    vector<Employee> get_db_vector();
+    vector<Employee> get_db_vector(); //sql
 
     //Find employee in database
-    Employee find_employee(int empl_ID);
+    Employee find_employee(int empl_ID); //sql
 
     //Get Employee Names
-    vectorStr get_empl_names();
+    vectorStr get_empl_names(); //works w sql
 
     //Get Roster Titles & Dates
     vectorStr get_roster_titles();
