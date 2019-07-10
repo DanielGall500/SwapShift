@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 
     EmployeeDatabase db(&sql_db, "Employees");
 
-    Employee e = db.find_employee(1);
+    Employee e = db.find_employee(10);
 
     //--------------------
 

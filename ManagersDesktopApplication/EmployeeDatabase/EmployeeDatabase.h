@@ -34,10 +34,10 @@ class EmployeeDatabase
 
 
     //Unsafe
-    size_t get_empl_db_indx(string f_name, string l_name);
+   // size_t get_empl_db_indx(string f_name, string l_name);
 
     //Safe
-    size_t get_empl_db_indx(int ID);
+   // size_t get_empl_db_indx(int ID);
 
 public:
     EmployeeDatabase(QSqlDatabase *empl_db, string db_title);
@@ -45,7 +45,7 @@ public:
 
     //Add, Edit or Delete employees
     void add_employee(Employee empl); //sql
-    void del_employee(string empl_ID);
+    void del_employee(int empl_ID); //sql
 
     void edit_empl_firstN(int ID, string new_first_name); //sql
     void edit_empl_lastN(int ID, string new_last_name); //sql
@@ -61,7 +61,7 @@ public:
     bool empl_exists(string first_name, string last_name); //sql
 
 	//Add new roster to the database
-    void add_new_roster(Roster& r);
+    void add_new_roster(Roster& r); //sql
 
     //Get database as vector
     vector<Employee> get_db_vector(); //sql

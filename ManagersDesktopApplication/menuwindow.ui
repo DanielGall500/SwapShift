@@ -77,9 +77,11 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QTableWidget" name="emplTableDisp"/>
       <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QTableView" name="emplTableDisplay"/>
+        </item>
         <item>
          <widget class="QPushButton" name="addEmplButton">
           <property name="text">
@@ -154,7 +156,7 @@
        <string>Back</string>
       </property>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>100</x>

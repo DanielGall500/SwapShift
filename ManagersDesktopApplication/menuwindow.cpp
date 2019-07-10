@@ -12,7 +12,7 @@ MenuWindow::MenuWindow(EmployeeDatabase *db, QWidget *parent) :
 
 
     //Setup the employee table for viewing
-    //setup_empl_table_view(EMPL_DB);
+    setup_empl_table_view(EMPL_DB);
 
 }
 
@@ -115,6 +115,24 @@ void MenuWindow::refresh_empl_table_view(EmployeeDatabase *empl_db)
     }
 }*/
 
+void MenuWindow::setup_empl_table_view(EmployeeDatabase *empl_db)
+{
+    QSqlQuery new_q("SELECT * "
+                    "FROM swapshift_db.employees");
+
+    empl_tbl = ui->emplTableDisplay;
+    sql_model = new QSqlQueryModel();
+    sql_model->setQuery("SELECT * "
+                        "FROM swapshift_db.employees");
+
+    sql_model->setHeaderData(0, Qt::Horizontal, "Employee ID");
+    sql_model->setHeaderData(1, Qt::Horizontal, "First Name");
+    sql_model->setHeaderData(2, Qt::Horizontal, "Last Name");
+    sql_model->setHeaderData(3, Qt::Horizontal, "Department");
+
+    empl_tbl->setModel(sql_model);
+}
+
 //--EMPLOYEE PAGE: SLOTS--
 void MenuWindow::on_emplButton_clicked()
 {
@@ -122,18 +140,33 @@ void MenuWindow::on_emplButton_clicked()
     ui->stackedWidget->setCurrentIndex(1);
 
     //Can only select rows on the employee table view
-    ui->emplTableDisp->setSelectionBehavior( QAbstractItemView::SelectRows );
+    ui->emplTableDisplay->setSelectionBehavior( QAbstractItemView::SelectRows );
 
     //Refresh the table view
    // refresh_empl_table_view(EMPL_DB);
 
 }
-
+/*
 //On Clicking An Employee(Row) In The Table
 void MenuWindow::on_emplTableDisp_itemSelectionChanged()
 {
     //Find how many rows the user has selected
-    QItemSelectionModel *itmMod = ui->emplTableDisp->selectionModel();
+    QItemSelectionModel *itmMod = ui->emplTableDisplay->selectionModel();
+    int numRowsSelected = itmMod->selectedRows().size();
+
+     If the user has selected no rows, or selected more than
+       one, we disable the edit and delete employee button
+    ui->editEmplButton->setEnabled(numRowsSelected == 1);
+    ui->delEmplButton->setEnabled(numRowsSelected == 1);
+}*/
+
+void MenuWindow::on_emplTableDisplay_clicked(const QModelIndex &index)
+{
+    //Update the global var for the selected row
+    tbl_selection = index;
+
+    //Find how many rows the user has selected
+    QItemSelectionModel *itmMod = ui->emplTableDisplay->selectionModel();
     int numRowsSelected = itmMod->selectedRows().size();
 
     /* If the user has selected no rows, or selected more than
@@ -151,20 +184,40 @@ void MenuWindow::on_addEmplButton_clicked()
     newAddEmpDial.exec();
 }
 
-std::string MenuWindow::selectedRowEmplID()
+int MenuWindow::selectedRowEmplID()
 {
+    /*
     //Find the employee ID in the row the user has selected
-    int curr_row_indx = ui->emplTableDisp->currentRow();
-    QString curr_ID = ui->emplTableDisp->item(curr_row_indx, ID_hdr_indx)->text();
+    int curr_row_indx = empl_tbl->currentIndex();
+    QString curr_ID = ui->emplTableDisplay->item(curr_row_indx, ID_hdr_indx)->text();
 
     //Convert to STD String
-    return qStr_to_stdStr(curr_ID);
+    return qStr_to_stdStr(curr_ID); */
+
+    //BROKEN************************************************************************************************
+
+
+    QItemSelectionModel *rows = ui->emplTableDisplay->selectionModel();
+
+    QModelIndexList selected_row = rows->selectedRows();
+
+    if(selected_row.size() == 1)
+    {
+        return 1; //BROKEN
+    }
+    else
+    {
+        qDebug() << "Too Many/Few Rows Selected";
+        return -1;
+    }
+
+    //int empl_ID = tbl_selection.data().toInt();
 }
 
 //On Clicking 'Edit Employee' Button
 void MenuWindow::on_editEmplButton_clicked()
 {
-    std::string ID = selectedRowEmplID();
+    int ID = selectedRowEmplID();
 
     //Create an Edit Employee Dialog Box
     EditEmpDialog newEditEmpDialog(this, EMPL_DB, ID);
@@ -185,7 +238,7 @@ void MenuWindow::on_delEmplButton_clicked()
     if(delEmplMsgBox == QMessageBox::Yes)
     {
         //Find the selected employee's ID
-        std::string ID = selectedRowEmplID();
+        int ID = selectedRowEmplID();
 
         //Delete them from the database
         EMPL_DB->del_employee(ID);

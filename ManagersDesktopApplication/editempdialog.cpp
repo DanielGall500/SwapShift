@@ -2,7 +2,7 @@
 #include "ui_editempdialog.h"
 #include "menuwindow.h"
 
-EditEmpDialog::EditEmpDialog(MenuWindow *mw, EmployeeDatabase *db, string ID, QWidget *parent) :
+EditEmpDialog::EditEmpDialog(MenuWindow *mw, EmployeeDatabase *db, int ID, QWidget *parent) :
     QDialog(parent), main_window(mw), EMPL_DB(db), empl_ID(ID),
     ui(new Ui::EditEmpDialog)
 {
@@ -38,5 +38,5 @@ void EditEmpDialog::on_editEmpButtonBox_accepted()
     EMPL_DB->edit_empl_dept(empl_ID, qStr_to_stdStr(dept));
 
     //Refresh the table
-    main_window->refresh_empl_table_view(EMPL_DB);
+    //main_window->refresh_empl_table_view(EMPL_DB);
 }

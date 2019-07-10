@@ -37,35 +37,32 @@ void EmployeeDatabase::add_employee(Employee empl)
     }
 }
 
-void EmployeeDatabase::del_employee(string empl_ID)
+void EmployeeDatabase::del_employee(int empl_ID)
 {
     //SQL: Delete from employees
     // AND ALSO shifts database
-	bool success = false;
-	int indx = 0;
-    string tmp_ID;
 
-	//Iterate employees in database
-	for (Employee &i : empl_db)
-	{
-        tmp_ID = i.get_unique_ID();
+    //Handle Employee Table
+    query->prepare("DELETE FROM employees "
+                   "WHERE empl_id = ?");
 
-		//Deletion based on ID number
-		if (tmp_ID == empl_ID)
-		{
-			empl_db.erase(empl_db.begin() + indx);
-			success = true;
-			break;
-		}
+    query->bindValue("?", empl_ID);
 
-		indx++;
-	}
+    if(!query->exec())
+        qDebug() << "SQLError: Del Empl 1" << query->lastError();
 
-	if(!success)
-		cout << "Employee Not Found" << endl;
+
+    //Handle Shifts Table
+    query->prepare("DELETE FROM shifts "
+                   "WHERE empl_id = ?");
+
+    query->bindValue("?", empl_ID);
+
+    if(!query->exec())
+        qDebug() << "SQLError: Del Empl 2" << query->lastError();
 	
 }
-
+/*
 //ID safer than name
 size_t EmployeeDatabase::get_empl_db_indx(string f_name, string l_name)
 {
@@ -97,33 +94,47 @@ size_t EmployeeDatabase::get_empl_db_indx(int ID)
 
     return indx;
 }
-
+*/
 Employee EmployeeDatabase::find_employee(int empl_ID)
 {
     /* empl_id is unique,
      * thus only one result will be returned */
 
-    QString q = QString("SELECT * "
-                        "WHERE empl_ID = %1").arg(empl_ID);
+    query->prepare("SELECT * "
+                   "FROM employees "
+                   "WHERE empl_id = :empl_id");
 
-    query->prepare(q);
+    query->bindValue(":empl_id", empl_ID);
 
-    if(query->exec())
-        qDebug() << "Find Employee Query Executed";
+    if (!query->exec())
+    {
+        //Error: SQL Cannot Execute Statement
+        qDebug() << "Find Employee Query Failed Execution"
+                 << query->lastError();
+
+        return Employee();
+    }
+    else if (query->size() != 1)
+    {
+        qDebug() << "Invalid Employee ID";
+        return Employee();
+    }
     else
-        qDebug() << "Find Employee Query Failed Execution";
+    {
+        query->first();
 
-    QString f_name = query->value("first_name").toString(),
-            l_name = query->value("last_name").toString(),
-            dept   = query->value("dept").toString();
+        QString f_name = query->value("first_name").toString(),
+                l_name = query->value("last_name").toString(),
+                dept   = query->value("dept").toString();
 
-    qDebug() << f_name << l_name << dept;
+        qDebug() << f_name << l_name << dept;
 
-    Employee e(qStr_to_stdStr(f_name),
-               qStr_to_stdStr(l_name),
-               qStr_to_stdStr(dept));
+        Employee e(qStr_to_stdStr(f_name),
+                   qStr_to_stdStr(l_name),
+                   qStr_to_stdStr(dept));
 
-    return e;
+        return e;
+    }
 }
 
 QString EmployeeDatabase::query_edit_empl_info(int empl_ID, string col_name, string new_val)
@@ -402,7 +413,6 @@ vectorStr EmployeeDatabase::get_roster_titles()
 vectorStr2D EmployeeDatabase::get_roster_dates()
 {
     vectorStr2D dates;
-    size_t indx = 0;
 
     for(roster_info ri : r_info)
         dates.push_back(ri.dates);

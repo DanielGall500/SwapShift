@@ -12,6 +12,7 @@
 #include "editempdialog.h"
 #include "uploadrosterdialog.h"
 #include "emplrostermodel.h"
+#include <QtSql/QSqlQueryModel>
 
 namespace Ui {
 class MenuWindow;
@@ -22,11 +23,13 @@ class MenuWindow : public QMainWindow
     Q_OBJECT
 
     //EMPLOYEE DISPLAY
-    QTableWidget *empl_tbl;
+    QTableView *empl_tbl;
 
     //ROSTER DISPLAY
     EmplRosterModel *rost_model;
     QTableView *rost_tbl;
+    QSqlQueryModel *sql_model;
+
 
     //MAIN DATABASE
     EmployeeDatabase *EMPL_DB;
@@ -46,8 +49,6 @@ private slots:
 
     void on_editEmplButton_clicked();
 
-    void on_emplTableDisp_itemSelectionChanged();
-
     void on_delEmplButton_clicked();
 
     void on_emplBackButton_clicked();
@@ -60,6 +61,8 @@ private slots:
 
     void on_rostSelectCombo_activated(const QString &title);
 
+    void on_emplTableDisplay_clicked(const QModelIndex &index);
+
 private:
     Ui::MenuWindow *ui;
 
@@ -68,6 +71,8 @@ private:
     friend class AddEmpDialog;
 
     /* Employee DB Display Widget */
+    QModelIndex tbl_selection;
+
     //First time setup of the table
     void setup_empl_table_view(EmployeeDatabase *empl_db);
 
@@ -75,7 +80,7 @@ private:
     void refresh_empl_table_view(EmployeeDatabase *empl_db);
 
     //Get the index of the selected row
-    std::string selectedRowEmplID();
+    int selectedRowEmplID();
 
     /*Current Rosters Table View*/
     void curr_rost_display(string roster);
