@@ -195,6 +195,7 @@ string EmployeeDatabase::get_empl_firstN(int empl_ID)
     if(query->exec(q))
     {
         qDebug() << "Success Get Empl First Name";
+
         QString fn = query->value("first_name").toString();
 
         return qStr_to_stdStr(fn);

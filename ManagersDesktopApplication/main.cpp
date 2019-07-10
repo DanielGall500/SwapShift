@@ -64,10 +64,6 @@ int main(int argc, char *argv[])
 
     vectorStr non_shifts{"N/A", "Hol"};
     Roster r("Week1", csv_vec, names_pos, dates_pos,non_shifts);
-    db.add_new_roster(r);
-
-
-
 
     //Run Application
     QApplication a(argc, argv);

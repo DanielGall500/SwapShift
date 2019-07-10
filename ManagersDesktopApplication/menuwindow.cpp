@@ -186,32 +186,17 @@ void MenuWindow::on_addEmplButton_clicked()
 
 int MenuWindow::selectedRowEmplID()
 {
-    /*
-    //Find the employee ID in the row the user has selected
-    int curr_row_indx = empl_tbl->currentIndex();
-    QString curr_ID = ui->emplTableDisplay->item(curr_row_indx, ID_hdr_indx)->text();
+    //id_col -> The ID Column Index
+    int id_col = 0, empl_id;
 
-    //Convert to STD String
-    return qStr_to_stdStr(curr_ID); */
+    //We must specify which column holds the employee ID's
+    QModelIndex column = tbl_selection.siblingAtColumn(id_col);
 
-    //BROKEN************************************************************************************************
+    //Get the data in this column
+    empl_id = empl_tbl->model()->data(column).toInt();
 
-
-    QItemSelectionModel *rows = ui->emplTableDisplay->selectionModel();
-
-    QModelIndexList selected_row = rows->selectedRows();
-
-    if(selected_row.size() == 1)
-    {
-        return 1; //BROKEN
-    }
-    else
-    {
-        qDebug() << "Too Many/Few Rows Selected";
-        return -1;
-    }
-
-    //int empl_ID = tbl_selection.data().toInt();
+    qDebug() << "Employee ID: " << empl_id;
+    return empl_id;
 }
 
 //On Clicking 'Edit Employee' Button
