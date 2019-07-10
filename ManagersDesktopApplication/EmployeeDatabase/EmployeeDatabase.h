@@ -29,15 +29,8 @@ class EmployeeDatabase
     QSqlQueryModel *sql_model;
     QSqlQuery *query;
 
-    QString query_edit_empl_info(int empl_ID, string col_name, string new_val);
-    QString query_get_empl_info(int empl_ID, string col_name);
-
-
-    //Unsafe
-   // size_t get_empl_db_indx(string f_name, string l_name);
-
-    //Safe
-   // size_t get_empl_db_indx(int ID);
+    QSqlQuery query_edit_empl_info(int empl_ID, string col_name, string new_val);
+    QSqlQuery query_get_empl_info(int empl_ID);
 
 public:
     EmployeeDatabase(QSqlDatabase *empl_db, string db_title);

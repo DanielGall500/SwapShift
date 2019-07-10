@@ -137,30 +137,43 @@ Employee EmployeeDatabase::find_employee(int empl_ID)
     }
 }
 
-QString EmployeeDatabase::query_edit_empl_info(int empl_ID, string col_name, string new_val)
+QSqlQuery EmployeeDatabase::query_edit_empl_info(int empl_ID, string col_name, string new_val)
 {
-    return QString("UPDATE employees "
-                   "SET %1 = '%2' "
-                   "WHERE empl_ID  = %3 ").arg(
-           QString::fromStdString(col_name),
-           QString::fromStdString(new_val)).arg(
-                                  empl_ID);
+    QSqlQuery q(*empl_sql_db);
+
+    QString c = QString::fromStdString(col_name);
+    QString v = QString::fromStdString(new_val);
+
+    q.prepare("UPDATE employees "
+              "SET :col = :val "
+              "WHERE empl_id = :empl_id");
+
+    q.bindValue(":col", c);
+    q.bindValue(":val", v);
+    q.bindValue(":empl_id", empl_ID);
+
+    return q;
 }
 
-QString EmployeeDatabase::query_get_empl_info(int empl_ID, string col_name)
+QSqlQuery EmployeeDatabase::query_get_empl_info(int empl_ID)
 {
-    return QString("SELECT %1"
-                   "WHERE empl_id = %2").arg(
-                QString::fromStdString(col_name)).arg(
-                                       empl_ID);
+    QSqlQuery q(*empl_sql_db);
+
+    q.prepare("SELECT * "
+              "FROM employees "
+              "WHERE empl_id = :empl_id");
+
+    q.bindValue(":empl_id", empl_ID);
+
+    return q;
 }
 
 //Edit Employees
 void EmployeeDatabase::edit_empl_firstN(int empl_ID, string new_first_name)
 {
-    QString q = query_edit_empl_info(empl_ID, "first_name", new_first_name);
+    QSqlQuery q = query_edit_empl_info(empl_ID, "first_name", new_first_name);
 
-    if(query->exec(q))
+    if(q.exec())
         qDebug() << "Success Edit Empl First Name";
     else
         qDebug() << "Failed Edit Empl First Name";
@@ -169,9 +182,9 @@ void EmployeeDatabase::edit_empl_firstN(int empl_ID, string new_first_name)
 
 void EmployeeDatabase::edit_empl_lastN(int empl_ID, string new_last_name)
 {
-    QString q = query_edit_empl_info(empl_ID, "last_name", new_last_name);
+    QSqlQuery q = query_edit_empl_info(empl_ID, "last_name", new_last_name);
 
-    if(query->exec(q))
+    if(q.exec())
         qDebug() << "Success Edit Empl Last Name";
     else
         qDebug() << "Failed Edit Empl Last Name";
@@ -179,9 +192,9 @@ void EmployeeDatabase::edit_empl_lastN(int empl_ID, string new_last_name)
 
 void EmployeeDatabase::edit_empl_dept(int empl_ID, string new_dept)
 {
-    QString q = query_edit_empl_info(empl_ID, "dept", new_dept);
+    QSqlQuery q = query_edit_empl_info(empl_ID, "dept", new_dept);
 
-    if(query->exec(q))
+    if(q.exec())
         qDebug() << "Success Edit Empl Dept";
     else
         qDebug() << "Failed Edit Empl Dept";
@@ -190,53 +203,73 @@ void EmployeeDatabase::edit_empl_dept(int empl_ID, string new_dept)
 //Get employee info
 string EmployeeDatabase::get_empl_firstN(int empl_ID)
 {
-    QString q = query_get_empl_info(empl_ID, "first_name");
+    QSqlQuery q = query_get_empl_info(empl_ID);
 
-    if(query->exec(q))
+    if(q.exec())
     {
         qDebug() << "Success Get Empl First Name";
 
-        QString fn = query->value("first_name").toString();
+        q.first();
+
+        QString fn = q.value("first_name").toString();
 
         return qStr_to_stdStr(fn);
     }
     else
-        qDebug() << "Failed Get Empl First Name";
-        return "Employee Not Found";
+    {
+        qDebug() << "Failed Get Empl First Name"
+                 << q.lastError();
+
+        return "ERROR";
+    }
 
 
 }
 
 string EmployeeDatabase::get_empl_lastN(int empl_ID)
 {
-    QString q = query_get_empl_info(empl_ID, "last_name");
+    QSqlQuery q = query_get_empl_info(empl_ID);
 
-    if(query->exec(q))
+    if(q.exec())
     {
         qDebug() << "Success Get Empl Last Name";
-        QString ln = query->value("last_name").toString();
+
+        q.first();
+
+        QString ln = q.value("last_name").toString();
 
         return qStr_to_stdStr(ln);
     }
     else
-        qDebug() << "Failed Get Empl last Name";
-        return "Employee Not Found";
+    {
+        qDebug() << "Failed Get Empl Last Name"
+                 << q.lastError();
+
+        return "ERROR";
+    }
 }
 
 string EmployeeDatabase::get_empl_dept(int empl_ID)
 {
-    QString q = query_get_empl_info(empl_ID, "dept");
+    QSqlQuery q = query_get_empl_info(empl_ID);
 
-    if(query->exec(q))
+    if(q.exec())
     {
         qDebug() << "Success Get Empl Dept";
-        QString dpt = query->value("dept").toString();
+
+        q.first();
+
+        QString dpt = q.value("dept").toString();
 
         return qStr_to_stdStr(dpt);
     }
     else
-        qDebug() << "Failed Get Empl Dept";
-        return "Employee Not Found";
+    {
+        qDebug() << "Failed Get Empl Department"
+                 << q.lastError();
+
+        return "ERROR";
+    }
 }
 
 //Roster Functions
