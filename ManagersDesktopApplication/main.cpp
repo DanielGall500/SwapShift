@@ -69,8 +69,6 @@ int main(int argc, char *argv[])
 
 
 
-
-
     //Run Application
     QApplication a(argc, argv);
     MenuWindow w(&db);

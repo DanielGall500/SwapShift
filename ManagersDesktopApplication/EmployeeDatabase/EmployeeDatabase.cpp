@@ -289,65 +289,17 @@ void EmployeeDatabase::add_new_roster(Roster& r)
 
                 //SQL Query: Insert Shift
                 QString q = QString("INSERT INTO shifts (empl_id, start_time, end_time, date, roster) "
-                                    "VALUES (%1, %2, %3, %4, %5)").arg(id).arg(st, et, d, rst);
+                                    "VALUES (%1, '%2', '%3', '%4', '%5')").arg(id).arg(st, et, d, rst);
 
-                query->exec(q);
+                //Error if the query cannot execute
+                if(!query->exec(q))
+                    qDebug() << query->lastError();
             }
         }
         else
             qDebug() << QString("Employee %1 Does Not Exist").arg(QString::fromStdString(name));
     }
 }
-/*
-void EmployeeDatabase::add_new_roster(Roster& r)
-{
-    //Declare variables
-    map<string, vector<shift>> empl_shift_map = r.get_empl_shifts();
-    vector<shift> shifts;
-    string name;
-    size_t empl_db_indx;
-
-    cout << "Dates: " << r.get_shift_dates().size() << endl;
-    cout << "Names: " << r.get_employee_names().size() << endl;
-
-    for(auto s : r.get_employee_names())
-    {
-        cout << s << endl;
-    }
-
-    //Store roster's title, dates and names
-    roster_info new_info(r.get_title(),
-                         r.get_shift_dates(),
-                         r.get_employee_names());
-
-    r_info.push_back(new_info);
-
-    for (auto &it : empl_shift_map)
-    {
-        //Name of employee is the map key
-        name = it.first;
-
-        //Vector of the shifts as the value
-        shifts = it.second;
-
-        //Ensure employee exists in the database
-        if (empl_exists(name))
-        {
-             We only have access to the employee's name.
-               Therefore, we have to search using the name
-               instead of ID.
-            empl_db_indx = get_empl_db_indx(name);
-
-
-            Iterate through each shift the employee
-              has on this roster. We give each shift to
-              the employee as we iterate through them
-            for (auto& s : shifts)
-                empl_db[empl_db_indx].set_shift(s);
-        }
-    }
-}
-*/
 
 //Other Functions
 void EmployeeDatabase::print_summary()
