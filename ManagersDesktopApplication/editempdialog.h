@@ -21,7 +21,8 @@ class EditEmpDialog : public QDialog
     EmployeeDatabase *EMPL_DB;
 
     //Employee's Variables
-    QString f_name, l_name, dept;
+    QString f_name, l_name;
+    QString orig_dept, curr_dept;
     int empl_ID;
 
 

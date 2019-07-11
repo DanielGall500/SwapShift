@@ -7,16 +7,10 @@ EmployeeDatabase::EmployeeDatabase(QSqlDatabase *empl_db, string title) :
     this->sql_model = new QSqlQueryModel();
     this->query     = new QSqlQuery(*empl_sql_db);
 
-    vector<Employee> vec = get_db_vector();
-
 }
 
 void EmployeeDatabase::add_employee(Employee empl)
 {
-    //OLD
-	empl_db.push_back(empl);
-
-    //SQL INSERT EMPL
     QString f_name = QString::fromStdString(empl.get_first_name()),
             l_name = QString::fromStdString(empl.get_last_name()),
             dept   = QString::fromStdString(empl.get_department());
@@ -39,8 +33,9 @@ void EmployeeDatabase::add_employee(Employee empl)
 
 void EmployeeDatabase::del_employee(int empl_ID)
 {
-    //SQL: Delete from employees
-    // AND ALSO shifts database
+    /* When deleting employee,
+     * we need to be sure to delete
+     * their shifts also */
 
     //Handle Employee Table
     query->prepare("DELETE FROM employees "
@@ -62,39 +57,7 @@ void EmployeeDatabase::del_employee(int empl_ID)
         qDebug() << "SQLError: Del Empl 2" << query->lastError();
 	
 }
-/*
-//ID safer than name
-size_t EmployeeDatabase::get_empl_db_indx(string f_name, string l_name)
-{
-    size_t indx = 0;
 
-    for (Employee& e : get_db_vector())
-    {
-        if (f_name == e.get_first_name() &&
-            l_name == e.get_last_name())
-			break;
-
-		indx++;
-	}
-
-	return indx;
-}
-
-size_t EmployeeDatabase::get_empl_db_indx(int ID)
-{
-    size_t indx = 0;
-
-    for (Employee& e : get_db_vector())
-    {
-        if (ID == e.get_unique_ID())
-            break;
-
-        indx++;
-    }
-
-    return indx;
-}
-*/
 Employee EmployeeDatabase::find_employee(int empl_ID)
 {
     /* empl_id is unique,
@@ -506,24 +469,6 @@ bool EmployeeDatabase::has_shift(int empl_id, string date, string roster, shift 
     }
 
     return false;
-
-
-  /*  //WONT WORK
-    int empl_indx = get_empl_db_indx(name, NAME);
-
-    Employee e = get_db_vector()[empl_indx];
-
-    for(shift s : e.get_all_shifts())
-    {
-        cout << "NEW TEST" << endl;
-        if(s.str_date == date && s.roster == roster)
-        {
-            return_shift = s;
-            return true;
-        }
-    }
-
-    return false;*/
 }
 
 map<string, Employee> EmployeeDatabase::create_empl_map()
@@ -540,15 +485,18 @@ map<string, Employee> EmployeeDatabase::create_empl_map()
 
 int EmployeeDatabase::get_empl_id(string f_name, string l_name)
 {
-    QString get_id = QString(
-                "SELECT * "
-                "FROM employees "
-                "WHERE first_name = '%1' "
-                "AND last_name = '%2'").arg(
-                QString::fromStdString(f_name),
-                QString::fromStdString(l_name));
+    QString fn = QString::fromStdString(f_name),
+            ln = QString::fromStdString(l_name);
 
-    if(query->exec(get_id))
+    query->prepare("SELECT * "
+                   "FROM employees "
+                   "WHERE first_name = :FN "
+                   "AND last_name = :LN ");
+
+    query->bindValue(":FN", fn);
+    query->bindValue(":LN", ln);
+
+    if(query->exec())
     {
         query->first();
         return query->value("empl_id").toInt();
