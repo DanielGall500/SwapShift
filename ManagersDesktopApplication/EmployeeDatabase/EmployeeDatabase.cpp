@@ -44,9 +44,9 @@ void EmployeeDatabase::del_employee(int empl_ID)
 
     //Handle Employee Table
     query->prepare("DELETE FROM employees "
-                   "WHERE empl_id = ?");
+                   "WHERE empl_id = :ID");
 
-    query->bindValue("?", empl_ID);
+    query->bindValue(":ID", empl_ID);
 
     if(!query->exec())
         qDebug() << "SQLError: Del Empl 1" << query->lastError();
@@ -54,9 +54,9 @@ void EmployeeDatabase::del_employee(int empl_ID)
 
     //Handle Shifts Table
     query->prepare("DELETE FROM shifts "
-                   "WHERE empl_id = ?");
+                   "WHERE empl_id = :ID");
 
-    query->bindValue("?", empl_ID);
+    query->bindValue(":ID", empl_ID);
 
     if(!query->exec())
         qDebug() << "SQLError: Del Empl 2" << query->lastError();
@@ -141,16 +141,23 @@ QSqlQuery EmployeeDatabase::query_edit_empl_info(int empl_ID, string col_name, s
 {
     QSqlQuery q(*empl_sql_db);
 
+    //STD Str -> QStr
     QString c = QString::fromStdString(col_name);
     QString v = QString::fromStdString(new_val);
 
-    q.prepare("UPDATE employees "
-              "SET :col = :val "
-              "WHERE empl_id = :empl_id");
+    //Cannot bind column name as it will insert quotation marks
+    QString str_q = QString("UPDATE employees "
+                            "SET %1 = :val "
+                            "WHERE empl_id = :empl_id;").arg(c);
 
-    q.bindValue(":col", c);
+    q.prepare(str_q);
+
+    //Bind any values
     q.bindValue(":val", v);
     q.bindValue(":empl_id", empl_ID);
+
+    if(!q.exec())
+        qDebug() << "ERROR: "<< q.lastError();
 
     return q;
 }
