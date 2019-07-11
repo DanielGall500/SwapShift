@@ -38,6 +38,7 @@ void AddEmpDialog::on_addEmpButtonBox_accepted()
         EMPL_DB->add_employee(new_emp);
 
 
+        main_window->refresh_empl();
         //UPDATE TABLE***
         //main_window->refresh_empl_table_view(EMPL_DB);
     }

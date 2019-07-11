@@ -37,6 +37,8 @@ void EditEmpDialog::on_editEmpButtonBox_accepted()
     EMPL_DB->edit_empl_lastN(empl_ID, qStr_to_stdStr(l_name));
     EMPL_DB->edit_empl_dept(empl_ID, qStr_to_stdStr(dept));
 
+    main_window->refresh_empl();
+
     //Refresh the table
     //main_window->refresh_empl_table_view(EMPL_DB);
 }

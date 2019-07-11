@@ -12,7 +12,7 @@ MenuWindow::MenuWindow(EmployeeDatabase *db, QWidget *parent) :
 
 
     //Setup the employee table for viewing
-    setup_empl_table_view(EMPL_DB);
+    setup_empl_table_view();
 
 }
 
@@ -20,102 +20,8 @@ MenuWindow::~MenuWindow()
 {
     delete ui;
 }
-/*
-//--EMPLOYEE PAGE: TABLE VIEW--
-void MenuWindow::setup_empl_table_view(EmployeeDatabase *empl_db)
-{
-    empl_tbl = ui->emplTableDisp;
-    vector<Employee> empl_vec = empl_db->get_db_vector();
 
-    //Make Table Read-Only
-    empl_tbl->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-    //No. Rows = Size of employee database
-    //Columns: Name, Department, ID
-    size_t rows = empl_vec.size();
-    size_t cols = 3;
-
-    //Column Headers
-    QStringList headers = {"Name", "Department", "Unique ID"};
-    empl_tbl->setColumnCount((signed)cols);
-    empl_tbl->setHorizontalHeaderLabels(headers);
-
-    //Add items to table
-    for(size_t r = 0; r < rows; r++)
-    {
-       Employee &e = empl_vec[r];
-
-       string entries[3] = { e.get_full_name(), e.get_department(),
-                             e.get_unique_ID() };
-
-       //Add a new row for a new employee
-       empl_tbl->insertRow((signed)r);
-
-       for(size_t c = 0; c < cols; c++)
-       {
-           //Create an item for our next entry
-           QTableWidgetItem *nxt_itm = new QTableWidgetItem();
-
-           // Set the value of the next item:
-           // c = 0 -> Name
-           //   c = 1 -> Department
-           //   c = 2 -> Unique ID
-           nxt_itm->setText(QString::fromStdString(entries[c]));
-
-           //Add the item to the table
-           empl_tbl->setItem((signed)r, (signed)c, nxt_itm);
-       }
-
-
-    }
-
-
-}
-
-void MenuWindow::refresh_empl_table_view(EmployeeDatabase *empl_db)
-{
-    //Clear the previous rows in the employee table
-    empl_tbl->setRowCount(0);
-
-    //Reload the employee data
-    vector<Employee> empl_vec = empl_db->get_db_vector();
-
-    //No. Rows = Size of employee database
-    //Columns: Name, Department, ID
-    size_t rows = empl_vec.size();
-    size_t cols = 3;
-
-    //Add items to table
-    for(size_t r = 0; r < rows; r++)
-    {
-       Employee &e = empl_vec[r];
-
-       string entries[3] = { e.get_full_name(), e.get_department(),
-                             e.get_unique_ID() };
-
-       //Add a new row for a new employee
-       empl_tbl->insertRow((signed)r);
-
-       for(size_t c = 0; c < cols; c++)
-       {
-           //Create an item for our next entry
-           QTableWidgetItem *nxt_itm = new QTableWidgetItem();
-
-           // Set the value of the next item:
-           // c = 0 -> Name
-            //  c = 1 -> Department
-           //   c = 2 -> Unique ID
-           nxt_itm->setText(QString::fromStdString(entries[c]));
-
-           //Add the item to the table
-           empl_tbl->setItem((signed)r, (signed)c, nxt_itm);
-       }
-
-
-    }
-}*/
-
-void MenuWindow::setup_empl_table_view(EmployeeDatabase *empl_db)
+void MenuWindow::setup_empl_table_view()
 {
     QSqlQuery new_q("SELECT * "
                     "FROM swapshift_db.employees");
@@ -159,6 +65,13 @@ void MenuWindow::on_emplTableDisp_itemSelectionChanged()
     ui->editEmplButton->setEnabled(numRowsSelected == 1);
     ui->delEmplButton->setEnabled(numRowsSelected == 1);
 }*/
+
+//Refresh The Employee Table
+void MenuWindow::refresh_empl()
+{
+    sql_model->setQuery("SELECT *"
+                        "FROM employees");
+}
 
 void MenuWindow::on_emplTableDisplay_clicked(const QModelIndex &index)
 {
@@ -214,9 +127,9 @@ void MenuWindow::on_editEmplButton_clicked()
 
 void MenuWindow::on_delEmplButton_clicked()
 {
-    //TODO: ADD 'ARE YOU SURE' DIALOG
     QMessageBox::StandardButton delEmplMsgBox;
 
+    //Dialog: 'Are You Sure?'
     delEmplMsgBox = QMessageBox::question(this, "Delete Employee", "Are you sure?",
                                    QMessageBox::Yes | QMessageBox::No);
 
@@ -228,12 +141,13 @@ void MenuWindow::on_delEmplButton_clicked()
         //Delete them from the database
         EMPL_DB->del_employee(ID);
 
-        //Refresh the employee table
-       // refresh_empl_table_view(EMPL_DB);
+        //Refresh the table
+        this->refresh_empl();
     }
 
 }
 
+//Employees Page: Back Button
 void MenuWindow::on_emplBackButton_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
@@ -295,3 +209,17 @@ void MenuWindow::on_rostSelectCombo_activated(const QString &title)
     //Display selected roster
     curr_rost_display(t);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

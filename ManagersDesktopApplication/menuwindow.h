@@ -42,6 +42,9 @@ public:
     explicit MenuWindow(EmployeeDatabase *db, QWidget *parent = nullptr);
     ~MenuWindow();
 
+    //Refresh Employee Table
+    void refresh_empl();
+
 private slots:
     void on_emplButton_clicked();
 
@@ -74,10 +77,7 @@ private:
     QModelIndex tbl_selection;
 
     //First time setup of the table
-    void setup_empl_table_view(EmployeeDatabase *empl_db);
-
-    //Refresh when edits are made
-    void refresh_empl_table_view(EmployeeDatabase *empl_db);
+    void setup_empl_table_view();
 
     //Get the index of the selected row
     int selectedRowEmplID();
