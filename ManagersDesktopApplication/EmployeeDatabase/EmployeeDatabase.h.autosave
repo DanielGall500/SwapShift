@@ -31,6 +31,8 @@ class EmployeeDatabase
 
     QSqlQuery query_edit_empl_info(int empl_ID, string col_name, string new_val);
     QSqlQuery query_get_empl_info(int empl_ID);
+    
+    void refresh_rost_info();
 
 public:
     EmployeeDatabase(QSqlDatabase *empl_db, string db_title);

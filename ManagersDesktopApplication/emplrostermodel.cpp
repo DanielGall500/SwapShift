@@ -50,14 +50,18 @@ QVariant EmplRosterModel::data(const QModelIndex &index, int role) const
 
         for(shift s : shifts)
         {
+            cout << s.str_date << "##" << curr_date << endl;
             if(s.str_date == curr_date)
             {
                 string shift_str = s.start_time + " - " + s.end_time;
+
+                qDebug() << QString::fromStdString(shift_str);
                 return QString::fromStdString(shift_str);
             }
         }
     }
 
+    qDebug() << "NONE";
     //No shift
     return QString();
 }

@@ -10,6 +10,8 @@ MenuWindow::MenuWindow(EmployeeDatabase *db, QWidget *parent) :
 {
     ui->setupUi(this);
 
+    sql_model_empl = new QSqlQueryModel();
+    sql_model_rost = new QSqlQueryModel();
 
     //Setup the employee table for viewing
     setup_empl_table_view();
@@ -23,20 +25,17 @@ MenuWindow::~MenuWindow()
 
 void MenuWindow::setup_empl_table_view()
 {
-    QSqlQuery new_q("SELECT * "
-                    "FROM swapshift_db.employees");
-
     empl_tbl = ui->emplTableDisplay;
-    sql_model = new QSqlQueryModel();
-    sql_model->setQuery("SELECT * "
-                        "FROM swapshift_db.employees");
 
-    sql_model->setHeaderData(0, Qt::Horizontal, "Employee ID");
-    sql_model->setHeaderData(1, Qt::Horizontal, "First Name");
-    sql_model->setHeaderData(2, Qt::Horizontal, "Last Name");
-    sql_model->setHeaderData(3, Qt::Horizontal, "Department");
+    sql_model_empl->setQuery("SELECT * "
+                             "FROM swapshift_db.employees");
 
-    empl_tbl->setModel(sql_model);
+    sql_model_empl->setHeaderData(0, Qt::Horizontal, "Employee ID");
+    sql_model_empl->setHeaderData(1, Qt::Horizontal, "First Name");
+    sql_model_empl->setHeaderData(2, Qt::Horizontal, "Last Name");
+    sql_model_empl->setHeaderData(3, Qt::Horizontal, "Department");
+
+    empl_tbl->setModel(sql_model_empl);
 }
 
 //--EMPLOYEE PAGE: SLOTS--
@@ -52,24 +51,11 @@ void MenuWindow::on_emplButton_clicked()
    // refresh_empl_table_view(EMPL_DB);
 
 }
-/*
-//On Clicking An Employee(Row) In The Table
-void MenuWindow::on_emplTableDisp_itemSelectionChanged()
-{
-    //Find how many rows the user has selected
-    QItemSelectionModel *itmMod = ui->emplTableDisplay->selectionModel();
-    int numRowsSelected = itmMod->selectedRows().size();
-
-     If the user has selected no rows, or selected more than
-       one, we disable the edit and delete employee button
-    ui->editEmplButton->setEnabled(numRowsSelected == 1);
-    ui->delEmplButton->setEnabled(numRowsSelected == 1);
-}*/
 
 //Refresh The Employee Table
 void MenuWindow::refresh_empl()
 {
-    sql_model->setQuery("SELECT *"
+    sql_model_empl->setQuery("SELECT *"
                         "FROM employees");
 }
 
@@ -190,9 +176,21 @@ void MenuWindow::curr_rost_display(string roster)
 {
     rost_tbl = ui->currRostTableView;
     rost_model = new EmplRosterModel(EMPL_DB, roster, 0);
+/*
+    QSqlQuery q("SELECT * "
+                "FROM shifts "
+                "WHERE roster = 'rost1'",
+                EMPL_DB->connect_db());
+
+    q.bindValue(":R", QString::fromStdString(roster));
+*/
+
+
     rost_tbl->setModel(rost_model);
     rost_tbl->show();
 }
+
+
 
 //Clicked Current Roster Page Back Button
 void MenuWindow::on_currRostBackButton_clicked()

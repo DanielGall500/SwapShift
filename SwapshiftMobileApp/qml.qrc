@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>MyShiftsPage.qml</file>
+        <file>MyShiftsPageForm.ui.qml</file>
+        <file>SwapAShiftPage.qml</file>
+        <file>SwapAShiftPageForm.ui.qml</file>
     </qresource>
 </RCC>

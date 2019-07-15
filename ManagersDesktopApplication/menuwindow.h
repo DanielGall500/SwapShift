@@ -24,11 +24,12 @@ class MenuWindow : public QMainWindow
 
     //EMPLOYEE DISPLAY
     QTableView *empl_tbl;
+    QSqlQueryModel *sql_model_empl;
 
     //ROSTER DISPLAY
     EmplRosterModel *rost_model;
     QTableView *rost_tbl;
-    QSqlQueryModel *sql_model;
+    QSqlQueryModel *sql_model_rost;
 
 
     //MAIN DATABASE
@@ -84,6 +85,9 @@ private:
 
     /*Current Rosters Table View*/
     void curr_rost_display(string roster);
+
+    void refresh_rost();
+
 };
 
 #endif // MenuWindow_H

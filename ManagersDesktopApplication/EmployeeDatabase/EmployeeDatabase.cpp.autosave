@@ -6,14 +6,16 @@ EmployeeDatabase::EmployeeDatabase(QSqlDatabase *empl_db, string title) :
 {
     this->sql_model = new QSqlQueryModel();
     this->query     = new QSqlQuery(*empl_sql_db);
-
+    
+    
+    
 
 
 }
 
 void EmployeeDatabase::refresh_rost_info()
 {
-
+    
 }
 
 void EmployeeDatabase::add_employee(Employee empl)
