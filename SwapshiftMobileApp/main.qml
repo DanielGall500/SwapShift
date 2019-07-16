@@ -8,6 +8,12 @@ ApplicationWindow {
     height: 500
     title: qsTr("SwapShift")
 
+    StackView {
+        id: stackView
+        initialItem: "SwapShiftPage.qml"
+        anchors.fill: parent
+    }
+
     footer: ToolBar {
 
         id: mainToolBar
@@ -23,7 +29,7 @@ ApplicationWindow {
                 onClicked: {
                     highlighted = true
 
-                    stackView.push("MyShiftsPageForm.ui.qml")
+                   // stackView.push("MyShiftsPageForm.ui.qml")
 
                 }
 
@@ -36,7 +42,7 @@ ApplicationWindow {
 
                 onClicked: {
                     highlighted = true
-                    stackView.push("SwapAShiftPageForm.ui.qml")
+                    stackView.push("SwapShiftPage.qml")
                 }
 
                 onActiveFocusChanged: highlighted = false
@@ -53,11 +59,5 @@ ApplicationWindow {
         }
 
 
-    }
-
-    StackView {
-        id: stackView
-        initialItem: "SwapAShiftPageForm.ui.qml"
-        anchors.fill: parent
     }
 }

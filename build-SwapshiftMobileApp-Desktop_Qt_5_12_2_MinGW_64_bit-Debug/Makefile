@@ -239,6 +239,7 @@ Makefile: ../SwapshiftMobileApp/SwapshiftMobileApp.pro C:/Qt/5.12.2/mingw73_64/m
 		C:/Qt/5.12.2/mingw73_64/lib/Qt5Gui.prl \
 		C:/Qt/5.12.2/mingw73_64/lib/Qt5Qml.prl \
 		C:/Qt/5.12.2/mingw73_64/lib/Qt5Network.prl \
+		C:/Qt/5.12.2/mingw73_64/lib/Qt5Sql.prl \
 		C:/Qt/5.12.2/mingw73_64/lib/Qt5Core.prl \
 		C:/Qt/5.12.2/mingw73_64/lib/qtmaind.prl
 	$(QMAKE) -o Makefile ..\SwapshiftMobileApp\SwapshiftMobileApp.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
@@ -418,6 +419,7 @@ C:/Qt/5.12.2/mingw73_64/lib/Qt5Quick.prl:
 C:/Qt/5.12.2/mingw73_64/lib/Qt5Gui.prl:
 C:/Qt/5.12.2/mingw73_64/lib/Qt5Qml.prl:
 C:/Qt/5.12.2/mingw73_64/lib/Qt5Network.prl:
+C:/Qt/5.12.2/mingw73_64/lib/Qt5Sql.prl:
 C:/Qt/5.12.2/mingw73_64/lib/Qt5Core.prl:
 C:/Qt/5.12.2/mingw73_64/lib/qtmaind.prl:
 qmake: FORCE
