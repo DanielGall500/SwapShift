@@ -2,6 +2,7 @@ import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
 
+
 Item {
     width: 400
     height: 400
@@ -29,6 +30,11 @@ Item {
             anchors.leftMargin: 0
             anchors.right: parent.right
             anchors.rightMargin: 8
+
+            model: chooseShiftModel
+            textRole: "display"
+
+
         }
     }
 

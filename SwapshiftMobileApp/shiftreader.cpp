@@ -4,7 +4,7 @@ ShiftReader::ShiftReader(QSqlDatabase *db) :
     db(db)
 {}
 
-vector<shift> ShiftReader::get_shifts(int employee_ID)
+QList<shift> ShiftReader::get_shifts(int employee_ID)
 {
     QSqlQuery query;
 
@@ -19,12 +19,12 @@ vector<shift> ShiftReader::get_shifts(int employee_ID)
         qDebug() << "COULD NOT READ SHIFTS"
                  << query.lastError();
 
-        return vector<shift>();
+        return QList<shift>();
     }
     else
     {
         QString start_t, end_t, date, rost;
-        vector<shift> shifts;
+        QList<shift> shifts;
 
         while(query.next())
         {

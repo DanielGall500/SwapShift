@@ -14,6 +14,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
+        shiftmodel.cpp \
         shiftreader.cpp
 
 RESOURCES += qml.qrc
@@ -32,5 +33,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES +=
 
 HEADERS += \
+    shiftmodel.h \
     shiftreader.h \
     structs.h

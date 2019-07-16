@@ -15,7 +15,7 @@ class ShiftReader
 public:
     ShiftReader(QSqlDatabase *shifts);
 
-    vector<shift> get_shifts(int employee_ID);
+    QList<shift> get_shifts(int employee_ID);
 
 
 };

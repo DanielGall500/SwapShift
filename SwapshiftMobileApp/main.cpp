@@ -1,11 +1,13 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include <QDebug>
 #include <fstream>
 #include <QtSql>
 #include <stdlib.h>
 #include "shiftreader.h"
 #include "structs.h"
+#include "shiftmodel.h"
 
 using namespace std;
 
@@ -42,18 +44,27 @@ int main(int argc, char *argv[])
 
     //Shifts
     ShiftReader sr(&sql_db);
-    vector<shift> s = sr.get_shifts(4);
+    QList<shift> s = sr.get_shifts(4);
 
     for(int i = 0; i < s.size(); i++)
     {
         qDebug() << s[i].date;
     }
 
+    ShiftModel chooseShiftModel(sr, 4);
+
+
+
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+
+    engine.rootContext()->setContextProperty("chooseShiftModel", &chooseShiftModel);
+    //qmlRegisterType<ShiftModel>("qt.shift_model", 1, 0, "ShiftModel");
+
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
