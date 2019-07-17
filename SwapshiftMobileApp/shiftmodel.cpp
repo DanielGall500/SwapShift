@@ -29,8 +29,6 @@ QVariant ShiftModel::data(const QModelIndex &index, int role) const
 
     int r = index.row();
 
-    qDebug() << "DATA";
-
     if(role == Qt::DisplayRole)
     {
         shift s = shifts.value((int)r);
@@ -38,8 +36,6 @@ QVariant ShiftModel::data(const QModelIndex &index, int role) const
         QString s_info = s.date + " " +
                          s.start_time + "-" +
                          s.end_time;
-
-        qDebug() << s_info;
 
         return s_info;
     }

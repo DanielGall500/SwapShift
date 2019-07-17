@@ -13,6 +13,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        Employee/Employee.cpp \
+        availableemployeefinder.cpp \
         main.cpp \
         shiftmodel.cpp \
         shiftreader.cpp
@@ -33,6 +35,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES +=
 
 HEADERS += \
+    Employee/Employee.h \
+    availableemployeefinder.h \
     shiftmodel.h \
     shiftreader.h \
     structs.h

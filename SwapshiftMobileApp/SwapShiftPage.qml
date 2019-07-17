@@ -32,9 +32,12 @@ Item {
             anchors.rightMargin: 8
 
             model: chooseShiftModel
+
             textRole: "display"
 
-
+            onCurrentIndexChanged: {
+                console.debug(chooseShiftCombo.currentIndex);
+            }
         }
     }
 

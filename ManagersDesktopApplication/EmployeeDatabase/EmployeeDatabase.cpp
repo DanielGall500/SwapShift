@@ -456,7 +456,6 @@ bool EmployeeDatabase::has_shift(int empl_id, string date, string roster, shift 
                                   "AND   roster     = '%3' ")
                                   .arg(empl_id).arg(dt, rst);
 
-
     if(query->exec(check_shift))
     {
         if(query->size() > 0)

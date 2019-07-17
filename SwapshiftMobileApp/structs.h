@@ -16,4 +16,16 @@ typedef struct shift
 
 } shift;
 
+typedef struct employee
+{
+    QString f_name, l_name, dept;
+
+    int empl_id;
+
+    employee(QString fn, QString ln, QString dpt, int id) :
+        f_name(fn), l_name(ln), dept(dpt), empl_id(id)
+    {}
+
+} employee;
+
 #endif // STRUCTS_H]

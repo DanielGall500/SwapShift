@@ -8,6 +8,7 @@
 #include "shiftreader.h"
 #include "structs.h"
 #include "shiftmodel.h"
+#include "availableemployeefinder.h"
 
 using namespace std;
 
@@ -42,18 +43,32 @@ int main(int argc, char *argv[])
         qDebug() << sql_db.lastError();
     }
 
+    //**EMPLOYEE LOGIN**
+    int EMPL_LOGIN_ID = 1;
+
     //Shifts
     ShiftReader sr(&sql_db);
-    QList<shift> s = sr.get_shifts(4);
+    QList<shift> s = sr.get_shifts(EMPL_LOGIN_ID);
 
     for(int i = 0; i < s.size(); i++)
     {
         qDebug() << s[i].date;
     }
 
-    ShiftModel chooseShiftModel(sr, 4);
+    //Shift Model
+    ShiftModel chooseShiftModel(sr, EMPL_LOGIN_ID);
 
 
+    AvailableEmployeeFinder finder(&sql_db);
+
+    shift sh("Tues 14th", "18:30", "22:30", "Roster10");
+    QList<employee> avail_empl = finder.get_available_empl(sh);
+
+    qDebug() << "Who Can Work During This Shift?";
+    for(auto e : avail_empl)
+    {
+        qDebug() << e.f_name << e.l_name;
+    }
 
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
