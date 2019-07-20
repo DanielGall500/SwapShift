@@ -1,0 +1,10 @@
+release/Employee.o
+release/availableemployeefinder.o
+release/availemplfindermodel.o
+release/main.o
+release/shiftmodel.o
+release/shiftreader.o
+release/qrc_qml.o
+release/moc_availableemployeefinder.o
+release/moc_availemplfindermodel.o
+release/moc_shiftmodel.o

@@ -1,7 +1,7 @@
 #include "availableemployeefinder.h"
 
-AvailableEmployeeFinder::AvailableEmployeeFinder(QSqlDatabase *db) :
-    db(db)
+AvailableEmployeeFinder::AvailableEmployeeFinder(QSqlDatabase *db, QList<shift> s, QObject *parent) :
+    QObject(parent), db(db), shifts(s)
 {
     this->query = new QSqlQuery(*db);
 }
@@ -47,11 +47,16 @@ QSet<int> AvailableEmployeeFinder::get_available_empl_IDs(shift s)
     return avail_empl;
 }
 
-QList<employee> AvailableEmployeeFinder::get_available_empl(shift s)
+QVariant AvailableEmployeeFinder::get_available_empl()
 {
-    QSet<int> avail_empl_ids = get_available_empl_IDs(s);
+    qDebug() << "Finding New Available Employees";
+
+    shift curr_shift = shifts.at(m_shift_indx);
+
+    QSet<int> avail_empl_ids = get_available_empl_IDs(curr_shift);
 
     QList<employee> avail_empl;
+    QVector<QVector<QString>> list;
 
     query->prepare("SELECT * "
                    "FROM employees ");
@@ -71,6 +76,8 @@ QList<employee> AvailableEmployeeFinder::get_available_empl(shift s)
                         l_name = query->value("last_name").toString(),
                         dept   = query->value("dept").toString();
 
+                list.append({f_name, l_name, dept});
+
                 employee e(f_name, l_name, dept, id);
 
                 avail_empl.push_back(e);
@@ -78,7 +85,10 @@ QList<employee> AvailableEmployeeFinder::get_available_empl(shift s)
         }
     }
 
-    return avail_empl;
+    //Convert to QML format
+    QVariant output = QVariant::fromValue(list);
+
+    return output;
 }
 
 QSet<int> AvailableEmployeeFinder::get_all_empl_ID()
@@ -104,3 +114,43 @@ QSet<int> AvailableEmployeeFinder::get_all_empl_ID()
 
     return empl;
 }
+
+void AvailableEmployeeFinder::set_shift_indx(const int &indx)
+{
+    qDebug() << "SHIFT INDX CHANGED" << indx;
+
+    if(indx == m_shift_indx)
+        return;
+
+    m_shift_indx = indx;
+
+    emit shift_indx_changed();
+}
+
+int AvailableEmployeeFinder::shift_indx()
+{
+    return m_shift_indx;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

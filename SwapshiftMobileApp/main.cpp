@@ -9,6 +9,7 @@
 #include "structs.h"
 #include "shiftmodel.h"
 #include "availableemployeefinder.h"
+#include "availemplfindermodel.h"
 
 using namespace std;
 
@@ -48,37 +49,25 @@ int main(int argc, char *argv[])
 
     //Shifts
     ShiftReader sr(&sql_db);
-    QList<shift> s = sr.get_shifts(EMPL_LOGIN_ID);
+    QList<shift> SHIFTS = sr.get_shifts(EMPL_LOGIN_ID);
 
-    for(int i = 0; i < s.size(); i++)
-    {
-        qDebug() << s[i].date;
-    }
+    //Shift & Available Employee Models
+    ShiftModel *chooseShiftModel = new ShiftModel(SHIFTS, EMPL_LOGIN_ID);
 
-    //Shift Model
-    ShiftModel chooseShiftModel(sr, EMPL_LOGIN_ID);
+    AvailableEmployeeFinder *finder = new AvailableEmployeeFinder(&sql_db, SHIFTS);
 
-
-    AvailableEmployeeFinder finder(&sql_db);
-
-    shift sh("Tues 14th", "18:30", "22:30", "Roster10");
-    QList<employee> avail_empl = finder.get_available_empl(sh);
-
-    qDebug() << "Who Can Work During This Shift?";
-    for(auto e : avail_empl)
-    {
-        qDebug() << e.f_name << e.l_name;
-    }
+    AvailEmplFinderModel *finderModel = new AvailEmplFinderModel();
 
 
+    //Setup GUI
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
     QGuiApplication app(argc, argv);
-
     QQmlApplicationEngine engine;
 
-    engine.rootContext()->setContextProperty("chooseShiftModel", &chooseShiftModel);
-    //qmlRegisterType<ShiftModel>("qt.shift_model", 1, 0, "ShiftModel");
+    //Pass C++ Functions to QML
+    engine.rootContext()->setContextProperty("chooseShiftModel", chooseShiftModel);
+    engine.rootContext()->setContextProperty("availEmployeeFinder", finder);
+    engine.rootContext()->setContextProperty("finderModel", finderModel);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

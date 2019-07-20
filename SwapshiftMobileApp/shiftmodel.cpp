@@ -1,15 +1,8 @@
 #include "shiftmodel.h"
 
-ShiftModel::ShiftModel(ShiftReader sr, int empl_id, QObject *parent)
-    : QAbstractListModel(parent), empl_id(empl_id)
-{
-    shifts = sr.get_shifts(empl_id);
-}
-
-QVariant ShiftModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-    // FIXME: Implement me!
-}
+ShiftModel::ShiftModel(QList<shift> s, int empl_id, QObject *parent)
+    : QAbstractListModel(parent), shifts(s), empl_id(empl_id)
+{}
 
 int ShiftModel::rowCount(const QModelIndex &parent) const
 {

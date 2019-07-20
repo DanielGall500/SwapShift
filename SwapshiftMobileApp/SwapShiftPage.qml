@@ -36,8 +36,17 @@ Item {
             textRole: "display"
 
             onCurrentIndexChanged: {
-                console.debug(chooseShiftCombo.currentIndex);
+                
+                availEmployeeFinder.set_shift_indx(chooseShiftCombo.currentIndex);
+                finderModel.setEmplList(availEmployeeFinder.get_available_empl());
+                
             }
+        }
+
+        ComboBox {
+            id: availEmplCombo
+            model: finderModel
+            textRole: "display"
         }
     }
 

@@ -12,14 +12,8 @@ class ShiftModel : public QAbstractListModel
 
     int empl_id;
 
-
-
-
 public:
-    explicit ShiftModel(ShiftReader sr, int empl_id, QObject *parent = nullptr);
-
-    // Header:
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+    explicit ShiftModel(QList<shift> s, int empl_id, QObject *parent = nullptr);
 
     // Basic functionality:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;

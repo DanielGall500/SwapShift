@@ -15,6 +15,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         Employee/Employee.cpp \
         availableemployeefinder.cpp \
+        availemplfindermodel.cpp \
         main.cpp \
         shiftmodel.cpp \
         shiftreader.cpp
@@ -37,6 +38,7 @@ DISTFILES +=
 HEADERS += \
     Employee/Employee.h \
     availableemployeefinder.h \
+    availemplfindermodel.h \
     shiftmodel.h \
     shiftreader.h \
     structs.h

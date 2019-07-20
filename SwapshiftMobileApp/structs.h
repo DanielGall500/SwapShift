@@ -26,6 +26,10 @@ typedef struct employee
         f_name(fn), l_name(ln), dept(dpt), empl_id(id)
     {}
 
+    employee(QString fn, QString ln, QString dpt) :
+        f_name(fn), l_name(ln), dept(dpt)
+    {}
+
 } employee;
 
 #endif // STRUCTS_H]
